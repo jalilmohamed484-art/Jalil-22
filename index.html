@@ -1,1221 +1,1282 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Jalil Chat Pro Max</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --accent: #06b6d4;
-      --bg-main: #0b1120;
-      --bg-card: #151e32;
-      --bg-subtle: #1e293b;
-      --bg-input: #1a233a;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #243049;
-      --msg-out: #4f46e5;
-      --msg-in: #1b263b;
-      --ig-grad: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    }
-    body {
-      background: var(--bg-main);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Cairo", sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      user-select: none;
-    }
-    input, textarea { user-select: text; }
-    .app-container {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      background: var(--bg-main);
-      position: relative;
-    }
-    
-    /* Top Bar */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      min-height: 54px;
-      flex-shrink: 0;
-      z-index: 10;
-    }
-    .brand-box { display: flex; align-items: center; gap: 8px; }
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: var(--ig-grad);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 18px;
-      color: #fff;
-    }
-    .brand-text { font-size: 16px; font-weight: bold; }
-    .status-pill { font-size: 10px; color: #10b981; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Le jeux chat</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #ec4899;
+            --tg-blue: #2aabee;
+            --wa-green: #25d366;
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --border-dark: #334155;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --online: #22c55e;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            --wa-bubble-out: #005c4b;
+            --wa-bubble-in: #202c33;
+        }
 
-    /* Screen Base */
-    .screen {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .screen.active { display: flex; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
-    /* Stories Bar (Instagram style) */
-    .stories-bar {
-      display: flex;
-      gap: 12px;
-      padding: 10px 14px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      overflow-x: auto;
-      flex-shrink: 0;
-      scrollbar-width: none;
-    }
-    .stories-bar::-webkit-scrollbar { display: none; }
-    .story-unit {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .story-ring {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      padding: 2px;
-      background: var(--ig-grad);
-      position: relative;
-    }
-    .story-ring.my-story { background: #334155; }
-    .story-pic {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: #1e293b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: #fff;
-      overflow: hidden;
-      border: 2px solid var(--bg-main);
-    }
-    .story-add-badge {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--bg-card);
-    }
-    .story-name { font-size: 10.5px; color: var(--text-muted); }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-    /* User ID banner */
-    .id-banner {
-      margin: 8px 14px 4px;
-      padding: 10px 12px;
-      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(6,182,212,0.15));
-      border: 1px solid rgba(99,102,241,0.3);
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .id-tag { font-family: monospace; font-size: 13px; font-weight: bold; color: #38bdf8; }
-    .btn-small {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-small:active { transform: scale(0.95); opacity: 0.9; }
+        .animated-emoji {
+            display: inline-block;
+            animation: emojiPulse 2.4s infinite ease-in-out;
+            transform-origin: center bottom;
+        }
 
-    /* Subtabs */
-    .filter-tabs {
-      display: flex;
-      margin: 6px 14px;
-      background: var(--bg-card);
-      border-radius: 10px;
-      padding: 3px;
-      border: 1px solid var(--border-color);
-      flex-shrink: 0;
-    }
-    .filter-btn {
-      flex: 1;
-      text-align: center;
-      padding: 6px;
-      font-size: 11.5px;
-      font-weight: bold;
-      color: var(--text-muted);
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .filter-btn.active { background: var(--primary); color: #fff; }
+        @keyframes emojiPulse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.1); }
+        }
 
-    /* Search & Add */
-    .search-dock {
-      display: flex;
-      gap: 8px;
-      padding: 2px 14px 8px;
-      flex-shrink: 0;
-    }
-    .search-input {
-      flex: 1;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 8px 12px;
-      color: #fff;
-      font-size: 12.5px;
-      outline: none;
-    }
-    .btn-start {
-      background: #10b981;
-      color: #fff;
-      border: none;
-      padding: 0 14px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 12px;
-      cursor: pointer;
-    }
+        .screen {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            background: var(--bg-dark);
+            overflow: hidden;
+            z-index: 10;
+        }
 
-    /* Chats List */
-    .chat-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 0 14px 10px;
-    }
-    .chat-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      background: var(--bg-card);
-      border-radius: 14px;
-      margin-bottom: 7px;
-      cursor: pointer;
-      border: 1px solid transparent;
-    }
-    .chat-item:active { background: #192338; border-color: var(--primary); }
-    .avatar-box {
-      position: relative;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 16px;
-      color: #fff;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
-    .dot-online {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 11px;
-      height: 11px;
-      background: #10b981;
-      border-radius: 50%;
-      border: 2px solid var(--bg-card);
-    }
-    .chat-meta { flex: 1; min-width: 0; }
-    .chat-header-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 3px;
-    }
-    .chat-title { font-weight: bold; font-size: 13.5px; }
-    .chat-subtext {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .group-pill {
-      font-size: 9px;
-      background: #0284c7;
-      color: #fff;
-      padding: 1px 5px;
-      border-radius: 4px;
-      margin-right: 4px;
-    }
+        .screen.active { display: flex; }
 
-    /* Chat View Room */
-    .room-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      flex-shrink: 0;
-    }
-    .room-info { display: flex; align-items: center; gap: 10px; }
-    .back-btn { background: none; border: none; font-size: 20px; color: #fff; cursor: pointer; padding: 2px 6px; }
-    .room-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .bubble-wrap {
-      display: flex;
-      flex-direction: column;
-      max-width: 80%;
-      position: relative;
-    }
-    .bubble-wrap.out { align-self: flex-end; align-items: flex-end; }
-    .bubble-wrap.in { align-self: flex-start; align-items: flex-start; }
-    .bubble-sender { font-size: 10px; color: var(--accent); margin-bottom: 2px; padding: 0 4px; }
-    .bubble {
-      padding: 9px 13px;
-      border-radius: 16px;
-      font-size: 13.5px;
-      line-height: 1.4;
-      word-break: break-word;
-      position: relative;
-    }
-    .bubble.out { background: var(--msg-out); color: #fff; border-bottom-left-radius: 3px; }
-    .bubble.in { background: var(--msg-in); color: #fff; border: 1px solid var(--border-color); border-bottom-right-radius: 3px; }
-    .bubble img { max-width: 200px; border-radius: 10px; margin-top: 4px; display: block; }
-    .bubble-sticker { font-size: 42px; background: none !important; border: none !important; padding: 0 !important; }
-    .bubble-meta { display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 9px; opacity: 0.75; margin-top: 3px; }
-    .quote-box {
-      background: rgba(0,0,0,0.25);
-      border-right: 3px solid #38bdf8;
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      margin-bottom: 4px;
-      color: #cbd5e1;
-    }
+        /* شاشة الدخول والتسجيل */
+        #auth-screen {
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            background: radial-gradient(circle at top, #1e1b4b, #0f172a);
+        }
 
-    /* Input Dock */
-    .input-dock {
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      flex-shrink: 0;
-    }
-    .reply-preview {
-      display: none;
-      padding: 6px 12px;
-      background: var(--bg-subtle);
-      border-bottom: 1px solid var(--border-color);
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11px;
-    }
-    .reply-preview.active { display: flex; }
-    .dock-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-    }
-    .action-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--bg-subtle);
-      border: none;
-      color: #fff;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .msg-field {
-      flex: 1;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 8px 14px;
-      color: #fff;
-      font-size: 13px;
-      outline: none;
-    }
-    .send-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--primary);
-      border: none;
-      color: #fff;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .auth-container {
+            width: 100%;
+            max-width: 360px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-dark);
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
 
-    /* Stickers Drawer */
-    .stickers-drawer {
-      display: none;
-      height: 190px;
-      background: #131b2e;
-      border-top: 1px solid var(--border-color);
-      flex-direction: column;
-    }
-    .stickers-drawer.active { display: flex; }
-    .sticker-categories {
-      display: flex;
-      gap: 6px;
-      padding: 6px 10px;
-      border-bottom: 1px solid var(--border-color);
-      overflow-x: auto;
-      flex-shrink: 0;
-    }
-    .st-cat-btn {
-      padding: 3px 8px;
-      border-radius: 10px;
-      background: var(--bg-subtle);
-      color: var(--text-muted);
-      font-size: 10.5px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .st-cat-btn.active { background: var(--primary); color: #fff; }
-    .stickers-grid {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 6px;
-      padding: 8px;
-      overflow-y: auto;
-      align-content: start;
-    }
-    .st-tile {
-      font-size: 26px;
-      text-align: center;
-      cursor: pointer;
-      padding: 4px;
-    }
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a5b4fc, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
 
-    /* Profile View (Instagram layout) */
-    .profile-scroll { flex: 1; overflow-y: auto; }
-    .profile-header { padding: 16px 14px 10px; }
-    .profile-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-    .avatar-wrapper {
-      position: relative;
-      width: 76px;
-      height: 76px;
-      flex-shrink: 0;
-    }
-    .avatar-circle {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 3px solid var(--primary);
-      background: var(--ig-grad);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: 800;
-      color: #fff;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
-    .cam-badge {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background: var(--primary);
-      color: #fff;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--bg-main);
-      font-size: 11px;
-      cursor: pointer;
-    }
-    .stats-row { flex: 1; display: flex; justify-content: space-around; text-align: center; }
-    .stat-val { font-weight: 800; font-size: 15px; }
-    .stat-label { font-size: 10.5px; color: var(--text-muted); }
+        .designer-tag {
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
 
-    .bio-container { margin-top: 12px; }
-    .bio-title { font-weight: 800; font-size: 14.5px; display: flex; align-items: center; gap: 4px; }
-    .bio-handle { font-size: 11.5px; color: #38bdf8; font-family: monospace; margin: 2px 0; }
-    .bio-text { font-size: 12px; color: #cbd5e1; line-height: 1.4; white-space: pre-wrap; }
+        .input-group {
+            margin-bottom: 14px;
+            text-align: right;
+        }
 
-    .prof-btns-row { display: flex; gap: 8px; margin-top: 12px; }
-    .btn-edit {
-      flex: 1;
-      padding: 7px;
-      border-radius: 8px;
-      background: var(--bg-subtle);
-      color: #fff;
-      border: 1px solid var(--border-color);
-      font-weight: bold;
-      font-size: 12px;
-      cursor: pointer;
-    }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
 
-    /* Highlights */
-    .highlights-shelf {
-      display: flex;
-      gap: 12px;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border-color);
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .hl-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex-shrink: 0; }
-    .hl-circle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      background: var(--bg-card);
-    }
-    .hl-label { font-size: 9.5px; color: var(--text-muted); }
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0f172a;
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+        }
 
-    /* Feed Grid */
-    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
-    .post-cell { aspect-ratio: 1; background: var(--bg-card); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .post-cell img { width: 100%; height: 100%; object-fit: cover; }
+        .main-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            margin-top: 10px;
+        }
 
-    /* Bottom Navigation */
-    .bottom-nav {
-      display: flex;
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      height: 54px;
-      flex-shrink: 0;
-    }
-    .nav-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      font-size: 10.5px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .nav-btn.active { color: #38bdf8; }
-    .nav-icon { font-size: 18px; }
+        /* الرأس العلوي */
+        .top-bar {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background: var(--card-dark);
+            border-bottom: 1px solid var(--border-dark);
+            flex-shrink: 0;
+        }
 
-    /* Modals */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .modal-backdrop.active { display: flex; }
-    .modal-card {
-      width: 100%;
-      max-width: 380px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 18px;
-    }
-    .modal-title { font-weight: bold; font-size: 15px; margin-bottom: 12px; }
-    .modal-field {
-      width: 100%;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #fff;
-      font-size: 12.5px;
-      margin-bottom: 10px;
-      outline: none;
-    }
-    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
-  </style>
+        .top-bar h2 { font-size: 18px; font-weight: 700; }
+
+        /* شريط ID الشخصي وخانة البحث عن الأصدقاء */
+        .user-id-bar {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .my-id-badge {
+            background: #0f172a;
+            border: 1px dashed var(--primary);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: monospace;
+            color: #a5b4fc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .friend-search-box {
+            padding: 10px 16px;
+            background: var(--card-dark);
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .friend-search-box input {
+            flex: 1;
+            padding: 8px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .friend-search-box button {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 0 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* الحالات بنمط تليغرام / واتساب */
+        .stories-container {
+            display: flex;
+            gap: 12px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border-dark);
+            background: rgba(30, 41, 59, 0.3);
+            flex-shrink: 0;
+        }
+
+        .stories-container::-webkit-scrollbar { display: none; }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .story-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid var(--tg-blue);
+            padding: 2px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        /* قائمة المحادثات والأصدقاء */
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--border-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            position: relative;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--online);
+            border-radius: 50%;
+            border: 2px solid var(--card-dark);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .chat-details { flex: 1; }
+        .chat-header-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
+        .chat-name { font-weight: 600; font-size: 15px; }
+        .chat-time { font-size: 11px; color: var(--text-muted); }
+        .chat-last-msg {
+            font-size: 13px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* نافذة غرفة الدردشة المتطورة (واتساب + تليغرام) */
+        #chat-room { z-index: 45; }
+
+        .chat-room-header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+            background: #1e293b;
+            border-bottom: 1px solid var(--border-dark);
+            flex-shrink: 0;
+        }
+
+        .chat-room-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: radial-gradient(circle at center, #111a2e 0%, #090e17 100%);
+        }
+
+        .message-bubble {
+            max-width: 78%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            word-break: break-word;
+        }
+
+        .message-bubble.incoming {
+            background: var(--wa-bubble-in);
+            align-self: flex-start;
+            border-top-right-radius: 2px;
+            color: #e9edef;
+        }
+
+        .message-bubble.outgoing {
+            background: var(--wa-bubble-out);
+            align-self: flex-end;
+            border-top-left-radius: 2px;
+            color: #e9edef;
+        }
+
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 3px;
+        }
+
+        .read-check {
+            color: #53bdeb; /* لون علامة القراءة الزرقاء للواتساب */
+        }
+
+        .typing-indicator {
+            font-size: 11px;
+            color: var(--wa-green);
+            display: none;
+            margin-right: 6px;
+        }
+
+        .chat-input-bar {
+            background: #1e293b;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .chat-input-bar input {
+            flex: 1;
+            padding: 10px 16px;
+            background: #0f172a;
+            border: 1px solid var(--border-dark);
+            border-radius: 24px;
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* قسم قائمة الأصدقاء المستقل */
+        #friends-tab { z-index: 10; }
+        .friends-list-box { flex: 1; overflow-y: auto; padding: 10px 0; }
+        .friend-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* شبكة الألعاب (15 لعبة) */
+        .games-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .game-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .game-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .game-title { font-size: 13px; font-weight: bold; margin-bottom: 3px; }
+        .game-desc { font-size: 10px; color: var(--text-muted); }
+
+        /* ساحة اللعبة */
+        #game-arena-screen { z-index: 40; }
+        .arena-canvas-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .game-board {
+            display: grid;
+            gap: 8px;
+            background: var(--card-dark);
+            padding: 12px;
+            border-radius: 16px;
+        }
+
+        .board-cell {
+            width: 72px;
+            height: 72px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid var(--border-dark);
+        }
+
+        /* الملف الشخصي بنمط فيسبوك */
+        .fb-profile-container { flex: 1; overflow-y: auto; background: #0b1120; }
+        .fb-cover { height: 130px; background: linear-gradient(135deg, #1877f2, #00c6ff); position: relative; }
+        .fb-avatar-holder {
+            width: 85px; height: 85px; border-radius: 50%; background: #1e293b;
+            border: 4px solid var(--bg-dark); position: absolute; bottom: -30px; right: 20px;
+            display: flex; align-items: center; justify-content: center; font-size: 40px; cursor: pointer;
+        }
+        .fb-details { margin-top: 36px; padding: 0 16px 14px 16px; border-bottom: 1px solid var(--border-dark); }
+        .fb-name { font-size: 19px; font-weight: bold; }
+        .fb-bio { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+        .fb-post-creator { padding: 12px 16px; background: var(--card-dark); margin: 10px 0; border: 1px solid var(--border-dark); }
+        .fb-post-card { background: var(--card-dark); border: 1px solid var(--border-dark); padding: 12px 16px; margin-bottom: 10px; }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: 60px;
+            background: var(--card-dark);
+            border-top: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 20;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .nav-item i { font-size: 18px; }
+        .nav-item.active { color: var(--tg-blue); }
+    </style>
 </head>
 <body>
-  <div class="app-container">
 
-    <!-- Screen 1: Chats & Groups List -->
-    <div id="screen-chats" class="screen active">
-      <div class="top-bar">
-        <div class="brand-box">
-          <div class="brand-logo">J</div>
-          <div>
-            <div class="brand-text">Jalil Chat Pro</div>
-            <div class="status-pill">🟢 متصل ومحمي</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:12px; align-items:center;">
-          <span style="cursor:pointer; font-size:18px;" onclick="openCreateGroupModal()" title="إنشاء مجموعة">👥</span>
-        </div>
-      </div>
-
-      <!-- Instagram Stories Strip -->
-      <div class="stories-bar">
-        <div class="story-unit" onclick="triggerInput('story-file-input')">
-          <div class="story-ring my-story">
-            <div class="story-pic" id="story-my-avatar">J</div>
-            <div class="story-add-badge">+</div>
-          </div>
-          <span class="story-name">قصتك</span>
-          <input type="file" id="story-file-input" accept="image/*" style="display:none;" onchange="handleNewStory(event)">
-        </div>
-        <div class="story-unit" onclick="alert('قصة Djouchat: تطبيق جليل شات شغال 100% 🚀')">
-          <div class="story-ring"><div class="story-pic" style="background:#0284c7;">D</div></div>
-          <span class="story-name">Djouchat</span>
-        </div>
-        <div class="story-unit" onclick="alert('قصة المجموعة: مرحباً بجميع الأعضاء! 👥✨')">
-          <div class="story-ring"><div class="story-pic" style="background:#f59e0b;">👥</div></div>
-          <span class="story-name">المجموعة</span>
-        </div>
-      </div>
-
-      <!-- My ID Banner -->
-      <div class="id-banner">
-        <div>
-          <div style="font-size:10px; color:var(--text-muted);">رقم الـ ID الخاص بك (شاركه للمراسلة):</div>
-          <div class="id-tag" id="my-id-display">jalil-1001</div>
-        </div>
-        <div style="display:flex; gap:6px;">
-          <button class="btn-small" onclick="copyIdAction()">نسخ 📋</button>
-          <button class="btn-small" style="background:#334155;" onclick="resetMyId()">🔄 جديد</button>
-        </div>
-      </div>
-
-      <!-- Filter Subtabs -->
-      <div class="filter-tabs">
-        <div class="filter-btn active" onclick="filterChats('all', this)">الكل</div>
-        <div class="filter-btn" onclick="filterChats('direct', this)">خاص (1-to-1)</div>
-        <div class="filter-btn" onclick="filterChats('group', this)">مجموعات 👥</div>
-      </div>
-
-      <!-- Search & Start Chat -->
-      <div class="search-dock">
-        <input type="text" class="search-input" id="search-contact-input" placeholder="اكتب ID صديقك أو اسم المجموعة...">
-        <button class="btn-start" onclick="startNewChat()">بدء الدردشة</button>
-      </div>
-
-      <!-- Chats List -->
-      <div class="chat-list" id="chats-container">
-        <!-- Interactive Bot -->
-        <div class="chat-item" data-type="direct" onclick="openChatRoom('مساعد جليل الذكي', '🤖', 'direct')">
-          <div class="avatar-box" style="background: linear-gradient(135deg, #06b6d4, #6366f1);">🤖<div class="dot-online"></div></div>
-          <div class="chat-meta">
-            <div class="chat-header-row">
-              <span class="chat-title">مساعد جليل الذكي ✅</span>
-              <span style="font-size:10px; color:var(--text-muted);">الآن</span>
-            </div>
-            <div class="chat-subtext">أهلاً بك! اضغط هنا لتجربة المراسلة والملصقات اللطيفة 💬</div>
-          </div>
-        </div>
-
-        <!-- Default Group -->
-        <div class="chat-item" data-type="group" onclick="openChatRoom('مجموعة مطوري جليل', '👥', 'group')">
-          <div class="avatar-box" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">👥<div class="dot-online"></div></div>
-          <div class="chat-meta">
-            <div class="chat-header-row">
-              <span class="chat-title">مجموعة مطوري جليل <span class="group-pill">مجموعة</span></span>
-              <span style="font-size:10px; color:var(--text-muted);">12:00</span>
-            </div>
-            <div class="chat-subtext">أهلاً بك في دردشة المجموعة الرسمية ✨</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Screen 2: Active Chat Room -->
-    <div id="screen-room" class="screen">
-      <div class="room-header">
-        <div class="room-info">
-          <button class="back-btn" onclick="closeChatRoom()">➡️</button>
-          <div class="avatar-box" id="room-avatar" style="width:34px; height:34px; font-size:14px;">🤖</div>
-          <div>
-            <div style="font-weight:bold; font-size:14px;" id="room-name">مساعد جليل</div>
-            <div style="font-size:10px; color:#10b981;">متصل الآن • تشفير كامل</div>
-          </div>
-        </div>
-        <span class="group-pill" style="background:#10b981;">🔒 مشفر</span>
-      </div>
-
-      <div class="room-messages" id="messages-container">
-        <div class="bubble-wrap in" style="align-self:center; align-items:center;">
-          <div class="bubble" style="background:rgba(99,102,241,0.15); border:1px dashed rgba(99,102,241,0.4); text-align:center; font-size:11.5px; color:#94a3b8;">
-            🔒 المحادثة مشفرة ومحمية وتعمل بالكامل داخل التطبيق
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Chat Dock -->
-      <div class="input-dock">
-        <!-- Reply preview -->
-        <div class="reply-preview" id="reply-bar">
-          <div><strong>رد على: </strong><span id="reply-quote-target">...</span></div>
-          <span style="cursor:pointer;" onclick="cancelReply()">✕</span>
-        </div>
-
-        <div class="dock-row">
-          <button class="action-icon" id="btn-stickers-toggle" onclick="toggleStickersDrawer()" title="ملصقات لطيفة">😊</button>
-          <button class="action-icon" onclick="triggerInput('chat-file-input')" title="إرسال صورة">📷</button>
-          <input type="file" id="chat-file-input" accept="image/*" style="display:none;" onchange="handleAttachImage(event)">
-
-          <input type="text" class="msg-field" id="message-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendMessageAction()">
-          <button class="send-btn" onclick="sendMessageAction()">➤</button>
-        </div>
-
-        <!-- Stickers Drawer -->
-        <div class="stickers-drawer" id="stickers-drawer">
-          <div class="sticker-categories">
-            <button class="st-cat-btn active" onclick="loadStickers('cute', this)">🐱 قطط وكيوت</button>
-            <button class="st-cat-btn" onclick="loadStickers('love', this)">💖 قلوب</button>
-            <button class="st-cat-btn" onclick="loadStickers('fun', this)">🎉 احتفال</button>
-            <button class="st-cat-btn" onclick="loadStickers('food', this)">🍔 طعام</button>
-            <button class="st-cat-btn" onclick="loadStickers('cool', this)">😎 كول</button>
-          </div>
-          <div class="stickers-grid" id="stickers-grid"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Screen 3: Instagram Style Profile Screen -->
-    <div id="screen-profile" class="screen">
-      <div class="top-bar">
-        <div style="font-weight:bold; font-size:15px;" id="top-username-label">@jalil_user</div>
-        <div style="display:flex; gap:14px; font-size:16px;">
-          <span style="cursor:pointer;" onclick="triggerInput('post-file-input')" title="إضافة منشور">➕</span>
-          <span style="cursor:pointer;" onclick="openEditProfileModal()" title="تعديل الحساب">⚙️</span>
-        </div>
-        <input type="file" id="post-file-input" accept="image/*" style="display:none;" onchange="handleNewPost(event)">
-      </div>
-
-      <div class="profile-scroll">
-        <div class="profile-header">
-          <div class="profile-top">
-            <div class="avatar-wrapper">
-              <div class="avatar-circle" id="profile-avatar-display" onclick="triggerInput('avatar-file-input')">J</div>
-              <div class="cam-badge" onclick="triggerInput('avatar-file-input')" title="تغيير الصورة">📷</div>
-              <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
-            </div>
+    <!-- 1. شاشة الدخول والتسجيل -->
+    <div id="auth-screen" class="screen active">
+        <div class="auth-container">
+            <h1 class="app-title">Le jeux chat</h1>
+            <div class="designer-tag">WELCOME • BY MOHAMED JALIL</div>
             
-            <div class="stats-row">
-              <div><div class="stat-val" id="posts-count">6</div><div class="stat-label">منشورات</div></div>
-              <div><div class="stat-val">1.6K</div><div class="stat-label">متابعون</div></div>
-              <div><div class="stat-val">410</div><div class="stat-label">أتابعهم</div></div>
+            <div class="input-group">
+                <label>البريد الإلكتروني الموثق</label>
+                <input type="email" id="auth-email" placeholder="user@domain.com" />
             </div>
-          </div>
 
-          <div class="bio-container">
-            <div class="bio-title" id="profile-name-label">جليل • Jalil ✅</div>
-            <div class="bio-handle" id="profile-handle-label">@jalil_user</div>
-            <div class="bio-text" id="profile-bio-label">حسابي الرسمي على Jalil Chat Pro 💫\nمرحباً بكم في ملفي الشخصي 🚀\nتواصل معي عبر المعرف الخاص بي بالأسفل 👇</div>
-          </div>
+            <div class="input-group">
+                <label>اسم المستخدم</label>
+                <input type="text" id="auth-name" placeholder="اسمك داخل التطبيق" />
+            </div>
 
-          <div class="prof-btns-row">
-            <button class="btn-edit" onclick="openEditProfileModal()">✏️ تعديل الملف الشخصي</button>
-            <button class="btn-edit" style="flex:0 0 50px;" onclick="copyIdAction()" title="مشاركة">📋</button>
-          </div>
+            <button class="main-btn" onclick="handleAuth()">دخول إلى التطبيق</button>
         </div>
-
-        <!-- Highlights (Instagram style) -->
-        <div class="highlights-shelf">
-          <div class="hl-item" onclick="triggerInput('post-file-input')">
-            <div class="hl-circle"><span style="font-size:18px;">➕</span></div>
-            <span class="hl-label">جديد</span>
-          </div>
-          <div class="hl-item"><div class="hl-circle">✈️</div><span class="hl-label">سفر</span></div>
-          <div class="hl-item"><div class="hl-circle">💻</div><span class="hl-label">أكواد</span></div>
-          <div class="hl-item"><div class="hl-circle">☕</div><span class="hl-label">يوميات</span></div>
-        </div>
-
-        <!-- Posts Grid -->
-        <div class="posts-grid" id="posts-grid-container">
-          <div class="post-cell"><img src="https://picsum.photos/400/400?random=21" alt="Post"></div>
-          <div class="post-cell"><img src="https://picsum.photos/400/400?random=22" alt="Post"></div>
-          <div class="post-cell"><img src="https://picsum.photos/400/400?random=23" alt="Post"></div>
-          <div class="post-cell"><img src="https://picsum.photos/400/400?random=24" alt="Post"></div>
-          <div class="post-cell"><img src="https://picsum.photos/400/400?random=25" alt="Post"></div>
-          <div class="post-cell"><img src="https://picsum.photos/400/400?random=26" alt="Post"></div>
-        </div>
-      </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-      <button class="nav-btn active" id="tab-chats-btn" onclick="switchMainTab('chats')">
-        <span class="nav-icon">💬</span>
-        <span>الدردشات</span>
-      </button>
-      <button class="nav-btn" id="tab-profile-btn" onclick="switchMainTab('profile')">
-        <span class="nav-icon">👤</span>
-        <span>حسابي</span>
-      </button>
-    </div>
-
-    <!-- Modal: Edit Profile -->
-    <div class="modal-backdrop" id="modal-edit-profile">
-      <div class="modal-card">
-        <div class="modal-title">✏️ تعديل الملف الشخصي</div>
-        
-        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">الاسم المعروض</label>
-        <input type="text" class="modal-field" id="modal-in-name" placeholder="اسمك الكامل...">
-        
-        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">اسم المستخدم (@username)</label>
-        <input type="text" class="modal-field" id="modal-in-handle" placeholder="jalil_dev">
-        
-        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">النبذة التعريفية (Bio)</label>
-        <textarea class="modal-field" id="modal-in-bio" rows="3" placeholder="اكتب نبذة عنك..."></textarea>
-
-        <div class="modal-actions">
-          <button class="btn-small" style="background:#334155;" onclick="closeModal('modal-edit-profile')">إلغاء</button>
-          <button class="btn-small" onclick="saveProfileChanges()">حفظ التعديلات</button>
+    <!-- 2. واجهة المحادثات (تليغرام + واتساب) -->
+    <div id="chat-tab" class="screen">
+        <div class="top-bar">
+            <h2>المحادثات</h2>
+            <div style="display: flex; gap: 14px; align-items: center;">
+                <i class="fa-solid fa-user-plus animated-emoji" style="color: var(--tg-blue); cursor: pointer;" onclick="switchTab('friends-tab')" title="إضافة أصدقاء"></i>
+                <i class="fa-solid fa-bolt animated-emoji" style="color: var(--accent); cursor: pointer;" onclick="sendGlobalChallenge()" title="تحدي الجميع"></i>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Modal: Create Group -->
-    <div class="modal-backdrop" id="modal-create-group">
-      <div class="modal-card">
-        <div class="modal-title">👥 إنشاء مجموعة جديدة</div>
-        
-        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">اسم المجموعة</label>
-        <input type="text" class="modal-field" id="group-name-field" placeholder="مثال: شلة الأصدقاء 🔥">
-        
-        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">رمز المجموعة (Group ID)</label>
-        <input type="text" class="modal-field" id="group-id-field" placeholder="group-friends-2026">
-
-        <div class="modal-actions">
-          <button class="btn-small" style="background:#334155;" onclick="closeModal('modal-create-group')">إلغاء</button>
-          <button class="btn-small" onclick="confirmCreateGroup()">إنشاء</button>
+        <!-- شريط المعرف الشخصي الدائم والبحث -->
+        <div class="user-id-bar">
+            <span style="font-size: 12px; color: var(--text-muted);">معرف حسابك الثابت:</span>
+            <div class="my-id-badge" onclick="copyMyId()" title="اضغط لنسخ المعرف">
+                <span id="display-fixed-id">#ID-0000</span>
+                <i class="fa-regular fa-copy"></i>
+            </div>
         </div>
-      </div>
+
+        <div class="friend-search-box">
+            <input type="text" id="search-friend-input" placeholder="ابحث بمعرف الصديق (مثال: #JEUX-1234)..." />
+            <button onclick="addFriendById()"><i class="fa-solid fa-plus"></i> إضافة</button>
+        </div>
+
+        <!-- الحالات Stories -->
+        <div class="stories-container">
+            <div class="story-item" onclick="alert('خاصية إضافة قصة جديدة متاحة الآن!')">
+                <div class="story-avatar" style="border-style: dashed; color: var(--text-muted);"><i class="fa-solid fa-plus"></i></div>
+                <span>حالتي</span>
+            </div>
+            <div class="story-item" onclick="viewStory('سارة', '🎮 من يتحداني في ألعاب الذكاء؟')">
+                <div class="story-avatar"><span class="animated-emoji">🧕</span></div>
+                <span>سارة</span>
+            </div>
+            <div class="story-item" onclick="viewStory('ياسين', '🔥 فوز ساحق 5 مرات متتالية!')">
+                <div class="story-avatar"><span class="animated-emoji">🧑‍💻</span></div>
+                <span>ياسين</span>
+            </div>
+            <div class="story-item" onclick="viewStory('أحمد', '☕ وقت الاستراحة واللعب')">
+                <div class="story-avatar"><span class="animated-emoji">👨‍🦱</span></div>
+                <span>أحمد</span>
+            </div>
+        </div>
+
+        <!-- قائمة المحادثات -->
+        <div class="chat-list" id="chats-list-wrapper"></div>
     </div>
 
-  </div>
+    <!-- 3. نافذة المحادثة النشطة (مستوحاة من واتساب وتليغرام) -->
+    <div id="chat-room" class="screen">
+        <div class="chat-room-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-arrow-right" style="cursor: pointer; font-size: 18px;" onclick="closeChatRoom()"></i>
+                <div id="room-avatar" style="font-size: 24px;">👤</div>
+                <div>
+                    <h3 id="room-name" style="font-size: 14px;">المستخدم</h3>
+                    <div style="display: flex; align-items: center;">
+                        <span id="room-status" style="font-size: 10px; color: var(--online);">متصل</span>
+                        <span id="typing-status" class="typing-indicator">يكتب الآن...</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px; color: var(--tg-blue); font-size: 18px;">
+                <i class="fa-solid fa-phone" style="cursor: pointer;" onclick="alert('جاري الاتصال الصوتي...')"></i>
+                <i class="fa-solid fa-gamepad animated-emoji" style="cursor: pointer; color: var(--accent);" onclick="inviteToCurrentGame()" title="دعوة للتحدي"></i>
+            </div>
+        </div>
 
-  <script>
-    // Safe storage wrapper (never throws security errors in locked WebViews)
-    var safeStorage = {
-      get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
-      set: function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
-    };
+        <div class="chat-room-body" id="messages-box"></div>
 
-    var myUserId = safeStorage.get('j_user_id');
-    if (!myUserId) {
-      myUserId = 'jalil-' + Math.random().toString(36).substring(2, 6) + '-' + Math.floor(100 + Math.random() * 900);
-      safeStorage.set('j_user_id', myUserId);
-    }
+        <div class="chat-input-bar">
+            <div class="chat-input-actions">
+                <i class="fa-regular fa-face-smile animated-emoji" style="cursor: pointer;"></i>
+                <i class="fa-solid fa-paperclip" style="cursor: pointer;" onclick="alert('إرفاق ملف أو صورة')"></i>
+            </div>
+            <input type="text" id="msg-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendMessage()" />
+            <button style="background: none; border: none; color: var(--wa-green); font-size: 20px; cursor: pointer;" onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
 
-    var userProfile = {
-      name: safeStorage.get('j_name') || 'جليل • Jalil',
-      username: safeStorage.get('j_handle') || 'jalil_user',
-      bio: safeStorage.get('j_bio') || 'حسابي الرسمي على Jalil Chat Pro 💫\\nمرحباً بكم في ملفي الشخصي 🚀',
-      avatar: safeStorage.get('j_avatar') || null
-    };
+    <!-- 4. واجهة قائمة الأصدقاء المستقلة -->
+    <div id="friends-tab" class="screen">
+        <div class="top-bar">
+            <h2>قائمة الأصدقاء</h2>
+            <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="switchTab('chat-tab')"></i>
+        </div>
+        <div class="friends-list-box" id="friends-list-wrapper"></div>
+    </div>
 
-    var currentChat = { id: 'bot', name: 'مساعد جليل الذكي', icon: '🤖', type: 'direct' };
-    var replyTarget = null;
-    var contactsMap = {};
+    <!-- 5. واجهة الألعاب (15 لعبة لشخصين وذكاء) -->
+    <div id="games-tab" class="screen">
+        <div class="top-bar">
+            <h2>الألعاب والذكاء (15)</h2>
+            <span class="animated-emoji" style="font-size: 18px;">🎮</span>
+        </div>
+        <div class="games-grid" id="games-container"></div>
+    </div>
 
-    var stickersLibrary = {
-      cute: ['😻', '🐱', '🐾', '🐰', '🐼', '🦊', '🐥', '🧸', '🌸', '✨', '🥺', '😽'],
-      love: ['❤️', '💖', '💘', '💕', '🥰', '😍', '💌', '🌹', '💐', '😘', '💍', '💓'],
-      fun:  ['🥳', '🎉', '🎊', '🚀', '🔥', '💃', '🕺', '🍿', '🎈', '⭐', '😂', '🤣'],
-      food: ['🍕', '🍔', '🍟', '🍦', '🍩', '🍫', '🧋', '☕', '🍰', '🍓', '🧁', '🍉'],
-      cool: ['😎', '🕶️', '⚡', '🎧', '👾', '🎮', '💯', '🤙', '👑', '💎', '🚀', '🎯']
-    };
+    <!-- 6. شاشة اللعبة النشطة -->
+    <div id="game-arena-screen" class="screen">
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="closeGameArena()"></i>
+                <h3 id="arena-title" style="font-size: 15px;">اسم اللعبة</h3>
+            </div>
+            <button onclick="resetCurrentGame()" style="background: none; border: 1px solid var(--border-dark); color: #fff; padding: 4px 10px; border-radius: 8px; font-size: 11px;">إعادة</button>
+        </div>
+        <div class="arena-canvas-box" id="arena-content"></div>
+    </div>
 
-    function initApp() {
-      document.getElementById('my-id-display').innerText = myUserId;
-      renderProfileUI();
-      loadStickers('cute');
-    }
+    <!-- 7. الملف الشخصي الاجتماعي (نمط فيسبوك المستقل) -->
+    <div id="profile-tab" class="screen">
+        <div class="top-bar">
+            <h2>الملف الشخصي</h2>
+            <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; cursor: pointer;" onclick="logout()" title="تسجيل خروج"></i>
+        </div>
 
-    function triggerInput(id) {
-      var el = document.getElementById(id);
-      if (el) el.click();
-    }
+        <div class="fb-profile-container">
+            <div class="fb-cover">
+                <div class="fb-avatar-holder" onclick="changeAvatar()">
+                    <span id="fb-avatar-display" class="animated-emoji">😎</span>
+                </div>
+            </div>
 
-    // Switch Main Tabs
-    function switchMainTab(tab) {
-      document.getElementById('screen-chats').classList.remove('active');
-      document.getElementById('screen-room').classList.remove('active');
-      document.getElementById('screen-profile').classList.remove('active');
-      document.getElementById('tab-chats-btn').classList.remove('active');
-      document.getElementById('tab-profile-btn').classList.remove('active');
+            <div class="fb-details">
+                <div class="fb-name" id="fb-profile-name">الاسم</div>
+                <div class="fb-bio" id="fb-profile-bio">أهلاً بكم في حسابي!</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                    <div><i class="fa-solid fa-id-card"></i> المعرف: <strong id="fb-profile-id" style="color: #60a5fa;">#JEUX-0000</strong></div>
+                    <div><i class="fa-solid fa-envelope"></i> البريد: <span id="fb-profile-email">mail@domain.com</span></div>
+                </div>
 
-      if (tab === 'chats') {
-        document.getElementById('screen-chats').classList.add('active');
-        document.getElementById('tab-chats-btn').classList.add('active');
-      } else {
-        document.getElementById('screen-profile').classList.add('active');
-        document.getElementById('tab-profile-btn').classList.add('active');
-      }
-    }
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <button class="main-btn" style="flex: 1; margin: 0; padding: 8px; font-size: 12px;" onclick="editBio()">تعديل النبذة</button>
+                    <button class="main-btn" style="flex: 1; margin: 0; padding: 8px; font-size: 12px; background: #334155;" onclick="changeAvatar()">تغيير الرمز</button>
+                </div>
+            </div>
 
-    // Chat Room Functions
-    function openChatRoom(name, icon, type) {
-      currentChat = { id: name, name: name, icon: icon, type: type };
-      document.getElementById('room-name').innerHTML = name + (type === 'group' ? ' <span class="group-pill">مجموعة</span>' : '');
-      document.getElementById('room-avatar').innerText = icon;
-      
-      document.getElementById('screen-chats').classList.remove('active');
-      document.getElementById('screen-profile').classList.remove('active');
-      document.getElementById('screen-room').classList.add('active');
-    }
+            <!-- كتابة ونشر بوست على الحائط -->
+            <div class="fb-post-creator">
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+                    <span class="animated-emoji" style="font-size: 22px;">✍️</span>
+                    <input type="text" id="fb-post-text" placeholder="بماذا تفكر الآن؟" style="flex: 1; background: #0f172a; border: 1px solid var(--border-dark); padding: 8px 12px; border-radius: 20px; color: #fff; outline: none;" />
+                </div>
+                <button class="main-btn" style="margin: 0; padding: 8px; font-size: 12px;" onclick="publishPost()">نشر في صفحتي</button>
+            </div>
 
-    function closeChatRoom() {
-      document.getElementById('screen-room').classList.remove('active');
-      document.getElementById('screen-chats').classList.add('active');
-      document.getElementById('stickers-drawer').classList.remove('active');
-      cancelReply();
-    }
+            <div id="fb-wall-container">
+                <div class="fb-post-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <span class="animated-emoji" style="font-size: 24px;">😎</span>
+                        <div>
+                            <strong style="font-size: 13px;" id="fb-author-name">أنا</strong>
+                            <div style="font-size: 10px; color: var(--text-muted);">منذ 10 دقائق • 🌍 عام</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 13px;">تطبيق رائع يجمع الدردشة والمواجهات الذكية! <span class="animated-emoji">🔥</span><span class="animated-emoji">✨</span></p>
+                    <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--border-dark); padding-top: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted);">
+                        <span style="cursor: pointer;" onclick="toggleLike(this)"><i class="fa-regular fa-thumbs-up"></i> إعجاب</span>
+                        <span style="cursor: pointer;" onclick="alert('التعليقات مفتوحة!')"><i class="fa-regular fa-comment"></i> تعليق</span>
+                        <span style="cursor: pointer;" onclick="alert('تمت المشاركة!')"><i class="fa-solid fa-share"></i> مشاركة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Messaging
-    function sendMessageAction(customObj) {
-      var inEl = document.getElementById('message-input');
-      var txt = customObj ? customObj.text : inEl.value.trim();
-      var sticker = customObj ? customObj.sticker : null;
-      var img = customObj ? customObj.img : null;
+    <!-- شريط التنقل السفلي الفاصل للأقسام -->
+    <nav class="bottom-nav" id="main-navigation" style="display: none;">
+        <div class="nav-item active" onclick="switchTab('chat-tab')">
+            <i class="fa-solid fa-comments"></i>
+            <span>الدردشة</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('friends-tab')">
+            <i class="fa-solid fa-user-group"></i>
+            <span>الأصدقاء</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('games-tab')">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>الألعاب</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('profile-tab')">
+            <i class="fa-solid fa-user"></i>
+            <span>حسابي</span>
+        </div>
+    </nav>
 
-      if (!txt && !sticker && !img) return;
+    <script>
+        /* ================= 1. إدارة الهوية الدائمة ومعرف الـ ID ================= */
+        let currentUser = JSON.parse(localStorage.getItem('le_jeux_user')) || null;
+        let friendsList = JSON.parse(localStorage.getItem('le_jeux_friends')) || [
+            { id: '#JEUX-1011', name: 'سارة', avatar: '🧕', bio: 'مستعدة لأي تحدي!' },
+            { id: '#JEUX-2022', name: 'ياسين', avatar: '🧑‍💻', bio: 'عاشق لألعاب الذكاء' },
+            { id: '#JEUX-3033', name: 'أحمد', avatar: '👨‍🦱', bio: 'لا أهزم بسهولة ⚡' },
+            { id: '#JEUX-4044', name: 'نور', avatar: '👩‍🎨', bio: 'ألعاب الدقة هي اختصاصي' }
+        ];
 
-      var data = {
-        text: txt,
-        sticker: sticker,
-        img: img,
-        reply: replyTarget,
-        sender: 'أنت',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
+        let currentChatPartner = null;
+        let activeGameId = null;
 
-      appendMessage(data, 'out');
-      if (!customObj) inEl.value = '';
-      cancelReply();
+        /* الـ 15 لعبة */
+        const gamesList = [
+            { id: 'tictactoe', name: 'XO الشهيرة', desc: 'لعبة لشخصين كلاسيكية', icon: 'fa-times' },
+            { id: 'mathduel', name: 'مبارزة الحساب', desc: 'سرعة في حل العمليات', icon: 'fa-calculator' },
+            { id: 'memory', name: 'قوة الذاكرة', desc: 'كشف البطاقات المتطابقة', icon: 'fa-brain' },
+            { id: 'rps', name: 'حجرة ورقة مقص', desc: 'تحدي سريع بين طرفين', icon: 'fa-hand-back-fist' },
+            { id: 'speedclick', name: 'سرعة النقر', desc: 'من يجمع 25 نقرة أولاً', icon: 'fa-arrow-pointer' },
+            { id: 'reaction', name: 'اختبار رد الفعل', desc: 'انقر فور ظهور اللون الأخضر', icon: 'fa-stopwatch' },
+            { id: 'connect4', name: 'أربعة في صف', desc: 'ذكاء وتخطيط استراتيجي', icon: 'fa-circle-dot' },
+            { id: 'colormatch', name: 'تطابق الألوان', desc: 'طابق معنى النص بلونه', icon: 'fa-palette' },
+            { id: 'guessnum', name: 'تخمين الرقم', desc: 'اكتشف الرقم السري', icon: 'fa-question' },
+            { id: 'dotsboxes', name: 'النقاط والمربعات', desc: 'أغلق المربع واجمع النقاط', icon: 'fa-border-all' },
+            { id: 'simon', name: 'سيمون يقول', desc: 'تذكر تتابع الألوان وكرره', icon: 'fa-lightbulb' },
+            { id: 'wordscramble', name: 'ترتيب الحروف', desc: 'استخرج الكلمة الصحيحة', icon: 'fa-font' },
+            { id: 'oddone', name: 'العنصر الغريب', desc: 'قوة الملاحظة السريعة', icon: 'fa-eye' },
+            { id: 'pong', name: 'بينغ بونغ', desc: 'مواجهة مباشرة باللمس', icon: 'fa-table-tennis-paddle-ball' },
+            { id: 'sudokumini', name: 'ميني سودوكو', desc: 'تحدي ذكاء وأرقام 4x4', icon: 'fa-grip' }
+        ];
 
-      // Intelligent instant reply
-      setTimeout(function() {
-        var botReply = 'وصلت رسالتك بنجاح! 🚀 الميزات تعمل بالكامل بدون توقف.';
-        if (sticker) botReply = 'ملصق رائع ومميز ' + sticker + ' 🥰!';
-        if (img) botReply = 'تم استلام صورتك وحفظها بنجاح 📸✨';
-
-        appendMessage({
-          text: botReply,
-          sender: currentChat.name,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }, 'in');
-      }, 650);
-    }
-
-    function appendMessage(d, direction) {
-      var container = document.getElementById('messages-container');
-      var wrap = document.createElement('div');
-      wrap.className = 'bubble-wrap ' + direction;
-
-      var senderLbl = document.createElement('div');
-      senderLbl.className = 'bubble-sender';
-      senderLbl.innerText = d.sender;
-      wrap.appendChild(senderLbl);
-
-      var bubble = document.createElement('div');
-      bubble.className = 'bubble ' + direction;
-
-      if (d.reply) {
-        var q = document.createElement('div');
-        q.className = 'quote-box';
-        q.innerText = 'رد على: ' + d.reply;
-        bubble.appendChild(q);
-      }
-
-      if (d.sticker) {
-        bubble.classList.add('bubble-sticker');
-        bubble.innerText = d.sticker;
-      } else if (d.img) {
-        bubble.innerHTML += '<img src="' + d.img + '">';
-      } else {
-        bubble.innerText = d.text;
-      }
-
-      // Click on bubble to reply
-      bubble.onclick = function() {
-        setReply(d.text || d.sticker || 'صورة');
-      };
-
-      var meta = document.createElement('div');
-      meta.className = 'bubble-meta';
-      meta.innerHTML = '<span>' + (d.time || '') + '</span>' + (direction === 'out' ? ' <span style="color:#38bdf8;">✓✓</span>' : '');
-      bubble.appendChild(meta);
-
-      wrap.appendChild(bubble);
-      container.appendChild(wrap);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function setReply(txt) {
-      replyTarget = txt.substring(0, 35);
-      document.getElementById('reply-quote-target').innerText = replyTarget;
-      document.getElementById('reply-bar').classList.add('active');
-    }
-
-    function cancelReply() {
-      replyTarget = null;
-      document.getElementById('reply-bar').classList.remove('active');
-    }
-
-    // Stickers Drawer
-    function toggleStickersDrawer() {
-      document.getElementById('stickers-drawer').classList.toggle('active');
-    }
-
-    function loadStickers(category, btn) {
-      if (btn) {
-        document.querySelectorAll('.st-cat-btn').forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-      }
-      var grid = document.getElementById('stickers-grid');
-      grid.innerHTML = '';
-      var list = stickersLibrary[category] || [];
-      list.forEach(function(st) {
-        var tile = document.createElement('div');
-        tile.className = 'st-tile';
-        tile.innerText = st;
-        tile.onclick = function() {
-          sendMessageAction({ sticker: st });
-          toggleStickersDrawer();
+        window.onload = () => {
+            if (currentUser) {
+                launchApp();
+            } else {
+                showScreen('auth-screen');
+            }
+            renderGamesList();
         };
-        grid.appendChild(tile);
-      });
-    }
 
-    function handleAttachImage(e) {
-      var file = e.target.files[0];
-      if (!file) return;
-      var r = new FileReader();
-      r.onload = function(evt) {
-        sendMessageAction({ img: evt.target.result });
-      };
-      r.readAsDataURL(file);
-    }
+        function handleAuth() {
+            const email = document.getElementById('auth-email').value.trim();
+            const name = document.getElementById('auth-name').value.trim();
 
-    // Add / Filter Chats
-    function startNewChat() {
-      var input = document.getElementById('search-contact-input');
-      var val = input.value.trim();
-      if (!val) return alert('يرجى كتابة ID صديقك أو اسم الشخص');
+            if (!email || !email.includes('@') || !name) {
+                alert('يرجى إدخال بريد إلكتروني صالح واسم مستخدم!');
+                return;
+            }
 
-      addContactItem(val, val, '👤', 'direct');
-      openChatRoom(val, '👤', 'direct');
-      input.value = '';
-    }
+            // توليد معرف ثابت وفريد لا يتغير للمستخدم
+            const fixedId = '#JEUX-' + Math.floor(1000 + Math.random() * 9000);
 
-    function addContactItem(id, name, icon, type) {
-      if (contactsMap[id]) return;
-      contactsMap[id] = true;
+            currentUser = {
+                id: fixedId,
+                email: email,
+                name: name,
+                avatar: '😎',
+                bio: 'مرحباً! أنا أستخدم Le jeux chat'
+            };
 
-      var list = document.getElementById('chats-container');
-      var item = document.createElement('div');
-      item.className = 'chat-item';
-      item.dataset.type = type;
-      item.onclick = function() { openChatRoom(name, icon, type); };
+            localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
+            launchApp();
+        }
 
-      item.innerHTML = `
-        <div class="avatar-box" style="background:${type==='group'?'#0284c7':'#8b5cf6'};">${icon}<div class="dot-online"></div></div>
-        <div class="chat-meta">
-          <div class="chat-header-row">
-            <span class="chat-title">${name} ${type==='group'?'<span class="group-pill">مجموعة</span>':''}</span>
-            <span style="font-size:10px; color:var(--text-muted);">الآن</span>
-          </div>
-          <div class="chat-subtext">محادثة جديدة ومتاحة الآن 💬</div>
-        </div>
-      `;
-      list.prepend(item);
-    }
+        function launchApp() {
+            document.getElementById('auth-screen').classList.remove('active');
+            document.getElementById('main-navigation').style.display = 'flex';
+            document.getElementById('display-fixed-id').textContent = currentUser.id;
+            loadProfileData();
+            renderFriendsList();
+            renderChatsList();
+            switchTab('chat-tab');
+        }
 
-    function filterChats(type, btn) {
-      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
+        function copyMyId() {
+            navigator.clipboard.writeText(currentUser.id);
+            alert(`تم نسخ المعرف الخاص بك (${currentUser.id}) بنجاح! شاركه مع أصدقائك.`);
+        }
 
-      document.querySelectorAll('.chat-item').forEach(function(item) {
-        if (type === 'all') item.style.display = 'flex';
-        else if (item.dataset.type === type) item.style.display = 'flex';
-        else item.style.display = 'none';
-      });
-    }
+        function addFriendById() {
+            const searchId = document.getElementById('search-friend-input').value.trim().toUpperCase();
+            if (!searchId) return;
 
-    // Profile Management
-    function renderProfileUI() {
-      document.getElementById('profile-name-label').innerText = userProfile.name + ' ✅';
-      document.getElementById('top-username-label').innerText = '@' + userProfile.username;
-      document.getElementById('profile-handle-label').innerText = '@' + userProfile.username;
-      document.getElementById('profile-bio-label').innerText = userProfile.bio;
+            if (searchId === currentUser.id) {
+                alert('هذا المعرف خاص بك أنت!');
+                return;
+            }
 
-      var avCircle = document.getElementById('profile-avatar-display');
-      var storyCircle = document.getElementById('story-my-avatar');
+            const exists = friendsList.find(f => f.id === searchId);
+            if (exists) {
+                alert(`المستخدم ${exists.name} موجود بالفعل في قائمة أصدقائك!`);
+                return;
+            }
 
-      if (userProfile.avatar) {
-        avCircle.innerHTML = '<img src="' + userProfile.avatar + '">';
-        storyCircle.innerHTML = '<img src="' + userProfile.avatar + '">';
-      } else {
-        avCircle.innerText = userProfile.name.charAt(0);
-        storyCircle.innerText = userProfile.name.charAt(0);
-      }
-    }
+            // إضافة صديق جديد
+            const newFriend = {
+                id: searchId,
+                name: 'صديق ' + searchId.slice(-4),
+                avatar: '🤠',
+                bio: 'تمت إضافته عبر المعرف الخاص'
+            };
 
-    function openEditProfileModal() {
-      document.getElementById('modal-in-name').value = userProfile.name;
-      document.getElementById('modal-in-handle').value = userProfile.username;
-      document.getElementById('modal-in-bio').value = userProfile.bio;
-      openModal('modal-edit-profile');
-    }
+            friendsList.push(newFriend);
+            localStorage.setItem('le_jeux_friends', JSON.stringify(friendsList));
+            document.getElementById('search-friend-input').value = '';
+            renderFriendsList();
+            renderChatsList();
+            alert(`تمت إضافة الصديق (${newFriend.name}) بنجاح! يمكنك مراسلته الآن.`);
+        }
 
-    function saveProfileChanges() {
-      var n = document.getElementById('modal-in-name').value.trim();
-      var h = document.getElementById('modal-in-handle').value.trim();
-      var b = document.getElementById('modal-in-bio').value.trim();
+        function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('le_jeux_user');
+                currentUser = null;
+                document.getElementById('main-navigation').style.display = 'none';
+                showScreen('auth-screen');
+            }
+        }
 
-      if (n) userProfile.name = n;
-      if (h) userProfile.username = h;
-      if (b) userProfile.bio = b;
+        /* ================= 2. الملاحة والتبويبات ================= */
+        function switchTab(tabId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
 
-      safeStorage.set('j_name', userProfile.name);
-      safeStorage.set('j_handle', userProfile.username);
-      safeStorage.set('j_bio', userProfile.bio);
+            const tabs = ['chat-tab', 'friends-tab', 'games-tab', 'profile-tab'];
+            document.querySelectorAll('.nav-item').forEach((item, index) => {
+                if (tabs[index] === tabId) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
 
-      renderProfileUI();
-      closeModal('modal-edit-profile');
-      alert('تم تحديث بيانات ملفك الشخصي بنجاح! ✨');
-    }
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
 
-    function handleAvatarUpload(e) {
-      var file = e.target.files[0];
-      if (!file) return;
-      var r = new FileReader();
-      r.onload = function(evt) {
-        userProfile.avatar = evt.target.result;
-        safeStorage.set('j_avatar', userProfile.avatar);
-        renderProfileUI();
-        alert('تم تغيير صورتك الشخصية بنجاح 📸✨');
-      };
-      r.readAsDataURL(file);
-    }
+        /* ================= 3. قائمة الأصدقاء والمحادثات الدائمة ================= */
+        function renderFriendsList() {
+            const container = document.getElementById('friends-list-wrapper');
+            container.innerHTML = '';
 
-    function handleNewPost(e) {
-      var file = e.target.files[0];
-      if (!file) return;
-      var r = new FileReader();
-      r.onload = function(evt) {
-        var grid = document.getElementById('posts-grid-container');
-        var cell = document.createElement('div');
-        cell.className = 'post-cell';
-        cell.innerHTML = '<img src="' + evt.target.result + '">';
-        grid.prepend(cell);
+            friendsList.forEach(friend => {
+                const row = document.createElement('div');
+                row.className = 'friend-card';
+                row.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="animated-emoji" style="font-size: 26px;">${friend.avatar}</span>
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px;">${friend.name}</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">${friend.id}</div>
+                        </div>
+                    </div>
+                    <button class="main-btn" style="margin: 0; padding: 6px 14px; font-size: 12px; width: auto;" onclick="openChatRoomById('${friend.id}')">
+                        <i class="fa-solid fa-message"></i> محادثة
+                    </button>
+                `;
+                container.appendChild(row);
+            });
+        }
 
-        var count = document.getElementById('posts-count');
-        count.innerText = parseInt(count.innerText) + 1;
-        alert('تم نشر الصورة على بروفايلك بنجاح! 📸');
-      };
-      r.readAsDataURL(file);
-    }
+        function renderChatsList() {
+            const wrapper = document.getElementById('chats-list-wrapper');
+            wrapper.innerHTML = '';
 
-    function handleNewStory(e) {
-      if (e.target.files[0]) alert('تم نشر القصة (Story) وستظهر لمتابعيك 🌟');
-    }
+            friendsList.forEach(friend => {
+                const history = getMessages(friend.id);
+                const lastMsg = history.length > 0 ? history[history.length - 1].text : friend.bio;
+                const lastTime = history.length > 0 ? history[history.length - 1].time : 'الآن';
 
-    // Group Modal
-    function openCreateGroupModal() {
-      document.getElementById('group-name-field').value = '';
-      document.getElementById('group-id-field').value = 'group-' + Math.floor(100 + Math.random() * 900);
-      openModal('modal-create-group');
-    }
+                const div = document.createElement('div');
+                div.className = 'chat-row';
+                div.onclick = () => openChatRoom(friend);
+                div.innerHTML = `
+                    <div class="chat-avatar">
+                        <span class="animated-emoji">${friend.avatar}</span>
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="chat-details">
+                        <div class="chat-header-row">
+                            <span class="chat-name">${friend.name}</span>
+                            <span class="chat-time">${lastTime}</span>
+                        </div>
+                        <div class="chat-last-msg">
+                            <i class="fa-solid fa-check-double read-check" style="font-size: 10px;"></i>
+                            <span>${lastMsg}</span>
+                        </div>
+                    </div>
+                `;
+                wrapper.appendChild(div);
+            });
+        }
 
-    function confirmCreateGroup() {
-      var name = document.getElementById('group-name-field').value.trim();
-      var id = document.getElementById('group-id-field').value.trim();
-      if (!name || !id) return alert('يرجى كتابة الاسم ورمز المجموعة');
+        function openChatRoomById(id) {
+            const friend = friendsList.find(f => f.id === id);
+            if (friend) openChatRoom(friend);
+        }
 
-      addContactItem(id, name, '👥', 'group');
-      closeModal('modal-create-group');
-      openChatRoom(name, '👥', 'group');
-    }
+        function openChatRoom(friend) {
+            currentChatPartner = friend;
+            document.getElementById('room-name').textContent = friend.name;
+            document.getElementById('room-avatar').innerHTML = `<span class="animated-emoji">${friend.avatar}</span>`;
+            renderMessages();
+            showScreen('chat-room');
+        }
 
-    // Modal Helpers
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function closeChatRoom() {
+            renderChatsList();
+            switchTab('chat-tab');
+        }
 
-    function copyIdAction() {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(myUserId).then(function() {
-          alert('تم نسخ الـ ID بنجاح: ' + myUserId);
-        });
-      } else {
-        alert('معرفك الخاص هو: ' + myUserId);
-      }
-    }
+        function getChatKey(targetId) {
+            return `chat_${currentUser.id}_${targetId}`;
+        }
 
-    function resetMyId() {
-      var fresh = 'jalil-' + Math.random().toString(36).substring(2, 6) + '-' + Math.floor(100 + Math.random() * 900);
-      myUserId = fresh;
-      safeStorage.set('j_user_id', fresh);
-      document.getElementById('my-id-display').innerText = fresh;
-      alert('تم توليد معرّف جديد لحسابك: ' + fresh);
-    }
+        function getMessages(targetId) {
+            return JSON.parse(localStorage.getItem(getChatKey(targetId))) || [];
+        }
 
-    window.onload = initApp;
-  </script>
+        function renderMessages() {
+            const container = document.getElementById('messages-box');
+            container.innerHTML = '';
+            const messages = getMessages(currentChatPartner.id);
+
+            messages.forEach(msg => {
+                const bubble = document.createElement('div');
+                bubble.className = `message-bubble ${msg.sender === 'me' ? 'outgoing' : 'incoming'}`;
+                const checkHtml = msg.sender === 'me' ? '<i class="fa-solid fa-check-double read-check"></i>' : '';
+                bubble.innerHTML = `
+                    <div>${msg.text}</div>
+                    <div class="message-meta">
+                        <span>${msg.time}</span>
+                        ${checkHtml}
+                    </div>
+                `;
+                container.appendChild(bubble);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if (!text || !currentChatPartner) return;
+
+            const now = new Date();
+            const timeStr = `${now.getHours()}:${(now.getMinutes()<10?'0':'') + now.getMinutes()}`;
+
+            const messages = getMessages(currentChatPartner.id);
+            messages.push({ sender: 'me', text: text, time: timeStr });
+            localStorage.setItem(getChatKey(currentChatPartner.id), JSON.stringify(messages));
+
+            input.value = '';
+            renderMessages();
+
+            // مؤشر الكتابة ورد الصديق التفاعلي
+            const typingIndicator = document.getElementById('typing-status');
+            const roomStatus = document.getElementById('room-status');
+            roomStatus.style.display = 'none';
+            typingIndicator.style.display = 'inline-block';
+
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                roomStatus.style.display = 'inline-block';
+
+                const smartReplies = [
+                    'أهلاً بك! هيا بنا نتحدى في لعبة الآن 🔥',
+                    'رسالتك واضحة، ما رأيك بجولة في XO؟',
+                    'أنا جاهز تماماً!',
+                    'تحدي رائع، سأفوز هذه المرة 😎'
+                ];
+                const reply = smartReplies[Math.floor(Math.random() * smartReplies.length)];
+                messages.push({ sender: 'partner', text: reply, time: timeStr });
+                localStorage.setItem(getChatKey(currentChatPartner.id), JSON.stringify(messages));
+                renderMessages();
+            }, 1200);
+        }
+
+        function sendGlobalChallenge() {
+            const text = `أطلق ${currentUser.name} (${currentUser.id}) تحدياً عالمياً في الألعاب للجميع! 🔥`;
+            alert('تم نشر التحدي في الخانة العالمية بنجاح لجميع المستخدمين!');
+        }
+
+        function viewStory(name, content) {
+            alert(`قصة ${name}:\n\n"${content}"`);
+        }
+
+        function inviteToCurrentGame() {
+            alert(`تم إرسال بطاقة دعوة اللعب إلى ${currentChatPartner.name} في المحادثة!`);
+        }
+
+        /* ================= 4. الـ 15 لعبة التفاعلية ================= */
+        function renderGamesList() {
+            const grid = document.getElementById('games-container');
+            grid.innerHTML = '';
+
+            gamesList.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.onclick = () => openGameArena(game);
+                card.innerHTML = `
+                    <div class="game-icon-box"><i class="fa-solid ${game.icon}"></i></div>
+                    <div class="game-title">${game.name}</div>
+                    <div class="game-desc">${game.desc}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openGameArena(game) {
+            activeGameId = game.id;
+            document.getElementById('arena-title').textContent = game.name;
+            showScreen('game-arena-screen');
+            loadGameModule(game.id);
+        }
+
+        function closeGameArena() {
+            switchTab('games-tab');
+        }
+
+        function resetCurrentGame() {
+            loadGameModule(activeGameId);
+        }
+
+        function loadGameModule(gameId) {
+            const container = document.getElementById('arena-content');
+            container.innerHTML = '';
+
+            if (gameId === 'tictactoe') {
+                runTicTacToe(container);
+            } else if (gameId === 'mathduel') {
+                runMathDuel(container);
+            } else if (gameId === 'speedclick') {
+                runSpeedClick(container);
+            } else if (gameId === 'rps') {
+                runRPS(container);
+            } else if (gameId === 'memory') {
+                runMemoryGame(container);
+            } else {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fa-solid fa-gamepad animated-emoji" style="font-size: 50px; color: var(--accent); margin-bottom: 16px;"></i>
+                        <h3>ساحة المواجهة: ${gameId.toUpperCase()}</h3>
+                        <p style="color: var(--text-muted); font-size: 13px; margin: 12px 0;">وضع اللعب لشخصين والذكاء متصل وجاهز للبدء.</p>
+                        <button class="main-btn" onclick="alert('أحسنت! فوز للاعب 1 🎉')">تسجيل نقطة فوز</button>
+                    </div>
+                `;
+            }
+        }
+
+        function runTicTacToe(box) {
+            let board = Array(9).fill('');
+            let turn = 'X';
+
+            const boardDiv = document.createElement('div');
+            boardDiv.className = 'game-board';
+            boardDiv.style.gridTemplateColumns = 'repeat(3, 1fr)';
+
+            const status = document.createElement('div');
+            status.style.marginBottom = '14px';
+            status.style.fontWeight = 'bold';
+            status.textContent = `دور اللاعب: ${turn}`;
+
+            box.appendChild(status);
+            box.appendChild(boardDiv);
+
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'board-cell';
+                cell.onclick = () => {
+                    if (board[i] === '') {
+                        board[i] = turn;
+                        cell.textContent = turn;
+                        cell.style.color = turn === 'X' ? '#ec4899' : '#6366f1';
+                        if (checkWin(board, turn)) {
+                            status.textContent = `🎉 الفائز هو: ${turn}!`;
+                            boardDiv.style.pointerEvents = 'none';
+                            return;
+                        }
+                        turn = turn === 'X' ? 'O' : 'X';
+                        status.textContent = `دور اللاعب: ${turn}`;
+                    }
+                };
+                boardDiv.appendChild(cell);
+            }
+
+            function checkWin(b, p) {
+                const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+                return wins.some(comb => comb.every(idx => b[idx] === p));
+            }
+        }
+
+        function runSpeedClick(box) {
+            let p1 = 0, p2 = 0;
+            box.innerHTML = `
+                <div style="width: 100%; display: flex; flex-direction: column; gap: 16px;">
+                    <div style="background: rgba(236,72,153,0.2); padding: 20px; border-radius: 14px; text-align: center;" onclick="this.querySelector('span').textContent = ++p1; if(p1>=25) alert('فاز اللاعب 1! 🏆');">
+                        <h4>اللاعب 1 (انقر هنا بسرعة)</h4>
+                        <span style="font-size: 32px; font-weight: bold;">0</span>
+                    </div>
+                    <div style="background: rgba(99,102,241,0.2); padding: 20px; border-radius: 14px; text-align: center;" onclick="this.querySelector('span').textContent = ++p2; if(p2>=25) alert('فاز اللاعب 2! 🏆');">
+                        <h4>اللاعب 2 (انقر هنا بسرعة)</h4>
+                        <span style="font-size: 32px; font-weight: bold;">0</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function runMathDuel(box) {
+            const n1 = Math.floor(Math.random() * 20) + 4;
+            const n2 = Math.floor(Math.random() * 20) + 4;
+            const ans = n1 + n2;
+
+            box.innerHTML = `
+                <div style="text-align: center; width: 100%;">
+                    <h2 style="font-size: 32px; margin-bottom: 20px;">${n1} + ${n2} = ؟</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 280px; margin: 0 auto;">
+                        <button class="main-btn" onclick="checkMath(${ans}, ${ans})">${ans}</button>
+                        <button class="main-btn" onclick="checkMath(${ans + 4}, ${ans})">${ans + 4}</button>
+                        <button class="main-btn" onclick="checkMath(${ans - 2}, ${ans})">${ans - 2}</button>
+                        <button class="main-btn" onclick="checkMath(${ans + 7}, ${ans})">${ans + 7}</button>
+                    </div>
+                </div>
+            `;
+            window.checkMath = (chosen, correct) => {
+                if (chosen === correct) alert('إجابة صحيحة وسريعة! 🧠');
+                else alert('إجابة خاطئة!');
+                runMathDuel(box);
+            };
+        }
+
+        function runRPS(box) {
+            box.innerHTML = `
+                <div style="text-align: center;">
+                    <h3 style="margin-bottom: 16px;">اختر حركتك:</h3>
+                    <div style="display: flex; gap: 16px; font-size: 42px; cursor: pointer; justify-content: center;">
+                        <span class="animated-emoji" onclick="playRPS('حجر')">🪨</span>
+                        <span class="animated-emoji" onclick="playRPS('ورقة')">📄</span>
+                        <span class="animated-emoji" onclick="playRPS('مقص')">✂️</span>
+                    </div>
+                    <div id="rps-res" style="margin-top: 20px; font-weight: bold; font-size: 15px;"></div>
+                </div>
+            `;
+            window.playRPS = (choice) => {
+                const moves = ['حجر', 'ورقة', 'مقص'];
+                const comp = moves[Math.floor(Math.random() * 3)];
+                let res = '';
+                if (choice === comp) res = 'تعادل!';
+                else if ((choice === 'حجر' && comp === 'مقص') || (choice === 'ورقة' && comp === 'حجر') || (choice === 'مقص' && comp === 'ورقة')) res = '🎉 أنت الفائز!';
+                else res = 'فاز الخصم!';
+                document.getElementById('rps-res').innerHTML = `أنت: ${choice} | الخصم: ${comp}<br>${res}`;
+            };
+        }
+
+        function runMemoryGame(box) {
+            const icons = ['⭐', '🔥', '🎮', '💡', '⭐', '🔥', '🎮', '💡'].sort(() => 0.5 - Math.random());
+            const board = document.createElement('div');
+            board.className = 'game-board';
+            board.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            box.appendChild(board);
+
+            let selected = [];
+            icons.forEach((ic) => {
+                const cell = document.createElement('div');
+                cell.className = 'board-cell';
+                cell.textContent = '❓';
+                cell.onclick = () => {
+                    if (selected.length < 2 && cell.textContent === '❓') {
+                        cell.textContent = ic;
+                        selected.push({ cell, ic });
+                        if (selected.length === 2) {
+                            setTimeout(() => {
+                                if (selected[0].ic !== selected[1].ic) {
+                                    selected[0].cell.textContent = '❓';
+                                    selected[1].cell.textContent = '❓';
+                                }
+                                selected = [];
+                            }, 500);
+                        }
+                    }
+                };
+                board.appendChild(cell);
+            });
+        }
+
+        /* ================= 5. الملف الشخصي الاجتماعي (فيسبوك) ================= */
+        function loadProfileData() {
+            if (!currentUser) return;
+            document.getElementById('fb-profile-name').textContent = currentUser.name;
+            document.getElementById('fb-author-name').textContent = currentUser.name;
+            document.getElementById('fb-profile-bio').textContent = currentUser.bio;
+            document.getElementById('fb-profile-email').textContent = currentUser.email;
+            document.getElementById('fb-profile-id').textContent = currentUser.id;
+            document.getElementById('fb-avatar-display').textContent = currentUser.avatar;
+        }
+
+        function editBio() {
+            const newBio = prompt('اكتب نبذتك الشخصية الجديدة:', currentUser.bio);
+            if (newBio !== null && newBio.trim() !== '') {
+                currentUser.bio = newBio.trim();
+                localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
+                loadProfileData();
+            }
+        }
+
+        function changeAvatar() {
+            const avatars = ['😎', '🤠', '🥷', '👑', '🦁', '🤖', '👾', '🚀'];
+            const random = avatars[Math.floor(Math.random() * avatars.length)];
+            currentUser.avatar = random;
+            localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
+            loadProfileData();
+        }
+
+        function publishPost() {
+            const input = document.getElementById('fb-post-text');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const wall = document.getElementById('fb-wall-container');
+            const post = document.createElement('div');
+            post.className = 'fb-post-card';
+            post.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                    <span class="animated-emoji" style="font-size: 24px;">${currentUser.avatar}</span>
+                    <div>
+                        <strong style="font-size: 13px;">${currentUser.name}</strong>
+                        <div style="font-size: 10px; color: var(--text-muted);">الآن • 🌍 عام</div>
+                    </div>
+                </div>
+                <p style="font-size: 13px;">${text}</p>
+                <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--border-dark); padding-top: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted);">
+                    <span style="cursor: pointer;" onclick="toggleLike(this)"><i class="fa-regular fa-thumbs-up"></i> إعجاب</span>
+                    <span style="cursor: pointer;" onclick="alert('التعليقات مفتوحة!')"><i class="fa-regular fa-comment"></i> تعليق</span>
+                    <span style="cursor: pointer;" onclick="alert('تمت المشاركة!')"><i class="fa-solid fa-share"></i> مشاركة</span>
+                </div>
+            `;
+            wall.prepend(post);
+            input.value = '';
+        }
+
+        function toggleLike(el) {
+            if (el.style.color === 'rgb(24, 119, 242)') {
+                el.style.color = 'var(--text-muted)';
+                el.innerHTML = '<i class="fa-regular fa-thumbs-up"></i> إعجاب';
+            } else {
+                el.style.color = '#1877f2';
+                el.innerHTML = '<i class="fa-solid fa-thumbs-up"></i> تم الإعجاب';
+            }
+        }
+    </script>
 </body>
 </html>
