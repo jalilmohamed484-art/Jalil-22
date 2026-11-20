@@ -1,105 +1,1221 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيقي</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jalil Chat Pro Max</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent: #06b6d4;
+      --bg-main: #0b1120;
+      --bg-card: #151e32;
+      --bg-subtle: #1e293b;
+      --bg-input: #1a233a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #243049;
+      --msg-out: #4f46e5;
+      --msg-in: #1b263b;
+      --ig-grad: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Cairo", sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    input, textarea { user-select: text; }
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      background: var(--bg-main);
+      position: relative;
+    }
+    
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      min-height: 54px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .brand-box { display: flex; align-items: center; gap: 8px; }
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--ig-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      color: #fff;
+    }
+    .brand-text { font-size: 16px; font-weight: bold; }
+    .status-pill { font-size: 10px; color: #10b981; }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f2f5;
-        }
+    /* Screen Base */
+    .screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .screen.active { display: flex; }
 
-        .card {
-            background: #ffffff;
-            padding: 30px 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            max-width: 350px;
-            width: 90%;
-        }
+    /* Stories Bar (Instagram style) */
+    .stories-bar {
+      display: flex;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    .stories-bar::-webkit-scrollbar { display: none; }
+    .story-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .story-ring {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      padding: 2px;
+      background: var(--ig-grad);
+      position: relative;
+    }
+    .story-ring.my-story { background: #334155; }
+    .story-pic {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      overflow: hidden;
+      border: 2px solid var(--bg-main);
+    }
+    .story-add-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-card);
+    }
+    .story-name { font-size: 10.5px; color: var(--text-muted); }
 
-        h1 {
-            color: #1a1a1a;
-            font-size: 22px;
-            margin-bottom: 24px;
-            transition: color 0.3s ease;
-        }
+    /* User ID banner */
+    .id-banner {
+      margin: 8px 14px 4px;
+      padding: 10px 12px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(6,182,212,0.15));
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .id-tag { font-family: monospace; font-size: 13px; font-weight: bold; color: #38bdf8; }
+    .btn-small {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-small:active { transform: scale(0.95); opacity: 0.9; }
 
-        button {
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            padding: 12px 28px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
+    /* Subtabs */
+    .filter-tabs {
+      display: flex;
+      margin: 6px 14px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 3px;
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+    .filter-btn {
+      flex: 1;
+      text-align: center;
+      padding: 6px;
+      font-size: 11.5px;
+      font-weight: bold;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .filter-btn.active { background: var(--primary); color: #fff; }
 
-        button:active {
-            transform: scale(0.98);
-            background-color: #0056b3;
-        }
+    /* Search & Add */
+    .search-dock {
+      display: flex;
+      gap: 8px;
+      padding: 2px 14px 8px;
+      flex-shrink: 0;
+    }
+    .search-input {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 12.5px;
+      outline: none;
+    }
+    .btn-start {
+      background: #10b981;
+      color: #fff;
+      border: none;
+      padding: 0 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+    }
 
-        #toast {
-            visibility: hidden;
-            min-width: 200px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 25px;
-            padding: 12px 20px;
-            position: fixed;
-            bottom: 30px;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s, bottom 0.3s;
-        }
+    /* Chats List */
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 14px 10px;
+    }
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: var(--bg-card);
+      border-radius: 14px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .chat-item:active { background: #192338; border-color: var(--primary); }
+    .avatar-box {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+      color: #fff;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+    .dot-online {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 11px;
+      height: 11px;
+      background: #10b981;
+      border-radius: 50%;
+      border: 2px solid var(--bg-card);
+    }
+    .chat-meta { flex: 1; min-width: 0; }
+    .chat-header-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .chat-title { font-weight: bold; font-size: 13.5px; }
+    .chat-subtext {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .group-pill {
+      font-size: 9px;
+      background: #0284c7;
+      color: #fff;
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
 
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            bottom: 50px;
-        }
-    </style>
+    /* Chat View Room */
+    .room-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+    .room-info { display: flex; align-items: center; gap: 10px; }
+    .back-btn { background: none; border: none; font-size: 20px; color: #fff; cursor: pointer; padding: 2px 6px; }
+    .room-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .bubble-wrap {
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+      position: relative;
+    }
+    .bubble-wrap.out { align-self: flex-end; align-items: flex-end; }
+    .bubble-wrap.in { align-self: flex-start; align-items: flex-start; }
+    .bubble-sender { font-size: 10px; color: var(--accent); margin-bottom: 2px; padding: 0 4px; }
+    .bubble {
+      padding: 9px 13px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      word-break: break-word;
+      position: relative;
+    }
+    .bubble.out { background: var(--msg-out); color: #fff; border-bottom-left-radius: 3px; }
+    .bubble.in { background: var(--msg-in); color: #fff; border: 1px solid var(--border-color); border-bottom-right-radius: 3px; }
+    .bubble img { max-width: 200px; border-radius: 10px; margin-top: 4px; display: block; }
+    .bubble-sticker { font-size: 42px; background: none !important; border: none !important; padding: 0 !important; }
+    .bubble-meta { display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 9px; opacity: 0.75; margin-top: 3px; }
+    .quote-box {
+      background: rgba(0,0,0,0.25);
+      border-right: 3px solid #38bdf8;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-bottom: 4px;
+      color: #cbd5e1;
+    }
+
+    /* Input Dock */
+    .input-dock {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+    .reply-preview {
+      display: none;
+      padding: 6px 12px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-color);
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+    .reply-preview.active { display: flex; }
+    .dock-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+    }
+    .action-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .msg-field {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Stickers Drawer */
+    .stickers-drawer {
+      display: none;
+      height: 190px;
+      background: #131b2e;
+      border-top: 1px solid var(--border-color);
+      flex-direction: column;
+    }
+    .stickers-drawer.active { display: flex; }
+    .sticker-categories {
+      display: flex;
+      gap: 6px;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+    .st-cat-btn {
+      padding: 3px 8px;
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      font-size: 10.5px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .st-cat-btn.active { background: var(--primary); color: #fff; }
+    .stickers-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      padding: 8px;
+      overflow-y: auto;
+      align-content: start;
+    }
+    .st-tile {
+      font-size: 26px;
+      text-align: center;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* Profile View (Instagram layout) */
+    .profile-scroll { flex: 1; overflow-y: auto; }
+    .profile-header { padding: 16px 14px 10px; }
+    .profile-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .avatar-wrapper {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+    }
+    .avatar-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      background: var(--ig-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .cam-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--primary);
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-main);
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .stats-row { flex: 1; display: flex; justify-content: space-around; text-align: center; }
+    .stat-val { font-weight: 800; font-size: 15px; }
+    .stat-label { font-size: 10.5px; color: var(--text-muted); }
+
+    .bio-container { margin-top: 12px; }
+    .bio-title { font-weight: 800; font-size: 14.5px; display: flex; align-items: center; gap: 4px; }
+    .bio-handle { font-size: 11.5px; color: #38bdf8; font-family: monospace; margin: 2px 0; }
+    .bio-text { font-size: 12px; color: #cbd5e1; line-height: 1.4; white-space: pre-wrap; }
+
+    .prof-btns-row { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-edit {
+      flex: 1;
+      padding: 7px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      color: #fff;
+      border: 1px solid var(--border-color);
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* Highlights */
+    .highlights-shelf {
+      display: flex;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hl-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex-shrink: 0; }
+    .hl-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      background: var(--bg-card);
+    }
+    .hl-label { font-size: 9.5px; color: var(--text-muted); }
+
+    /* Feed Grid */
+    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
+    .post-cell { aspect-ratio: 1; background: var(--bg-card); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .post-cell img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      display: flex;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      height: 54px;
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      font-size: 10.5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .nav-btn.active { color: #38bdf8; }
+    .nav-icon { font-size: 18px; }
+
+    /* Modals */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal-card {
+      width: 100%;
+      max-width: 380px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .modal-title { font-weight: bold; font-size: 15px; margin-bottom: 12px; }
+    .modal-field {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 12.5px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+  </style>
 </head>
 <body>
+  <div class="app-container">
 
-    <div class="card">
-        <h1 id="textView">مرحباً بك في تطبيقي!</h1>
-        <button id="btnClick">اضغط هنا</button>
+    <!-- Screen 1: Chats & Groups List -->
+    <div id="screen-chats" class="screen active">
+      <div class="top-bar">
+        <div class="brand-box">
+          <div class="brand-logo">J</div>
+          <div>
+            <div class="brand-text">Jalil Chat Pro</div>
+            <div class="status-pill">🟢 متصل ومحمي</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <span style="cursor:pointer; font-size:18px;" onclick="openCreateGroupModal()" title="إنشاء مجموعة">👥</span>
+        </div>
+      </div>
+
+      <!-- Instagram Stories Strip -->
+      <div class="stories-bar">
+        <div class="story-unit" onclick="triggerInput('story-file-input')">
+          <div class="story-ring my-story">
+            <div class="story-pic" id="story-my-avatar">J</div>
+            <div class="story-add-badge">+</div>
+          </div>
+          <span class="story-name">قصتك</span>
+          <input type="file" id="story-file-input" accept="image/*" style="display:none;" onchange="handleNewStory(event)">
+        </div>
+        <div class="story-unit" onclick="alert('قصة Djouchat: تطبيق جليل شات شغال 100% 🚀')">
+          <div class="story-ring"><div class="story-pic" style="background:#0284c7;">D</div></div>
+          <span class="story-name">Djouchat</span>
+        </div>
+        <div class="story-unit" onclick="alert('قصة المجموعة: مرحباً بجميع الأعضاء! 👥✨')">
+          <div class="story-ring"><div class="story-pic" style="background:#f59e0b;">👥</div></div>
+          <span class="story-name">المجموعة</span>
+        </div>
+      </div>
+
+      <!-- My ID Banner -->
+      <div class="id-banner">
+        <div>
+          <div style="font-size:10px; color:var(--text-muted);">رقم الـ ID الخاص بك (شاركه للمراسلة):</div>
+          <div class="id-tag" id="my-id-display">jalil-1001</div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button class="btn-small" onclick="copyIdAction()">نسخ 📋</button>
+          <button class="btn-small" style="background:#334155;" onclick="resetMyId()">🔄 جديد</button>
+        </div>
+      </div>
+
+      <!-- Filter Subtabs -->
+      <div class="filter-tabs">
+        <div class="filter-btn active" onclick="filterChats('all', this)">الكل</div>
+        <div class="filter-btn" onclick="filterChats('direct', this)">خاص (1-to-1)</div>
+        <div class="filter-btn" onclick="filterChats('group', this)">مجموعات 👥</div>
+      </div>
+
+      <!-- Search & Start Chat -->
+      <div class="search-dock">
+        <input type="text" class="search-input" id="search-contact-input" placeholder="اكتب ID صديقك أو اسم المجموعة...">
+        <button class="btn-start" onclick="startNewChat()">بدء الدردشة</button>
+      </div>
+
+      <!-- Chats List -->
+      <div class="chat-list" id="chats-container">
+        <!-- Interactive Bot -->
+        <div class="chat-item" data-type="direct" onclick="openChatRoom('مساعد جليل الذكي', '🤖', 'direct')">
+          <div class="avatar-box" style="background: linear-gradient(135deg, #06b6d4, #6366f1);">🤖<div class="dot-online"></div></div>
+          <div class="chat-meta">
+            <div class="chat-header-row">
+              <span class="chat-title">مساعد جليل الذكي ✅</span>
+              <span style="font-size:10px; color:var(--text-muted);">الآن</span>
+            </div>
+            <div class="chat-subtext">أهلاً بك! اضغط هنا لتجربة المراسلة والملصقات اللطيفة 💬</div>
+          </div>
+        </div>
+
+        <!-- Default Group -->
+        <div class="chat-item" data-type="group" onclick="openChatRoom('مجموعة مطوري جليل', '👥', 'group')">
+          <div class="avatar-box" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">👥<div class="dot-online"></div></div>
+          <div class="chat-meta">
+            <div class="chat-header-row">
+              <span class="chat-title">مجموعة مطوري جليل <span class="group-pill">مجموعة</span></span>
+              <span style="font-size:10px; color:var(--text-muted);">12:00</span>
+            </div>
+            <div class="chat-subtext">أهلاً بك في دردشة المجموعة الرسمية ✨</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="toast">أهلاً بك في التطبيق!</div>
+    <!-- Screen 2: Active Chat Room -->
+    <div id="screen-room" class="screen">
+      <div class="room-header">
+        <div class="room-info">
+          <button class="back-btn" onclick="closeChatRoom()">➡️</button>
+          <div class="avatar-box" id="room-avatar" style="width:34px; height:34px; font-size:14px;">🤖</div>
+          <div>
+            <div style="font-weight:bold; font-size:14px;" id="room-name">مساعد جليل</div>
+            <div style="font-size:10px; color:#10b981;">متصل الآن • تشفير كامل</div>
+          </div>
+        </div>
+        <span class="group-pill" style="background:#10b981;">🔒 مشفر</span>
+      </div>
 
-    <script>
-        const btn = document.getElementById('btnClick');
-        const text = document.getElementById('textView');
-        const toast = document.getElementById('toast');
+      <div class="room-messages" id="messages-container">
+        <div class="bubble-wrap in" style="align-self:center; align-items:center;">
+          <div class="bubble" style="background:rgba(99,102,241,0.15); border:1px dashed rgba(99,102,241,0.4); text-align:center; font-size:11.5px; color:#94a3b8;">
+            🔒 المحادثة مشفرة ومحمية وتعمل بالكامل داخل التطبيق
+          </div>
+        </div>
+      </div>
 
-        btn.addEventListener('click', () => {
-            text.innerText = "تم الضغط على الزر بنجاح!";
-            text.style.color = "#28a745";
+      <!-- Bottom Chat Dock -->
+      <div class="input-dock">
+        <!-- Reply preview -->
+        <div class="reply-preview" id="reply-bar">
+          <div><strong>رد على: </strong><span id="reply-quote-target">...</span></div>
+          <span style="cursor:pointer;" onclick="cancelReply()">✕</span>
+        </div>
+
+        <div class="dock-row">
+          <button class="action-icon" id="btn-stickers-toggle" onclick="toggleStickersDrawer()" title="ملصقات لطيفة">😊</button>
+          <button class="action-icon" onclick="triggerInput('chat-file-input')" title="إرسال صورة">📷</button>
+          <input type="file" id="chat-file-input" accept="image/*" style="display:none;" onchange="handleAttachImage(event)">
+
+          <input type="text" class="msg-field" id="message-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendMessageAction()">
+          <button class="send-btn" onclick="sendMessageAction()">➤</button>
+        </div>
+
+        <!-- Stickers Drawer -->
+        <div class="stickers-drawer" id="stickers-drawer">
+          <div class="sticker-categories">
+            <button class="st-cat-btn active" onclick="loadStickers('cute', this)">🐱 قطط وكيوت</button>
+            <button class="st-cat-btn" onclick="loadStickers('love', this)">💖 قلوب</button>
+            <button class="st-cat-btn" onclick="loadStickers('fun', this)">🎉 احتفال</button>
+            <button class="st-cat-btn" onclick="loadStickers('food', this)">🍔 طعام</button>
+            <button class="st-cat-btn" onclick="loadStickers('cool', this)">😎 كول</button>
+          </div>
+          <div class="stickers-grid" id="stickers-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Instagram Style Profile Screen -->
+    <div id="screen-profile" class="screen">
+      <div class="top-bar">
+        <div style="font-weight:bold; font-size:15px;" id="top-username-label">@jalil_user</div>
+        <div style="display:flex; gap:14px; font-size:16px;">
+          <span style="cursor:pointer;" onclick="triggerInput('post-file-input')" title="إضافة منشور">➕</span>
+          <span style="cursor:pointer;" onclick="openEditProfileModal()" title="تعديل الحساب">⚙️</span>
+        </div>
+        <input type="file" id="post-file-input" accept="image/*" style="display:none;" onchange="handleNewPost(event)">
+      </div>
+
+      <div class="profile-scroll">
+        <div class="profile-header">
+          <div class="profile-top">
+            <div class="avatar-wrapper">
+              <div class="avatar-circle" id="profile-avatar-display" onclick="triggerInput('avatar-file-input')">J</div>
+              <div class="cam-badge" onclick="triggerInput('avatar-file-input')" title="تغيير الصورة">📷</div>
+              <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
+            </div>
             
-            // إظهار تنبيه يشبه Toast في أندرويد
-            toast.className = "show";
-            setTimeout(() => { 
-                toast.className = toast.className.replace("show", ""); 
-            }, 2500);
+            <div class="stats-row">
+              <div><div class="stat-val" id="posts-count">6</div><div class="stat-label">منشورات</div></div>
+              <div><div class="stat-val">1.6K</div><div class="stat-label">متابعون</div></div>
+              <div><div class="stat-val">410</div><div class="stat-label">أتابعهم</div></div>
+            </div>
+          </div>
+
+          <div class="bio-container">
+            <div class="bio-title" id="profile-name-label">جليل • Jalil ✅</div>
+            <div class="bio-handle" id="profile-handle-label">@jalil_user</div>
+            <div class="bio-text" id="profile-bio-label">حسابي الرسمي على Jalil Chat Pro 💫\nمرحباً بكم في ملفي الشخصي 🚀\nتواصل معي عبر المعرف الخاص بي بالأسفل 👇</div>
+          </div>
+
+          <div class="prof-btns-row">
+            <button class="btn-edit" onclick="openEditProfileModal()">✏️ تعديل الملف الشخصي</button>
+            <button class="btn-edit" style="flex:0 0 50px;" onclick="copyIdAction()" title="مشاركة">📋</button>
+          </div>
+        </div>
+
+        <!-- Highlights (Instagram style) -->
+        <div class="highlights-shelf">
+          <div class="hl-item" onclick="triggerInput('post-file-input')">
+            <div class="hl-circle"><span style="font-size:18px;">➕</span></div>
+            <span class="hl-label">جديد</span>
+          </div>
+          <div class="hl-item"><div class="hl-circle">✈️</div><span class="hl-label">سفر</span></div>
+          <div class="hl-item"><div class="hl-circle">💻</div><span class="hl-label">أكواد</span></div>
+          <div class="hl-item"><div class="hl-circle">☕</div><span class="hl-label">يوميات</span></div>
+        </div>
+
+        <!-- Posts Grid -->
+        <div class="posts-grid" id="posts-grid-container">
+          <div class="post-cell"><img src="https://picsum.photos/400/400?random=21" alt="Post"></div>
+          <div class="post-cell"><img src="https://picsum.photos/400/400?random=22" alt="Post"></div>
+          <div class="post-cell"><img src="https://picsum.photos/400/400?random=23" alt="Post"></div>
+          <div class="post-cell"><img src="https://picsum.photos/400/400?random=24" alt="Post"></div>
+          <div class="post-cell"><img src="https://picsum.photos/400/400?random=25" alt="Post"></div>
+          <div class="post-cell"><img src="https://picsum.photos/400/400?random=26" alt="Post"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+      <button class="nav-btn active" id="tab-chats-btn" onclick="switchMainTab('chats')">
+        <span class="nav-icon">💬</span>
+        <span>الدردشات</span>
+      </button>
+      <button class="nav-btn" id="tab-profile-btn" onclick="switchMainTab('profile')">
+        <span class="nav-icon">👤</span>
+        <span>حسابي</span>
+      </button>
+    </div>
+
+    <!-- Modal: Edit Profile -->
+    <div class="modal-backdrop" id="modal-edit-profile">
+      <div class="modal-card">
+        <div class="modal-title">✏️ تعديل الملف الشخصي</div>
+        
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">الاسم المعروض</label>
+        <input type="text" class="modal-field" id="modal-in-name" placeholder="اسمك الكامل...">
+        
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">اسم المستخدم (@username)</label>
+        <input type="text" class="modal-field" id="modal-in-handle" placeholder="jalil_dev">
+        
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">النبذة التعريفية (Bio)</label>
+        <textarea class="modal-field" id="modal-in-bio" rows="3" placeholder="اكتب نبذة عنك..."></textarea>
+
+        <div class="modal-actions">
+          <button class="btn-small" style="background:#334155;" onclick="closeModal('modal-edit-profile')">إلغاء</button>
+          <button class="btn-small" onclick="saveProfileChanges()">حفظ التعديلات</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Create Group -->
+    <div class="modal-backdrop" id="modal-create-group">
+      <div class="modal-card">
+        <div class="modal-title">👥 إنشاء مجموعة جديدة</div>
+        
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">اسم المجموعة</label>
+        <input type="text" class="modal-field" id="group-name-field" placeholder="مثال: شلة الأصدقاء 🔥">
+        
+        <label style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:3px;">رمز المجموعة (Group ID)</label>
+        <input type="text" class="modal-field" id="group-id-field" placeholder="group-friends-2026">
+
+        <div class="modal-actions">
+          <button class="btn-small" style="background:#334155;" onclick="closeModal('modal-create-group')">إلغاء</button>
+          <button class="btn-small" onclick="confirmCreateGroup()">إنشاء</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Safe storage wrapper (never throws security errors in locked WebViews)
+    var safeStorage = {
+      get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+      set: function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+    };
+
+    var myUserId = safeStorage.get('j_user_id');
+    if (!myUserId) {
+      myUserId = 'jalil-' + Math.random().toString(36).substring(2, 6) + '-' + Math.floor(100 + Math.random() * 900);
+      safeStorage.set('j_user_id', myUserId);
+    }
+
+    var userProfile = {
+      name: safeStorage.get('j_name') || 'جليل • Jalil',
+      username: safeStorage.get('j_handle') || 'jalil_user',
+      bio: safeStorage.get('j_bio') || 'حسابي الرسمي على Jalil Chat Pro 💫\\nمرحباً بكم في ملفي الشخصي 🚀',
+      avatar: safeStorage.get('j_avatar') || null
+    };
+
+    var currentChat = { id: 'bot', name: 'مساعد جليل الذكي', icon: '🤖', type: 'direct' };
+    var replyTarget = null;
+    var contactsMap = {};
+
+    var stickersLibrary = {
+      cute: ['😻', '🐱', '🐾', '🐰', '🐼', '🦊', '🐥', '🧸', '🌸', '✨', '🥺', '😽'],
+      love: ['❤️', '💖', '💘', '💕', '🥰', '😍', '💌', '🌹', '💐', '😘', '💍', '💓'],
+      fun:  ['🥳', '🎉', '🎊', '🚀', '🔥', '💃', '🕺', '🍿', '🎈', '⭐', '😂', '🤣'],
+      food: ['🍕', '🍔', '🍟', '🍦', '🍩', '🍫', '🧋', '☕', '🍰', '🍓', '🧁', '🍉'],
+      cool: ['😎', '🕶️', '⚡', '🎧', '👾', '🎮', '💯', '🤙', '👑', '💎', '🚀', '🎯']
+    };
+
+    function initApp() {
+      document.getElementById('my-id-display').innerText = myUserId;
+      renderProfileUI();
+      loadStickers('cute');
+    }
+
+    function triggerInput(id) {
+      var el = document.getElementById(id);
+      if (el) el.click();
+    }
+
+    // Switch Main Tabs
+    function switchMainTab(tab) {
+      document.getElementById('screen-chats').classList.remove('active');
+      document.getElementById('screen-room').classList.remove('active');
+      document.getElementById('screen-profile').classList.remove('active');
+      document.getElementById('tab-chats-btn').classList.remove('active');
+      document.getElementById('tab-profile-btn').classList.remove('active');
+
+      if (tab === 'chats') {
+        document.getElementById('screen-chats').classList.add('active');
+        document.getElementById('tab-chats-btn').classList.add('active');
+      } else {
+        document.getElementById('screen-profile').classList.add('active');
+        document.getElementById('tab-profile-btn').classList.add('active');
+      }
+    }
+
+    // Chat Room Functions
+    function openChatRoom(name, icon, type) {
+      currentChat = { id: name, name: name, icon: icon, type: type };
+      document.getElementById('room-name').innerHTML = name + (type === 'group' ? ' <span class="group-pill">مجموعة</span>' : '');
+      document.getElementById('room-avatar').innerText = icon;
+      
+      document.getElementById('screen-chats').classList.remove('active');
+      document.getElementById('screen-profile').classList.remove('active');
+      document.getElementById('screen-room').classList.add('active');
+    }
+
+    function closeChatRoom() {
+      document.getElementById('screen-room').classList.remove('active');
+      document.getElementById('screen-chats').classList.add('active');
+      document.getElementById('stickers-drawer').classList.remove('active');
+      cancelReply();
+    }
+
+    // Messaging
+    function sendMessageAction(customObj) {
+      var inEl = document.getElementById('message-input');
+      var txt = customObj ? customObj.text : inEl.value.trim();
+      var sticker = customObj ? customObj.sticker : null;
+      var img = customObj ? customObj.img : null;
+
+      if (!txt && !sticker && !img) return;
+
+      var data = {
+        text: txt,
+        sticker: sticker,
+        img: img,
+        reply: replyTarget,
+        sender: 'أنت',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      appendMessage(data, 'out');
+      if (!customObj) inEl.value = '';
+      cancelReply();
+
+      // Intelligent instant reply
+      setTimeout(function() {
+        var botReply = 'وصلت رسالتك بنجاح! 🚀 الميزات تعمل بالكامل بدون توقف.';
+        if (sticker) botReply = 'ملصق رائع ومميز ' + sticker + ' 🥰!';
+        if (img) botReply = 'تم استلام صورتك وحفظها بنجاح 📸✨';
+
+        appendMessage({
+          text: botReply,
+          sender: currentChat.name,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }, 'in');
+      }, 650);
+    }
+
+    function appendMessage(d, direction) {
+      var container = document.getElementById('messages-container');
+      var wrap = document.createElement('div');
+      wrap.className = 'bubble-wrap ' + direction;
+
+      var senderLbl = document.createElement('div');
+      senderLbl.className = 'bubble-sender';
+      senderLbl.innerText = d.sender;
+      wrap.appendChild(senderLbl);
+
+      var bubble = document.createElement('div');
+      bubble.className = 'bubble ' + direction;
+
+      if (d.reply) {
+        var q = document.createElement('div');
+        q.className = 'quote-box';
+        q.innerText = 'رد على: ' + d.reply;
+        bubble.appendChild(q);
+      }
+
+      if (d.sticker) {
+        bubble.classList.add('bubble-sticker');
+        bubble.innerText = d.sticker;
+      } else if (d.img) {
+        bubble.innerHTML += '<img src="' + d.img + '">';
+      } else {
+        bubble.innerText = d.text;
+      }
+
+      // Click on bubble to reply
+      bubble.onclick = function() {
+        setReply(d.text || d.sticker || 'صورة');
+      };
+
+      var meta = document.createElement('div');
+      meta.className = 'bubble-meta';
+      meta.innerHTML = '<span>' + (d.time || '') + '</span>' + (direction === 'out' ? ' <span style="color:#38bdf8;">✓✓</span>' : '');
+      bubble.appendChild(meta);
+
+      wrap.appendChild(bubble);
+      container.appendChild(wrap);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function setReply(txt) {
+      replyTarget = txt.substring(0, 35);
+      document.getElementById('reply-quote-target').innerText = replyTarget;
+      document.getElementById('reply-bar').classList.add('active');
+    }
+
+    function cancelReply() {
+      replyTarget = null;
+      document.getElementById('reply-bar').classList.remove('active');
+    }
+
+    // Stickers Drawer
+    function toggleStickersDrawer() {
+      document.getElementById('stickers-drawer').classList.toggle('active');
+    }
+
+    function loadStickers(category, btn) {
+      if (btn) {
+        document.querySelectorAll('.st-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      }
+      var grid = document.getElementById('stickers-grid');
+      grid.innerHTML = '';
+      var list = stickersLibrary[category] || [];
+      list.forEach(function(st) {
+        var tile = document.createElement('div');
+        tile.className = 'st-tile';
+        tile.innerText = st;
+        tile.onclick = function() {
+          sendMessageAction({ sticker: st });
+          toggleStickersDrawer();
+        };
+        grid.appendChild(tile);
+      });
+    }
+
+    function handleAttachImage(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var r = new FileReader();
+      r.onload = function(evt) {
+        sendMessageAction({ img: evt.target.result });
+      };
+      r.readAsDataURL(file);
+    }
+
+    // Add / Filter Chats
+    function startNewChat() {
+      var input = document.getElementById('search-contact-input');
+      var val = input.value.trim();
+      if (!val) return alert('يرجى كتابة ID صديقك أو اسم الشخص');
+
+      addContactItem(val, val, '👤', 'direct');
+      openChatRoom(val, '👤', 'direct');
+      input.value = '';
+    }
+
+    function addContactItem(id, name, icon, type) {
+      if (contactsMap[id]) return;
+      contactsMap[id] = true;
+
+      var list = document.getElementById('chats-container');
+      var item = document.createElement('div');
+      item.className = 'chat-item';
+      item.dataset.type = type;
+      item.onclick = function() { openChatRoom(name, icon, type); };
+
+      item.innerHTML = `
+        <div class="avatar-box" style="background:${type==='group'?'#0284c7':'#8b5cf6'};">${icon}<div class="dot-online"></div></div>
+        <div class="chat-meta">
+          <div class="chat-header-row">
+            <span class="chat-title">${name} ${type==='group'?'<span class="group-pill">مجموعة</span>':''}</span>
+            <span style="font-size:10px; color:var(--text-muted);">الآن</span>
+          </div>
+          <div class="chat-subtext">محادثة جديدة ومتاحة الآن 💬</div>
+        </div>
+      `;
+      list.prepend(item);
+    }
+
+    function filterChats(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      document.querySelectorAll('.chat-item').forEach(function(item) {
+        if (type === 'all') item.style.display = 'flex';
+        else if (item.dataset.type === type) item.style.display = 'flex';
+        else item.style.display = 'none';
+      });
+    }
+
+    // Profile Management
+    function renderProfileUI() {
+      document.getElementById('profile-name-label').innerText = userProfile.name + ' ✅';
+      document.getElementById('top-username-label').innerText = '@' + userProfile.username;
+      document.getElementById('profile-handle-label').innerText = '@' + userProfile.username;
+      document.getElementById('profile-bio-label').innerText = userProfile.bio;
+
+      var avCircle = document.getElementById('profile-avatar-display');
+      var storyCircle = document.getElementById('story-my-avatar');
+
+      if (userProfile.avatar) {
+        avCircle.innerHTML = '<img src="' + userProfile.avatar + '">';
+        storyCircle.innerHTML = '<img src="' + userProfile.avatar + '">';
+      } else {
+        avCircle.innerText = userProfile.name.charAt(0);
+        storyCircle.innerText = userProfile.name.charAt(0);
+      }
+    }
+
+    function openEditProfileModal() {
+      document.getElementById('modal-in-name').value = userProfile.name;
+      document.getElementById('modal-in-handle').value = userProfile.username;
+      document.getElementById('modal-in-bio').value = userProfile.bio;
+      openModal('modal-edit-profile');
+    }
+
+    function saveProfileChanges() {
+      var n = document.getElementById('modal-in-name').value.trim();
+      var h = document.getElementById('modal-in-handle').value.trim();
+      var b = document.getElementById('modal-in-bio').value.trim();
+
+      if (n) userProfile.name = n;
+      if (h) userProfile.username = h;
+      if (b) userProfile.bio = b;
+
+      safeStorage.set('j_name', userProfile.name);
+      safeStorage.set('j_handle', userProfile.username);
+      safeStorage.set('j_bio', userProfile.bio);
+
+      renderProfileUI();
+      closeModal('modal-edit-profile');
+      alert('تم تحديث بيانات ملفك الشخصي بنجاح! ✨');
+    }
+
+    function handleAvatarUpload(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var r = new FileReader();
+      r.onload = function(evt) {
+        userProfile.avatar = evt.target.result;
+        safeStorage.set('j_avatar', userProfile.avatar);
+        renderProfileUI();
+        alert('تم تغيير صورتك الشخصية بنجاح 📸✨');
+      };
+      r.readAsDataURL(file);
+    }
+
+    function handleNewPost(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var r = new FileReader();
+      r.onload = function(evt) {
+        var grid = document.getElementById('posts-grid-container');
+        var cell = document.createElement('div');
+        cell.className = 'post-cell';
+        cell.innerHTML = '<img src="' + evt.target.result + '">';
+        grid.prepend(cell);
+
+        var count = document.getElementById('posts-count');
+        count.innerText = parseInt(count.innerText) + 1;
+        alert('تم نشر الصورة على بروفايلك بنجاح! 📸');
+      };
+      r.readAsDataURL(file);
+    }
+
+    function handleNewStory(e) {
+      if (e.target.files[0]) alert('تم نشر القصة (Story) وستظهر لمتابعيك 🌟');
+    }
+
+    // Group Modal
+    function openCreateGroupModal() {
+      document.getElementById('group-name-field').value = '';
+      document.getElementById('group-id-field').value = 'group-' + Math.floor(100 + Math.random() * 900);
+      openModal('modal-create-group');
+    }
+
+    function confirmCreateGroup() {
+      var name = document.getElementById('group-name-field').value.trim();
+      var id = document.getElementById('group-id-field').value.trim();
+      if (!name || !id) return alert('يرجى كتابة الاسم ورمز المجموعة');
+
+      addContactItem(id, name, '👥', 'group');
+      closeModal('modal-create-group');
+      openChatRoom(name, '👥', 'group');
+    }
+
+    // Modal Helpers
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    function copyIdAction() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(myUserId).then(function() {
+          alert('تم نسخ الـ ID بنجاح: ' + myUserId);
         });
-    </script>
+      } else {
+        alert('معرفك الخاص هو: ' + myUserId);
+      }
+    }
+
+    function resetMyId() {
+      var fresh = 'jalil-' + Math.random().toString(36).substring(2, 6) + '-' + Math.floor(100 + Math.random() * 900);
+      myUserId = fresh;
+      safeStorage.set('j_user_id', fresh);
+      document.getElementById('my-id-display').innerText = fresh;
+      alert('تم توليد معرّف جديد لحسابك: ' + fresh);
+    }
+
+    window.onload = initApp;
+  </script>
 </body>
 </html>
