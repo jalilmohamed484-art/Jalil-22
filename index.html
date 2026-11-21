@@ -4,52 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Le jeux chat</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --accent: #ec4899;
-            --tg-blue: #2aabee;
-            --wa-green: #25d366;
-            --bg-dark: #0f172a;
-            --card-dark: #1e293b;
-            --border-dark: #334155;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --online: #22c55e;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
-            --wa-bubble-out: #005c4b;
-            --wa-bubble-in: #202c33;
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            accent: '#ec4899',
+                            dark: '#0b1120',
+                            card: '#1e293b',
+                            border: '#334155'
+                        },
+                        tg: {
+                            blue: '#2aabee',
+                            dark: '#17212b'
+                        },
+                        wa: {
+                            green: '#25d366',
+                            out: '#005c4b',
+                            in: '#202c33',
+                            check: '#53bdeb'
+                        }
+                    }
+                }
+            }
         }
-
+    </script>
+    <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-color: #0b1120;
+            color: #f8fafc;
             height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-        }
-
-        .animated-emoji {
-            display: inline-block;
-            animation: emojiPulse 2.4s infinite ease-in-out;
-            transform-origin: center bottom;
-        }
-
-        @keyframes emojiPulse {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-3px) scale(1.1); }
         }
 
         .screen {
@@ -57,806 +61,730 @@
             inset: 0;
             display: none;
             flex-direction: column;
-            background: var(--bg-dark);
+            background: #0b1120;
             overflow: hidden;
             z-index: 10;
         }
 
-        .screen.active { display: flex; }
-
-        /* شاشة الدخول والتسجيل */
-        #auth-screen {
-            z-index: 50;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            background: radial-gradient(circle at top, #1e1b4b, #0f172a);
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 360px;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border-dark);
-            border-radius: 24px;
-            padding: 32px 24px;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .app-title {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #a5b4fc, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
-        }
-
-        .designer-tag {
-            font-size: 12px;
-            color: var(--accent);
-            letter-spacing: 1px;
-            font-weight: 700;
-            margin-bottom: 24px;
-        }
-
-        .input-group {
-            margin-bottom: 14px;
-            text-align: right;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 14px;
-            background: #0f172a;
-            border: 1px solid var(--border-dark);
-            border-radius: 12px;
-            color: #fff;
-            outline: none;
-            font-size: 14px;
-        }
-
-        .main-btn {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-            margin-top: 10px;
-        }
-
-        /* الرأس العلوي */
-        .top-bar {
-            height: 60px;
+        .screen.active {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            background: var(--card-dark);
-            border-bottom: 1px solid var(--border-dark);
-            flex-shrink: 0;
         }
 
-        .top-bar h2 { font-size: 18px; font-weight: 700; }
-
-        /* شريط ID الشخصي وخانة البحث عن الأصدقاء */
-        .user-id-bar {
-            background: rgba(30, 41, 59, 0.6);
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-dark);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
         }
 
-        .my-id-badge {
-            background: #0f172a;
-            border: 1px dashed var(--primary);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: monospace;
-            color: #a5b4fc;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .friend-search-box {
-            padding: 10px 16px;
-            background: var(--card-dark);
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid var(--border-dark);
+        /* Animated Emojis */
+        @keyframes emojiFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(-5px) rotate(4deg) scale(1.1);
+            }
         }
 
-        .friend-search-box input {
-            flex: 1;
-            padding: 8px 14px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 20px;
-            color: #fff;
-            font-size: 12px;
-            outline: none;
+        .anim-emoji {
+            display: inline-block;
+            animation: emojiFloat 2.6s ease-in-out infinite;
+            transform-origin: center bottom;
         }
 
-        .friend-search-box button {
-            background: var(--primary);
-            border: none;
-            color: #fff;
-            padding: 0 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
+        .tap-bounce:active {
+            transform: scale(0.96);
         }
 
-        /* الحالات بنمط تليغرام / واتساب */
-        .stories-container {
-            display: flex;
-            gap: 12px;
-            padding: 12px 16px;
-            overflow-x: auto;
-            border-bottom: 1px solid var(--border-dark);
-            background: rgba(30, 41, 59, 0.3);
-            flex-shrink: 0;
+        @keyframes storyPulse {
+            0%, 100% { border-color: #2aabee; }
+            50% { border-color: #ec4899; }
         }
-
-        .stories-container::-webkit-scrollbar { display: none; }
-
-        .story-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            cursor: pointer;
+        .story-border {
+            animation: storyPulse 3s infinite ease-in-out;
         }
-
-        .story-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 2px solid var(--tg-blue);
-            padding: 2px;
-            background: #1e293b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        /* قائمة المحادثات والأصدقاء */
-        .chat-list {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .chat-row {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-        }
-
-        .chat-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--border-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            position: relative;
-            margin-left: 12px;
-            flex-shrink: 0;
-        }
-
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            background: var(--online);
-            border-radius: 50%;
-            border: 2px solid var(--card-dark);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .chat-details { flex: 1; }
-        .chat-header-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
-        .chat-name { font-weight: 600; font-size: 15px; }
-        .chat-time { font-size: 11px; color: var(--text-muted); }
-        .chat-last-msg {
-            font-size: 13px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 220px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* نافذة غرفة الدردشة المتطورة (واتساب + تليغرام) */
-        #chat-room { z-index: 45; }
-
-        .chat-room-header {
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 14px;
-            background: #1e293b;
-            border-bottom: 1px solid var(--border-dark);
-            flex-shrink: 0;
-        }
-
-        .chat-room-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: radial-gradient(circle at center, #111a2e 0%, #090e17 100%);
-        }
-
-        .message-bubble {
-            max-width: 78%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.4;
-            position: relative;
-            word-break: break-word;
-        }
-
-        .message-bubble.incoming {
-            background: var(--wa-bubble-in);
-            align-self: flex-start;
-            border-top-right-radius: 2px;
-            color: #e9edef;
-        }
-
-        .message-bubble.outgoing {
-            background: var(--wa-bubble-out);
-            align-self: flex-end;
-            border-top-left-radius: 2px;
-            color: #e9edef;
-        }
-
-        .message-meta {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 4px;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 3px;
-        }
-
-        .read-check {
-            color: #53bdeb; /* لون علامة القراءة الزرقاء للواتساب */
-        }
-
-        .typing-indicator {
-            font-size: 11px;
-            color: var(--wa-green);
-            display: none;
-            margin-right: 6px;
-        }
-
-        .chat-input-bar {
-            background: #1e293b;
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid var(--border-dark);
-        }
-
-        .chat-input-bar input {
-            flex: 1;
-            padding: 10px 16px;
-            background: #0f172a;
-            border: 1px solid var(--border-dark);
-            border-radius: 24px;
-            color: #fff;
-            outline: none;
-            font-size: 14px;
-        }
-
-        .chat-input-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-muted);
-            font-size: 18px;
-        }
-
-        /* قسم قائمة الأصدقاء المستقل */
-        #friends-tab { z-index: 10; }
-        .friends-list-box { flex: 1; overflow-y: auto; padding: 10px 0; }
-        .friend-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* شبكة الألعاب (15 لعبة) */
-        .games-grid {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .game-card {
-            background: var(--card-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .game-icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .game-title { font-size: 13px; font-weight: bold; margin-bottom: 3px; }
-        .game-desc { font-size: 10px; color: var(--text-muted); }
-
-        /* ساحة اللعبة */
-        #game-arena-screen { z-index: 40; }
-        .arena-canvas-box {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-
-        .game-board {
-            display: grid;
-            gap: 8px;
-            background: var(--card-dark);
-            padding: 12px;
-            border-radius: 16px;
-        }
-
-        .board-cell {
-            width: 72px;
-            height: 72px;
-            background: var(--bg-dark);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            border: 1px solid var(--border-dark);
-        }
-
-        /* الملف الشخصي بنمط فيسبوك */
-        .fb-profile-container { flex: 1; overflow-y: auto; background: #0b1120; }
-        .fb-cover { height: 130px; background: linear-gradient(135deg, #1877f2, #00c6ff); position: relative; }
-        .fb-avatar-holder {
-            width: 85px; height: 85px; border-radius: 50%; background: #1e293b;
-            border: 4px solid var(--bg-dark); position: absolute; bottom: -30px; right: 20px;
-            display: flex; align-items: center; justify-content: center; font-size: 40px; cursor: pointer;
-        }
-        .fb-details { margin-top: 36px; padding: 0 16px 14px 16px; border-bottom: 1px solid var(--border-dark); }
-        .fb-name { font-size: 19px; font-weight: bold; }
-        .fb-bio { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
-        .fb-post-creator { padding: 12px 16px; background: var(--card-dark); margin: 10px 0; border: 1px solid var(--border-dark); }
-        .fb-post-card { background: var(--card-dark); border: 1px solid var(--border-dark); padding: 12px 16px; margin-bottom: 10px; }
-
-        /* شريط التنقل السفلي */
-        .bottom-nav {
-            height: 60px;
-            background: var(--card-dark);
-            border-top: 1px solid var(--border-dark);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 20;
-            flex-shrink: 0;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 600;
-            flex: 1;
-        }
-
-        .nav-item i { font-size: 18px; }
-        .nav-item.active { color: var(--tg-blue); }
     </style>
 </head>
-<body>
+<body class="relative bg-brand-dark text-slate-100 flex flex-col justify-between">
 
-    <!-- 1. شاشة الدخول والتسجيل -->
-    <div id="auth-screen" class="screen active">
-        <div class="auth-container">
-            <h1 class="app-title">Le jeux chat</h1>
-            <div class="designer-tag">WELCOME • BY MOHAMED JALIL</div>
-            
-            <div class="input-group">
-                <label>البريد الإلكتروني الموثق</label>
-                <input type="email" id="auth-email" placeholder="user@domain.com" />
-            </div>
-
-            <div class="input-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="auth-name" placeholder="اسمك داخل التطبيق" />
-            </div>
-
-            <button class="main-btn" onclick="handleAuth()">دخول إلى التطبيق</button>
-        </div>
+    <!-- Notification Toast banner (Never using alert) -->
+    <div id="toast-notify" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-accent text-white font-medium text-xs sm:text-sm shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 flex items-center gap-2">
+        <i id="toast-icon" class="fa-solid fa-circle-check"></i>
+        <span id="toast-message">رسالة إشعار</span>
     </div>
 
-    <!-- 2. واجهة المحادثات (تليغرام + واتساب) -->
-    <div id="chat-tab" class="screen">
-        <div class="top-bar">
-            <h2>المحادثات</h2>
-            <div style="display: flex; gap: 14px; align-items: center;">
-                <i class="fa-solid fa-user-plus animated-emoji" style="color: var(--tg-blue); cursor: pointer;" onclick="switchTab('friends-tab')" title="إضافة أصدقاء"></i>
-                <i class="fa-solid fa-bolt animated-emoji" style="color: var(--accent); cursor: pointer;" onclick="sendGlobalChallenge()" title="تحدي الجميع"></i>
+    <!-- 1. AUTH / ONBOARDING SCREEN -->
+    <section id="auth-screen" class="screen active z-50 justify-center items-center p-4">
+        <div class="w-full max-w-sm glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl text-center relative overflow-hidden border border-brand-border">
+            <div class="mb-2">
+                <span class="inline-block px-3 py-1 bg-brand-500/10 text-brand-500 border border-brand-500/30 rounded-full text-[11px] font-bold tracking-wider">
+                    WELCOME
+                </span>
             </div>
-        </div>
+            <h1 class="text-3xl font-black bg-gradient-to-r from-indigo-300 via-brand-500 to-brand-accent bg-clip-text text-transparent mb-1">
+                Le jeux chat
+            </h1>
+            <p class="text-[12px] font-bold text-brand-accent tracking-widest uppercase mb-5">
+                DESIGN BY MOHAMED JALIL
+            </p>
 
-        <!-- شريط المعرف الشخصي الدائم والبحث -->
-        <div class="user-id-bar">
-            <span style="font-size: 12px; color: var(--text-muted);">معرف حسابك الثابت:</span>
-            <div class="my-id-badge" onclick="copyMyId()" title="اضغط لنسخ المعرف">
-                <span id="display-fixed-id">#ID-0000</span>
-                <i class="fa-regular fa-copy"></i>
+            <div class="mb-4">
+                <div class="text-xs text-slate-400 mb-2 font-medium">اختر شخصيتك الرمزية</div>
+                <div class="flex justify-center gap-2 flex-wrap" id="auth-avatar-selector"></div>
             </div>
-        </div>
 
-        <div class="friend-search-box">
-            <input type="text" id="search-friend-input" placeholder="ابحث بمعرف الصديق (مثال: #JEUX-1234)..." />
-            <button onclick="addFriendById()"><i class="fa-solid fa-plus"></i> إضافة</button>
-        </div>
-
-        <!-- الحالات Stories -->
-        <div class="stories-container">
-            <div class="story-item" onclick="alert('خاصية إضافة قصة جديدة متاحة الآن!')">
-                <div class="story-avatar" style="border-style: dashed; color: var(--text-muted);"><i class="fa-solid fa-plus"></i></div>
-                <span>حالتي</span>
-            </div>
-            <div class="story-item" onclick="viewStory('سارة', '🎮 من يتحداني في ألعاب الذكاء؟')">
-                <div class="story-avatar"><span class="animated-emoji">🧕</span></div>
-                <span>سارة</span>
-            </div>
-            <div class="story-item" onclick="viewStory('ياسين', '🔥 فوز ساحق 5 مرات متتالية!')">
-                <div class="story-avatar"><span class="animated-emoji">🧑‍💻</span></div>
-                <span>ياسين</span>
-            </div>
-            <div class="story-item" onclick="viewStory('أحمد', '☕ وقت الاستراحة واللعب')">
-                <div class="story-avatar"><span class="animated-emoji">👨‍🦱</span></div>
-                <span>أحمد</span>
-            </div>
-        </div>
-
-        <!-- قائمة المحادثات -->
-        <div class="chat-list" id="chats-list-wrapper"></div>
-    </div>
-
-    <!-- 3. نافذة المحادثة النشطة (مستوحاة من واتساب وتليغرام) -->
-    <div id="chat-room" class="screen">
-        <div class="chat-room-header">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-arrow-right" style="cursor: pointer; font-size: 18px;" onclick="closeChatRoom()"></i>
-                <div id="room-avatar" style="font-size: 24px;">👤</div>
+            <div class="space-y-3.5 text-right">
                 <div>
-                    <h3 id="room-name" style="font-size: 14px;">المستخدم</h3>
-                    <div style="display: flex; align-items: center;">
-                        <span id="room-status" style="font-size: 10px; color: var(--online);">متصل</span>
-                        <span id="typing-status" class="typing-indicator">يكتب الآن...</span>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">البريد الإلكتروني الموثق</label>
+                    <input id="auth-email" type="email" placeholder="example@mail.com" class="w-full px-3.5 py-2.5 bg-slate-900 border border-brand-border rounded-xl text-sm focus:border-brand-500 outline-none text-left dir-ltr text-white" />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">اسم المستخدم</label>
+                    <input id="auth-username" type="text" placeholder="مثال: يونس الجزائري" class="w-full px-3.5 py-2.5 bg-slate-900 border border-brand-border rounded-xl text-sm focus:border-brand-500 outline-none text-white" />
+                </div>
+
+                <button onclick="handleLogin()" class="w-full mt-3 py-3 bg-gradient-to-r from-brand-500 via-indigo-600 to-brand-accent text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 tap-bounce transition">
+                    إنشاء حساب وتوليد الـ ID الدائم
+                </button>
+            </div>
+            <div class="mt-4 text-[11px] text-slate-400">
+                🔒 يتم حفظ كافة المحادثات والبيانات وتوليد معرّف ID فريد وخاص بك وحدك.
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. TAB: CHAT & DISCOVERY (Telegram + WhatsApp) -->
+    <main id="chat-tab" class="screen flex-col pb-16">
+        <header class="h-14 px-4 bg-slate-900/95 border-b border-brand-border flex items-center justify-between z-20 shrink-0">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-brand-accent flex items-center justify-center font-bold text-sm shadow">
+                    LJ
+                </div>
+                <div>
+                    <h2 class="text-base font-bold leading-tight">Le jeux chat</h2>
+                    <span class="text-[10px] text-brand-accent font-bold tracking-wider">BY MOHAMED JALIL</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="openGlobalChallengeModal()" class="px-3 py-1 bg-brand-accent/20 hover:bg-brand-accent/30 text-brand-accent border border-brand-accent/40 rounded-full text-xs font-bold flex items-center gap-1.5 tap-bounce transition">
+                    <i class="fa-solid fa-bullhorn animate-pulse"></i>
+                    <span>تحدي عام</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Permanent User ID Bar -->
+        <div class="bg-slate-900/80 px-4 py-2 border-b border-brand-border flex items-center justify-between text-xs shrink-0">
+            <div class="flex items-center gap-2">
+                <span class="text-slate-400">معرفك الثابت:</span>
+                <span id="header-fixed-id" class="font-mono font-bold text-indigo-400 bg-slate-950 px-2 py-0.5 rounded border border-brand-border select-all">#JEUX-0000</span>
+            </div>
+            <button onclick="copyMyPermanentId()" class="px-2.5 py-1 bg-brand-500/20 text-brand-500 hover:bg-brand-500/30 rounded-lg font-bold text-[11px] flex items-center gap-1 tap-bounce">
+                <i class="fa-regular fa-copy"></i>
+                <span>نسخ المعرف</span>
+            </button>
+        </div>
+
+        <!-- Quick Friend Search by ID -->
+        <div class="px-3 py-2 bg-slate-950/70 border-b border-brand-border flex items-center gap-2 shrink-0">
+            <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-slate-500 text-xs"></i>
+                <input id="quick-id-search-input" type="text" placeholder="ابحث بمعرف صديقك (مثال: #JEUX-1011)..." class="w-full pr-8 pl-3 py-1.5 bg-slate-900 border border-brand-border rounded-xl text-xs text-white placeholder-slate-500 outline-none focus:border-tg-blue" />
+            </div>
+            <button onclick="searchAndAddFriend()" class="px-3 py-1.5 bg-tg-blue text-white rounded-xl text-xs font-bold tap-bounce flex items-center gap-1 shrink-0">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>إضافة</span>
+            </button>
+        </div>
+
+        <!-- Global Challenge Live Bar -->
+        <div id="global-broadcast-banner" class="bg-gradient-to-r from-brand-accent/15 via-brand-500/15 to-transparent border-b border-brand-accent/30 px-4 py-1.5 flex items-center justify-between text-xs shrink-0">
+            <div class="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                <span class="w-2 h-2 rounded-full bg-brand-accent animate-ping"></span>
+                <span class="font-bold text-brand-accent">العالمية:</span>
+                <span id="global-banner-text" class="text-slate-300 truncate">لا توجد تحديات معلقة الآن. انقر لإرسال تحدي للكل!</span>
+            </div>
+            <button onclick="acceptGlobalChallenge()" class="shrink-0 mr-2 text-[10px] bg-brand-accent text-white px-2 py-0.5 rounded-md font-bold hover:opacity-90">
+                قبول
+            </button>
+        </div>
+
+        <!-- Stories (Telegram/WhatsApp Statuses) -->
+        <div class="bg-slate-900/40 border-b border-brand-border py-2.5 px-3 flex gap-3 overflow-x-auto shrink-0" id="stories-strip"></div>
+
+        <!-- Conversations List -->
+        <div class="flex-1 overflow-y-auto divide-y divide-slate-800/60" id="conversations-list"></div>
+    </main>
+
+    <!-- 3. TAB: FRIENDS LIST SCREEN (Dedicated) -->
+    <main id="friends-tab" class="screen flex-col pb-16">
+        <header class="h-14 px-4 bg-slate-900 border-b border-brand-border flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-user-group text-tg-blue text-lg"></i>
+                <h2 class="text-base font-bold">قائمة الأصدقاء</h2>
+            </div>
+            <span class="text-xs text-slate-400" id="friends-count-badge">4 أصدقاء</span>
+        </header>
+
+        <!-- Search Friends in list -->
+        <div class="p-3 bg-slate-950/60 border-b border-brand-border">
+            <input id="friends-filter-input" oninput="filterFriendsList()" type="text" placeholder="البحث في قائمة الأصدقاء بالاسم أو الـ ID..." class="w-full px-3 py-2 bg-slate-900 border border-brand-border rounded-xl text-xs text-white outline-none focus:border-brand-500" />
+        </div>
+
+        <div class="flex-1 overflow-y-auto divide-y divide-slate-800/60" id="friends-full-list"></div>
+    </main>
+
+    <!-- 4. ACTIVE CHAT ROOM SCREEN (WhatsApp + Telegram Engine) -->
+    <div id="chat-room-screen" class="screen z-40 pb-2">
+        <header class="h-14 px-3 bg-slate-900 border-b border-brand-border flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2.5">
+                <button onclick="closeChatRoom()" class="text-slate-300 hover:text-white p-1">
+                    <i class="fa-solid fa-arrow-right text-lg"></i>
+                </button>
+                <div class="relative">
+                    <div id="room-avatar" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-xl border border-brand-border">
+                        🤖
+                    </div>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 absolute bottom-0 left-0 border-2 border-slate-900"></span>
+                </div>
+                <div>
+                    <h3 id="room-contact-name" class="font-bold text-sm leading-tight text-white">الاسم</h3>
+                    <div class="flex items-center gap-1.5 text-[10px]">
+                        <span id="room-online-tag" class="text-emerald-400 font-medium">متصل الآن</span>
+                        <span id="room-typing-tag" class="text-wa-green font-bold hidden">يكتب الآن...</span>
                     </div>
                 </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 16px; color: var(--tg-blue); font-size: 18px;">
-                <i class="fa-solid fa-phone" style="cursor: pointer;" onclick="alert('جاري الاتصال الصوتي...')"></i>
-                <i class="fa-solid fa-gamepad animated-emoji" style="cursor: pointer; color: var(--accent);" onclick="inviteToCurrentGame()" title="دعوة للتحدي"></i>
+            <div class="flex items-center gap-2">
+                <button onclick="launchQuickDuelWithCurrent()" class="px-2.5 py-1 bg-brand-500/20 text-brand-500 border border-brand-500/40 rounded-lg text-xs font-bold hover:bg-brand-500/30 tap-bounce flex items-center gap-1.5">
+                    <i class="fa-solid fa-gamepad animated-emoji"></i>
+                    <span>تحدي 1v1</span>
+                </button>
             </div>
-        </div>
+        </header>
 
-        <div class="chat-room-body" id="messages-box"></div>
+        <!-- Messages Stream with Telegram Wallpaper Pattern Simulation -->
+        <div id="messages-stream" class="flex-1 overflow-y-auto p-3 space-y-2.5 flex flex-col bg-slate-950/80"></div>
 
-        <div class="chat-input-bar">
-            <div class="chat-input-actions">
-                <i class="fa-regular fa-face-smile animated-emoji" style="cursor: pointer;"></i>
-                <i class="fa-solid fa-paperclip" style="cursor: pointer;" onclick="alert('إرفاق ملف أو صورة')"></i>
-            </div>
-            <input type="text" id="msg-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendMessage()" />
-            <button style="background: none; border: none; color: var(--wa-green); font-size: 20px; cursor: pointer;" onclick="sendMessage()">
-                <i class="fa-solid fa-paper-plane"></i>
+        <!-- Chat Input Bar (WhatsApp Style) -->
+        <div class="px-3 pt-2 pb-1 shrink-0 bg-slate-900 border-t border-brand-border flex items-center gap-2">
+            <button onclick="showToast('إرفاق ملف أو صورة', 'fa-paperclip')" class="text-slate-400 hover:text-white p-1 text-base">
+                <i class="fa-solid fa-paperclip"></i>
+            </button>
+            <input id="chat-input-field" type="text" placeholder="اكتب رسالة..." class="flex-1 bg-slate-950 border border-brand-border text-sm px-4 py-2 rounded-full text-white placeholder-slate-500 outline-none focus:border-wa-green" onkeydown="if(event.key === 'Enter') sendCurrentMessage()" />
+            <button onclick="sendCurrentMessage()" class="w-9 h-9 rounded-full bg-wa-green text-slate-950 flex items-center justify-center font-bold shadow-lg hover:opacity-90 tap-bounce shrink-0">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
             </button>
         </div>
     </div>
 
-    <!-- 4. واجهة قائمة الأصدقاء المستقلة -->
-    <div id="friends-tab" class="screen">
-        <div class="top-bar">
-            <h2>قائمة الأصدقاء</h2>
-            <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="switchTab('chat-tab')"></i>
+    <!-- 5. TAB: 15 GAMES ARENA -->
+    <main id="games-tab" class="screen flex-col pb-16">
+        <header class="h-14 px-4 bg-slate-900 border-b border-brand-border flex items-center justify-between shrink-0">
+            <div>
+                <h2 class="text-base font-bold">صالة الألعاب والتحدي (15)</h2>
+                <span class="text-[10px] text-slate-400">ألعاب ذكاء ومواجهات حية لشخصين</span>
+            </div>
+            <div class="text-xs bg-slate-800 px-3 py-1 rounded-full text-brand-500 font-semibold border border-brand-border">
+                🎮 تعمل فوراً
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-3.5">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="games-catalogue"></div>
         </div>
-        <div class="friends-list-box" id="friends-list-wrapper"></div>
+    </main>
+
+    <!-- 6. ACTIVE GAME PLAYER SCREEN -->
+    <div id="game-player-screen" class="screen z-40 pb-2">
+        <header class="h-14 px-3 bg-slate-900 border-b border-brand-border flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2.5">
+                <button onclick="closeActiveGame()" class="text-slate-300 hover:text-white p-1">
+                    <i class="fa-solid fa-arrow-right text-lg"></i>
+                </button>
+                <div>
+                    <h3 id="current-game-title" class="font-bold text-sm">اسم اللعبة</h3>
+                    <p id="current-game-subtitle" class="text-[10px] text-slate-400">مواجهة ذكاء 1v1</p>
+                </div>
+            </div>
+            <button onclick="restartCurrentGame()" class="px-2.5 py-1 bg-slate-800 text-slate-200 border border-brand-border rounded-lg text-xs font-semibold hover:bg-slate-700 tap-bounce flex items-center gap-1">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>إعادة</span>
+            </button>
+        </header>
+
+        <div id="game-engine-viewport" class="flex-1 flex flex-col justify-center items-center p-3 overflow-hidden"></div>
     </div>
 
-    <!-- 5. واجهة الألعاب (15 لعبة لشخصين وذكاء) -->
-    <div id="games-tab" class="screen">
-        <div class="top-bar">
-            <h2>الألعاب والذكاء (15)</h2>
-            <span class="animated-emoji" style="font-size: 18px;">🎮</span>
-        </div>
-        <div class="games-grid" id="games-container"></div>
-    </div>
-
-    <!-- 6. شاشة اللعبة النشطة -->
-    <div id="game-arena-screen" class="screen">
-        <div class="top-bar">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="closeGameArena()"></i>
-                <h3 id="arena-title" style="font-size: 15px;">اسم اللعبة</h3>
+    <!-- 7. TAB: GAMING PROFILE / PASSPORT (Dedicated to stats only) -->
+    <main id="gaming-tab" class="screen flex-col pb-16">
+        <header class="h-14 px-4 bg-slate-900 border-b border-brand-border flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-amber-400 text-lg anim-emoji"></i>
+                <h2 class="text-base font-bold">جواز الألعاب والتصنيف</h2>
             </div>
-            <button onclick="resetCurrentGame()" style="background: none; border: 1px solid var(--border-dark); color: #fff; padding: 4px 10px; border-radius: 8px; font-size: 11px;">إعادة</button>
-        </div>
-        <div class="arena-canvas-box" id="arena-content"></div>
-    </div>
-
-    <!-- 7. الملف الشخصي الاجتماعي (نمط فيسبوك المستقل) -->
-    <div id="profile-tab" class="screen">
-        <div class="top-bar">
-            <h2>الملف الشخصي</h2>
-            <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; cursor: pointer;" onclick="logout()" title="تسجيل خروج"></i>
-        </div>
-
-        <div class="fb-profile-container">
-            <div class="fb-cover">
-                <div class="fb-avatar-holder" onclick="changeAvatar()">
-                    <span id="fb-avatar-display" class="animated-emoji">😎</span>
-                </div>
+            <div class="px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full text-[11px] font-bold flex items-center gap-1">
+                <span id="gaming-rank-badge">الرتبة: ذهبي ⭐</span>
             </div>
+        </header>
 
-            <div class="fb-details">
-                <div class="fb-name" id="fb-profile-name">الاسم</div>
-                <div class="fb-bio" id="fb-profile-bio">أهلاً بكم في حسابي!</div>
-                <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
-                    <div><i class="fa-solid fa-id-card"></i> المعرف: <strong id="fb-profile-id" style="color: #60a5fa;">#JEUX-0000</strong></div>
-                    <div><i class="fa-solid fa-envelope"></i> البريد: <span id="fb-profile-email">mail@domain.com</span></div>
-                </div>
-
-                <div style="display: flex; gap: 8px; margin-top: 12px;">
-                    <button class="main-btn" style="flex: 1; margin: 0; padding: 8px; font-size: 12px;" onclick="editBio()">تعديل النبذة</button>
-                    <button class="main-btn" style="flex: 1; margin: 0; padding: 8px; font-size: 12px; background: #334155;" onclick="changeAvatar()">تغيير الرمز</button>
-                </div>
-            </div>
-
-            <!-- كتابة ونشر بوست على الحائط -->
-            <div class="fb-post-creator">
-                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
-                    <span class="animated-emoji" style="font-size: 22px;">✍️</span>
-                    <input type="text" id="fb-post-text" placeholder="بماذا تفكر الآن؟" style="flex: 1; background: #0f172a; border: 1px solid var(--border-dark); padding: 8px 12px; border-radius: 20px; color: #fff; outline: none;" />
-                </div>
-                <button class="main-btn" style="margin: 0; padding: 8px; font-size: 12px;" onclick="publishPost()">نشر في صفحتي</button>
-            </div>
-
-            <div id="fb-wall-container">
-                <div class="fb-post-card">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                        <span class="animated-emoji" style="font-size: 24px;">😎</span>
-                        <div>
-                            <strong style="font-size: 13px;" id="fb-author-name">أنا</strong>
-                            <div style="font-size: 10px; color: var(--text-muted);">منذ 10 دقائق • 🌍 عام</div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div class="p-5 rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-pink-950 border border-brand-border shadow-2xl relative overflow-hidden">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-500 to-brand-accent flex items-center justify-center text-3xl shadow-lg border border-white/20">
+                        <span id="gaming-avatar-display" class="anim-emoji">🎮</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-base font-black truncate text-white" id="gaming-player-name">اللاعب</h3>
+                        <div class="text-xs text-slate-400 font-mono" id="gaming-player-uid">#JEUX-0000</div>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="text-[11px] px-2 py-0.5 rounded-md bg-brand-500/20 text-brand-500 font-bold border border-brand-500/30" id="gaming-level-text">المستوى 5</span>
+                            <span class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                جاهز للتحدي 1v1
+                            </span>
                         </div>
                     </div>
-                    <p style="font-size: 13px;">تطبيق رائع يجمع الدردشة والمواجهات الذكية! <span class="animated-emoji">🔥</span><span class="animated-emoji">✨</span></p>
-                    <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--border-dark); padding-top: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted);">
-                        <span style="cursor: pointer;" onclick="toggleLike(this)"><i class="fa-regular fa-thumbs-up"></i> إعجاب</span>
-                        <span style="cursor: pointer;" onclick="alert('التعليقات مفتوحة!')"><i class="fa-regular fa-comment"></i> تعليق</span>
-                        <span style="cursor: pointer;" onclick="alert('تمت المشاركة!')"><i class="fa-solid fa-share"></i> مشاركة</span>
+                </div>
+
+                <div class="mt-4">
+                    <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+                        <span>التقدم نحو المستوى القادم</span>
+                        <span id="gaming-xp-label">350 / 500 XP</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                        <div id="gaming-xp-bar" class="h-full bg-gradient-to-r from-brand-500 to-brand-accent rounded-full transition-all duration-500" style="width: 70%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-3 gap-2.5">
+                <div class="glass-panel p-3 rounded-2xl border border-brand-border text-center">
+                    <div class="text-xl font-black text-brand-accent" id="gaming-wins-count">0</div>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">مرات الفوز</span>
+                </div>
+                <div class="glass-panel p-3 rounded-2xl border border-brand-border text-center">
+                    <div class="text-xl font-black text-brand-500" id="gaming-matches-count">0</div>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">المباريات</span>
+                </div>
+                <div class="glass-panel p-3 rounded-2xl border border-brand-border text-center">
+                    <div class="text-xl font-black text-emerald-400" id="gaming-winrate-count">100%</div>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">نسبة الفوز</span>
+                </div>
+            </div>
+
+            <!-- Badges -->
+            <div class="glass-panel p-4 rounded-2xl border border-brand-border">
+                <h4 class="text-xs font-bold text-slate-200 mb-3 flex items-center gap-1.5">
+                    <i class="fa-solid fa-award text-amber-400"></i>
+                    <span>الأوسمة والإنجازات المقفلة</span>
+                </h4>
+                <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-brand-border flex flex-col items-center gap-1">
+                        <span class="text-2xl anim-emoji">👑</span>
+                        <span class="text-slate-300 font-bold truncate">ملك الـ XO</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-brand-border flex flex-col items-center gap-1">
+                        <span class="text-2xl anim-emoji">🧠</span>
+                        <span class="text-slate-300 font-bold truncate">عبقري الحساب</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-brand-border flex flex-col items-center gap-1">
+                        <span class="text-2xl anim-emoji">⚡</span>
+                        <span class="text-slate-300 font-bold truncate">سرعة البرق</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-brand-border flex flex-col items-center gap-1">
+                        <span class="text-2xl anim-emoji">🔥</span>
+                        <span class="text-slate-300 font-bold truncate">سلسلة فوز</span>
                     </div>
                 </div>
             </div>
         </div>
+    </main>
+
+    <!-- 8. TAB: FACEBOOK-STYLE SOCIAL PROFILE (Pure social, no game stats) -->
+    <main id="profile-tab" class="screen flex-col pb-16">
+        <header class="h-14 px-4 bg-slate-900 border-b border-brand-border flex items-center justify-between shrink-0">
+            <h2 class="text-base font-bold">الملف الشخصي الاجتماعي</h2>
+            <button onclick="handleLogout()" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1">
+                <i class="fa-solid fa-power-off"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto">
+            <!-- Facebook Header: Cover + Profile Pic -->
+            <div class="relative bg-slate-900 pb-3 border-b border-brand-border">
+                <div id="fb-cover-photo" class="h-32 w-full bg-gradient-to-r from-blue-700 via-indigo-800 to-purple-800 relative cursor-pointer" onclick="changeCoverPhoto()">
+                    <button class="absolute bottom-2 left-2 px-2.5 py-1 bg-black/60 text-white rounded-lg text-[11px] font-semibold flex items-center gap-1.5 backdrop-blur-sm">
+                        <i class="fa-solid fa-camera"></i>
+                        <span>تعديل الغلاف</span>
+                    </button>
+                </div>
+
+                <div class="px-4 relative flex flex-col">
+                    <div class="flex justify-between items-end -mt-12 mb-3">
+                        <div class="relative cursor-pointer" onclick="openAvatarModal()">
+                            <div id="fb-profile-avatar" class="w-24 h-24 rounded-full bg-slate-800 border-4 border-brand-dark flex items-center justify-center text-5xl shadow-2xl">
+                                <span class="anim-emoji" id="fb-avatar-emoji">😎</span>
+                            </div>
+                            <div class="w-7 h-7 rounded-full bg-blue-600 text-white absolute bottom-1 left-1 flex items-center justify-center text-xs shadow-md border-2 border-brand-dark">
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openEditProfileModal()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow tap-bounce transition">
+                                <i class="fa-solid fa-pen"></i>
+                                <span>تعديل الملف</span>
+                            </button>
+                            <button onclick="copyMyPermanentId()" class="px-3 py-1.5 bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-brand-border tap-bounce">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-extrabold text-white" id="fb-display-name">اسم المستخدم</h3>
+                    <p class="text-xs text-slate-400 mt-0.5" id="fb-display-bio">مرحباً بكم في حسابي الشخصي على Le jeux chat!</p>
+
+                    <!-- Meta -->
+                    <div class="mt-3 pt-3 border-t border-slate-800 space-y-1.5 text-xs text-slate-300">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-fingerprint text-indigo-400 w-4 text-center"></i>
+                            <span>المعرّف الثابت: <b id="fb-info-id" class="font-mono text-indigo-400">#JEUX-0000</b></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-slate-500 w-4 text-center"></i>
+                            <span>يقيم في <b id="fb-info-city" class="text-white">الجزائر العاصمة</b></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-briefcase text-slate-500 w-4 text-center"></i>
+                            <span>يعمل لدى <b id="fb-info-work" class="text-white">تطوير البرمجيات والتصميم</b></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-slate-500 w-4 text-center"></i>
+                            <span id="fb-info-email" class="font-mono text-slate-400">user@example.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Post Box -->
+            <div class="p-3 bg-slate-900 border-y border-brand-border my-2 flex flex-col gap-2.5">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-xl shrink-0 border border-brand-border">
+                        <span id="fb-creator-avatar" class="anim-emoji">😎</span>
+                    </div>
+                    <input id="fb-post-input" type="text" placeholder="بماذا تفكر اليوم؟ شارك أصدقاءك..." class="flex-1 bg-slate-950 border border-brand-border rounded-full px-4 py-2 text-xs text-white outline-none focus:border-blue-500" onkeydown="if(event.key === 'Enter') createFacebookPost()" />
+                </div>
+                <div class="flex justify-between items-center pt-1 px-2 border-t border-slate-800 text-xs text-slate-400">
+                    <button onclick="showToast('تم اختيار وسائط المنشور', 'fa-image')" class="flex items-center gap-1.5 hover:text-emerald-400">
+                        <i class="fa-regular fa-image text-emerald-400"></i>
+                        <span>صورة</span>
+                    </button>
+                    <button onclick="createFacebookPost()" class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs tap-bounce">
+                        نشر
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-3 space-y-3" id="fb-posts-feed"></div>
+        </div>
+    </main>
+
+    <!-- Modal for Edit Profile -->
+    <div id="fb-edit-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="w-full max-w-sm glass-panel p-5 rounded-3xl border border-brand-border text-right space-y-3">
+            <div class="flex justify-between items-center border-b border-brand-border pb-2">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-pen text-blue-500"></i>
+                    <span>تعديل الملف الشخصي (الفيسبوك)</span>
+                </h3>
+                <button onclick="closeEditProfileModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">الاسم الكامل</label>
+                <input id="edit-fb-name" type="text" class="w-full bg-slate-900 border border-brand-border rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-blue-500" />
+            </div>
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">النبذة الشخصية (Bio)</label>
+                <textarea id="edit-fb-bio" rows="2" class="w-full bg-slate-900 border border-brand-border rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-blue-500"></textarea>
+            </div>
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">المدينة / السكن</label>
+                <input id="edit-fb-city" type="text" class="w-full bg-slate-900 border border-brand-border rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-blue-500" />
+            </div>
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">العمل / التخصص</label>
+                <input id="edit-fb-work" type="text" class="w-full bg-slate-900 border border-brand-border rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-blue-500" />
+            </div>
+            <button onclick="saveFacebookProfileChanges()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs tap-bounce">
+                حفظ التعديلات
+            </button>
+        </div>
     </div>
 
-    <!-- شريط التنقل السفلي الفاصل للأقسام -->
-    <nav class="bottom-nav" id="main-navigation" style="display: none;">
-        <div class="nav-item active" onclick="switchTab('chat-tab')">
-            <i class="fa-solid fa-comments"></i>
-            <span>الدردشة</span>
+    <!-- Modal for Changing Avatar -->
+    <div id="avatar-picker-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="w-full max-w-xs glass-panel p-4 rounded-3xl border border-brand-border text-center space-y-3">
+            <h4 class="text-sm font-bold text-white">اختر صورتك الرمزية الجديدة</h4>
+            <div class="grid grid-cols-4 gap-2.5" id="modal-avatar-grid"></div>
+            <button onclick="closeAvatarModal()" class="w-full py-2 bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs">إلغاء</button>
         </div>
-        <div class="nav-item" onclick="switchTab('friends-tab')">
-            <i class="fa-solid fa-user-group"></i>
-            <span>الأصدقاء</span>
+    </div>
+
+    <!-- Global Challenge Custom Modal -->
+    <div id="global-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="w-full max-w-sm glass-panel p-5 rounded-3xl border border-brand-border text-right space-y-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-tower-broadcast text-brand-accent"></i>
+                <span>إرسال تحدي عالمي</span>
+            </h3>
+            <p class="text-xs text-slate-300">
+                سيظهر هذا التحدي لجميع مستخدمي التطبيق في الشريط العلوي مباشرة!
+            </p>
+            <input id="global-custom-challenge-input" type="text" placeholder="مثال: من ينافسني في XO الآن؟" class="w-full bg-slate-950 border border-brand-border rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-brand-accent" />
+            <div class="flex gap-2 pt-2">
+                <button onclick="submitGlobalChallenge()" class="flex-1 py-2 bg-gradient-to-r from-brand-accent to-pink-600 text-white font-bold rounded-xl text-xs tap-bounce">
+                    بث التحدي للجميع
+                </button>
+                <button onclick="closeGlobalModal()" class="px-4 py-2 bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs">
+                    إلغاء
+                </button>
+            </div>
         </div>
-        <div class="nav-item" onclick="switchTab('games-tab')">
-            <i class="fa-solid fa-gamepad"></i>
-            <span>الألعاب</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('profile-tab')">
-            <i class="fa-solid fa-user"></i>
-            <span>حسابي</span>
-        </div>
+    </div>
+
+    <!-- 9. BOTTOM NAVIGATION BAR (5 Clean Tabs) -->
+    <nav id="bottom-navbar" class="h-16 bg-slate-900/95 border-t border-brand-border fixed bottom-0 left-0 right-0 z-20 flex justify-around items-center px-1 hidden">
+        <button onclick="switchTab('chat-tab')" id="nav-btn-chat" class="flex flex-col items-center justify-center flex-1 text-tg-blue font-bold transition">
+            <i class="fa-solid fa-comments text-lg mb-0.5"></i>
+            <span class="text-[9px]">المحادثات</span>
+        </button>
+
+        <button onclick="switchTab('friends-tab')" id="nav-btn-friends" class="flex flex-col items-center justify-center flex-1 text-slate-400 font-medium transition">
+            <i class="fa-solid fa-user-group text-lg mb-0.5"></i>
+            <span class="text-[9px]">الأصدقاء</span>
+        </button>
+
+        <button onclick="switchTab('games-tab')" id="nav-btn-games" class="flex flex-col items-center justify-center flex-1 text-slate-400 font-medium transition">
+            <i class="fa-solid fa-gamepad text-lg mb-0.5"></i>
+            <span class="text-[9px]">الألعاب (15)</span>
+        </button>
+
+        <button onclick="switchTab('gaming-tab')" id="nav-btn-gaming" class="flex flex-col items-center justify-center flex-1 text-slate-400 font-medium transition">
+            <i class="fa-solid fa-trophy text-lg mb-0.5"></i>
+            <span class="text-[9px]">جواز اللعب</span>
+        </button>
+
+        <button onclick="switchTab('profile-tab')" id="nav-btn-profile" class="flex flex-col items-center justify-center flex-1 text-slate-400 font-medium transition">
+            <i class="fa-solid fa-circle-user text-lg mb-0.5"></i>
+            <span class="text-[9px]">فيسبوك</span>
+        </button>
     </nav>
 
+    <!-- CORE JAVASCRIPT LOGIC -->
     <script>
-        /* ================= 1. إدارة الهوية الدائمة ومعرف الـ ID ================= */
-        let currentUser = JSON.parse(localStorage.getItem('le_jeux_user')) || null;
-        let friendsList = JSON.parse(localStorage.getItem('le_jeux_friends')) || [
-            { id: '#JEUX-1011', name: 'سارة', avatar: '🧕', bio: 'مستعدة لأي تحدي!' },
-            { id: '#JEUX-2022', name: 'ياسين', avatar: '🧑‍💻', bio: 'عاشق لألعاب الذكاء' },
-            { id: '#JEUX-3033', name: 'أحمد', avatar: '👨‍🦱', bio: 'لا أهزم بسهولة ⚡' },
-            { id: '#JEUX-4044', name: 'نور', avatar: '👩‍🎨', bio: 'ألعاب الدقة هي اختصاصي' }
+        const AVATARS = ['😎', '🤠', '🥷', '🚀', '👑', '🦁', '🤖', '👾'];
+
+        const DEFAULT_FRIENDS = [
+            { id: '#JEUX-1011', name: 'سارة الذكية', avatar: '🧕', bio: 'أحب منافسات الذاكرة والأرقام 🧠', status: '🎮 من يتحداني في الأرقام الآن؟' },
+            { id: '#JEUX-2022', name: 'ياسين الجزائري', avatar: '🧑‍💻', bio: 'بطل XO لـ 5 جولات متتالية!', status: '🔥 لا أحد يستطيع هزيمتي في بونغ!' },
+            { id: '#JEUX-3033', name: 'أحمد البطل', avatar: '👨‍🦱', bio: 'تحديات سريعة في أي وقت ⚡', status: '☕ وقت استراحة ولعب ممتع' },
+            { id: '#JEUX-4044', name: 'نور الفائقة', avatar: '👩‍🎨', bio: 'سرعة البديهة والتركيز العالي', status: '✨ التحدي الحقيقي هنا!' }
         ];
 
-        let currentChatPartner = null;
-        let activeGameId = null;
-
-        /* الـ 15 لعبة */
-        const gamesList = [
-            { id: 'tictactoe', name: 'XO الشهيرة', desc: 'لعبة لشخصين كلاسيكية', icon: 'fa-times' },
-            { id: 'mathduel', name: 'مبارزة الحساب', desc: 'سرعة في حل العمليات', icon: 'fa-calculator' },
-            { id: 'memory', name: 'قوة الذاكرة', desc: 'كشف البطاقات المتطابقة', icon: 'fa-brain' },
-            { id: 'rps', name: 'حجرة ورقة مقص', desc: 'تحدي سريع بين طرفين', icon: 'fa-hand-back-fist' },
-            { id: 'speedclick', name: 'سرعة النقر', desc: 'من يجمع 25 نقرة أولاً', icon: 'fa-arrow-pointer' },
-            { id: 'reaction', name: 'اختبار رد الفعل', desc: 'انقر فور ظهور اللون الأخضر', icon: 'fa-stopwatch' },
-            { id: 'connect4', name: 'أربعة في صف', desc: 'ذكاء وتخطيط استراتيجي', icon: 'fa-circle-dot' },
-            { id: 'colormatch', name: 'تطابق الألوان', desc: 'طابق معنى النص بلونه', icon: 'fa-palette' },
-            { id: 'guessnum', name: 'تخمين الرقم', desc: 'اكتشف الرقم السري', icon: 'fa-question' },
-            { id: 'dotsboxes', name: 'النقاط والمربعات', desc: 'أغلق المربع واجمع النقاط', icon: 'fa-border-all' },
-            { id: 'simon', name: 'سيمون يقول', desc: 'تذكر تتابع الألوان وكرره', icon: 'fa-lightbulb' },
-            { id: 'wordscramble', name: 'ترتيب الحروف', desc: 'استخرج الكلمة الصحيحة', icon: 'fa-font' },
-            { id: 'oddone', name: 'العنصر الغريب', desc: 'قوة الملاحظة السريعة', icon: 'fa-eye' },
-            { id: 'pong', name: 'بينغ بونغ', desc: 'مواجهة مباشرة باللمس', icon: 'fa-table-tennis-paddle-ball' },
-            { id: 'sudokumini', name: 'ميني سودوكو', desc: 'تحدي ذكاء وأرقام 4x4', icon: 'fa-grip' }
+        const ALL_GAMES = [
+            { id: 'tictactoe', name: 'XO الكلاسيكية', desc: 'مواجهة بين طرفين (X و O)', icon: 'fa-xmark' },
+            { id: 'speedclick', name: 'سرعة النقر الساحقة', desc: 'أول من يبلغ 25 نقرة يفوز', icon: 'fa-hand-pointer' },
+            { id: 'mathduel', name: 'مبارزة الحساب الذهني', desc: 'أسرع حل للعمليات الرياضية', icon: 'fa-calculator' },
+            { id: 'rps', name: 'حجرة ورقة مقص', desc: 'تحدي تقليدي لحظي مع الخصم', icon: 'fa-hand-back-fist' },
+            { id: 'memory', name: 'بطاقات الذاكرة', desc: 'كشف البطاقات المتطابقة بأسرع وقت', icon: 'fa-brain' },
+            { id: 'reaction', name: 'سرعة رد الفعل', desc: 'انقر فور تحول الشاشة للأخضر', icon: 'fa-stopwatch-20' },
+            { id: 'colormatch', name: 'تضارب الألوان', desc: 'طابق معنى الكلمة مع لون الخط', icon: 'fa-palette' },
+            { id: 'guessnum', name: 'تخمين الرقم السري', desc: 'اكتشف الرقم المخفي من 1 إلى 50', icon: 'fa-hashtag' },
+            { id: 'connect4', name: 'أربعة على صف', desc: 'توصيل 4 أقراص متتالية', icon: 'fa-circle-dot' },
+            { id: 'dotsboxes', name: 'النقاط والمربعات', desc: 'أغلق الخطوط لامتلاك المربع', icon: 'fa-border-all' },
+            { id: 'simon', name: 'سيمون: تتابع الأضواء', desc: 'احفظ التسلسل وكرره بدقة', icon: 'fa-lightbulb' },
+            { id: 'wordscramble', name: 'فك رموز الكلمة', desc: 'رتب الحروف المبعثرة سريعاً', icon: 'fa-font' },
+            { id: 'oddone', name: 'العنصر الغريب', desc: 'اكتشف الرمز المختلف بين المجموعة', icon: 'fa-eye' },
+            { id: 'pong', name: 'بونغ 1v1 الكلاسيكية', desc: 'كرة المضرب المباشرة باللمس', icon: 'fa-table-tennis-paddle-ball' },
+            { id: 'sudokumini', name: 'ميني سودوكو 4x4', desc: 'تحدي المنطق الرياضي السريع', icon: 'fa-table-cells-large' }
         ];
 
-        window.onload = () => {
-            if (currentUser) {
-                launchApp();
+        let currentUser = null;
+        let friends = [];
+        let selectedAuthAvatar = AVATARS[0];
+        let currentChatContact = null;
+        let activeGameInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+
+        function initApp() {
+            renderAuthAvatars();
+            renderModalAvatars();
+            renderGamesCatalogue();
+
+            // Load Friends from LocalStorage or default
+            const savedFriends = localStorage.getItem('le_jeux_friends_db');
+            if (savedFriends) {
+                try { friends = JSON.parse(savedFriends); } catch(e) { friends = DEFAULT_FRIENDS; }
+            } else {
+                friends = DEFAULT_FRIENDS;
+                localStorage.setItem('le_jeux_friends_db', JSON.stringify(friends));
+            }
+
+            // Load Current User
+            const savedUser = localStorage.getItem('le_jeux_chat_user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    // Ensure permanent ID exists
+                    if (!currentUser.id) currentUser.id = '#JEUX-' + Math.floor(1000 + Math.random() * 9000);
+                    if (!currentUser.city) currentUser.city = 'الجزائر العاصمة';
+                    if (!currentUser.work) currentUser.work = 'تطوير البرمجيات والتصميم';
+                    launchMainApp();
+                } catch(e) {
+                    showScreen('auth-screen');
+                }
             } else {
                 showScreen('auth-screen');
             }
-            renderGamesList();
-        };
 
-        function handleAuth() {
+            const savedBanner = localStorage.getItem('le_jeux_global_challenge');
+            if (savedBanner) {
+                document.getElementById('global-banner-text').textContent = savedBanner;
+            }
+        }
+
+        /* Authentication & Permanent ID Generation */
+        function renderAuthAvatars() {
+            const container = document.getElementById('auth-avatar-selector');
+            container.innerHTML = '';
+            AVATARS.forEach(av => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `w-10 h-10 rounded-xl flex items-center justify-center text-xl transition border ${selectedAuthAvatar === av ? 'border-brand-accent bg-brand-accent/20 scale-110' : 'border-brand-border bg-slate-900'}`;
+                btn.innerHTML = `<span class="anim-emoji">${av}</span>`;
+                btn.onclick = () => {
+                    selectedAuthAvatar = av;
+                    renderAuthAvatars();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function handleLogin() {
             const email = document.getElementById('auth-email').value.trim();
-            const name = document.getElementById('auth-name').value.trim();
+            const username = document.getElementById('auth-username').value.trim();
 
-            if (!email || !email.includes('@') || !name) {
-                alert('يرجى إدخال بريد إلكتروني صالح واسم مستخدم!');
+            if (!email || !email.includes('@')) {
+                showToast('يرجى كتابة بريد إلكتروني صالح وموثق!', 'fa-circle-exclamation');
+                return;
+            }
+            if (!username || username.length < 2) {
+                showToast('يرجى إدخال اسم مستخدم صحيح!', 'fa-circle-exclamation');
                 return;
             }
 
-            // توليد معرف ثابت وفريد لا يتغير للمستخدم
+            // Permanent Unique ID that never changes
             const fixedId = '#JEUX-' + Math.floor(1000 + Math.random() * 9000);
 
             currentUser = {
                 id: fixedId,
                 email: email,
-                name: name,
-                avatar: '😎',
-                bio: 'مرحباً! أنا أستخدم Le jeux chat'
+                name: username,
+                avatar: selectedAuthAvatar,
+                bio: 'مرحباً بكم في حسابي الشخصي على Le jeux chat!',
+                city: 'الجزائر العاصمة',
+                work: 'تطوير البرمجيات والألعاب',
+                coverIndex: 0,
+                wins: 2,
+                matches: 3
             };
 
-            localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
-            launchApp();
+            saveUserData();
+            showToast(`أهلاً بك يا ${currentUser.name}! معرفك الثابت: ${currentUser.id}`, 'fa-circle-check');
+            launchMainApp();
         }
 
-        function launchApp() {
+        function saveUserData() {
+            localStorage.setItem('le_jeux_chat_user', JSON.stringify(currentUser));
+        }
+
+        function copyMyPermanentId() {
+            if (!currentUser) return;
+            navigator.clipboard.writeText(currentUser.id);
+            showToast(`تم نسخ معرفك الثابت (${currentUser.id}) بنجاح!`, 'fa-copy');
+        }
+
+        function launchMainApp() {
             document.getElementById('auth-screen').classList.remove('active');
-            document.getElementById('main-navigation').style.display = 'flex';
-            document.getElementById('display-fixed-id').textContent = currentUser.id;
-            loadProfileData();
+            document.getElementById('bottom-navbar').classList.remove('hidden');
+
+            document.getElementById('header-fixed-id').textContent = currentUser.id;
+
+            loadGamingProfile();
+            loadFacebookProfile();
+            renderStories();
+            renderConversationsList();
             renderFriendsList();
-            renderChatsList();
+            renderFacebookPosts();
             switchTab('chat-tab');
         }
 
-        function copyMyId() {
-            navigator.clipboard.writeText(currentUser.id);
-            alert(`تم نسخ المعرف الخاص بك (${currentUser.id}) بنجاح! شاركه مع أصدقائك.`);
-        }
-
-        function addFriendById() {
-            const searchId = document.getElementById('search-friend-input').value.trim().toUpperCase();
-            if (!searchId) return;
-
-            if (searchId === currentUser.id) {
-                alert('هذا المعرف خاص بك أنت!');
-                return;
-            }
-
-            const exists = friendsList.find(f => f.id === searchId);
-            if (exists) {
-                alert(`المستخدم ${exists.name} موجود بالفعل في قائمة أصدقائك!`);
-                return;
-            }
-
-            // إضافة صديق جديد
-            const newFriend = {
-                id: searchId,
-                name: 'صديق ' + searchId.slice(-4),
-                avatar: '🤠',
-                bio: 'تمت إضافته عبر المعرف الخاص'
-            };
-
-            friendsList.push(newFriend);
-            localStorage.setItem('le_jeux_friends', JSON.stringify(friendsList));
-            document.getElementById('search-friend-input').value = '';
-            renderFriendsList();
-            renderChatsList();
-            alert(`تمت إضافة الصديق (${newFriend.name}) بنجاح! يمكنك مراسلته الآن.`);
-        }
-
-        function logout() {
-            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                localStorage.removeItem('le_jeux_user');
+        function handleLogout() {
+            if (window.confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) {
+                localStorage.removeItem('le_jeux_chat_user');
                 currentUser = null;
-                document.getElementById('main-navigation').style.display = 'none';
+                document.getElementById('bottom-navbar').classList.add('hidden');
                 showScreen('auth-screen');
+                showToast('تم تسجيل الخروج بنجاح', 'fa-arrow-right-from-bracket');
             }
         }
 
-        /* ================= 2. الملاحة والتبويبات ================= */
+        /* Navigation */
         function switchTab(tabId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
 
-            const tabs = ['chat-tab', 'friends-tab', 'games-tab', 'profile-tab'];
-            document.querySelectorAll('.nav-item').forEach((item, index) => {
-                if (tabs[index] === tabId) item.classList.add('active');
-                else item.classList.remove('active');
+            const mapping = {
+                'chat-tab': 'nav-btn-chat',
+                'friends-tab': 'nav-btn-friends',
+                'games-tab': 'nav-btn-games',
+                'gaming-tab': 'nav-btn-gaming',
+                'profile-tab': 'nav-btn-profile'
+            };
+
+            Object.entries(mapping).forEach(([screenId, btnId]) => {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    if (screenId === tabId) {
+                        btn.classList.add('text-tg-blue');
+                        btn.classList.remove('text-slate-400');
+                    } else {
+                        btn.classList.remove('text-tg-blue');
+                        btn.classList.add('text-slate-400');
+                    }
+                }
             });
         }
 
@@ -865,102 +793,201 @@
             document.getElementById(id).classList.add('active');
         }
 
-        /* ================= 3. قائمة الأصدقاء والمحادثات الدائمة ================= */
-        function renderFriendsList() {
-            const container = document.getElementById('friends-list-wrapper');
-            container.innerHTML = '';
+        /* Friends System & Search by ID */
+        function searchAndAddFriend() {
+            const input = document.getElementById('quick-id-search-input');
+            const targetId = input.value.trim().toUpperCase();
+            if (!targetId) {
+                showToast('اكتب معرف الصديق أولاً!', 'fa-circle-exclamation');
+                return;
+            }
+            if (targetId === currentUser.id) {
+                showToast('هذا المعرف خاص بحسابك أنت!', 'fa-triangle-exclamation');
+                return;
+            }
 
-            friendsList.forEach(friend => {
-                const row = document.createElement('div');
-                row.className = 'friend-card';
-                row.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <span class="animated-emoji" style="font-size: 26px;">${friend.avatar}</span>
+            const alreadyExists = friends.find(f => f.id === targetId);
+            if (alreadyExists) {
+                showToast(`المستخدم ${alreadyExists.name} موجود بالفعل في قائمة أصدقائك!`, 'fa-circle-info');
+                return;
+            }
+
+            const newFriend = {
+                id: targetId,
+                name: 'صديق جديد ' + targetId.slice(-4),
+                avatar: '🤠',
+                bio: 'تمت إضافته عبر المعرف الدائم',
+                status: '🔥 مستعد لأي تحدي!'
+            };
+
+            friends.unshift(newFriend);
+            localStorage.setItem('le_jeux_friends_db', JSON.stringify(friends));
+            input.value = '';
+            renderFriendsList();
+            renderConversationsList();
+            showToast(`تمت إضافة (${newFriend.name}) إلى قائمة أصدقائك بنجاح! 🎉`, 'fa-user-check');
+        }
+
+        function renderFriendsList(filterText = '') {
+            const listContainer = document.getElementById('friends-full-list');
+            listContainer.innerHTML = '';
+
+            const filtered = friends.filter(f => 
+                f.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                f.id.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            document.getElementById('friends-count-badge').textContent = `${friends.length} أصدقاء`;
+
+            filtered.forEach(friend => {
+                const card = document.createElement('div');
+                card.className = 'flex items-center justify-between px-4 py-3 hover:bg-slate-800/40 transition';
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-full bg-slate-800 flex items-center justify-center text-2xl border border-brand-border">
+                            <span class="anim-emoji">${friend.avatar}</span>
+                        </div>
                         <div>
-                            <div style="font-weight: 600; font-size: 14px;">${friend.name}</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">${friend.id}</div>
+                            <h4 class="font-bold text-sm text-white">${friend.name}</h4>
+                            <span class="text-xs font-mono text-indigo-400 font-semibold">${friend.id}</span>
                         </div>
                     </div>
-                    <button class="main-btn" style="margin: 0; padding: 6px 14px; font-size: 12px; width: auto;" onclick="openChatRoomById('${friend.id}')">
-                        <i class="fa-solid fa-message"></i> محادثة
+                    <button onclick="openChatFromFriend('${friend.id}')" class="px-3 py-1.5 bg-tg-blue/20 text-tg-blue hover:bg-tg-blue/30 border border-tg-blue/40 rounded-xl text-xs font-bold tap-bounce flex items-center gap-1.5">
+                        <i class="fa-solid fa-message"></i>
+                        <span>محادثة</span>
                     </button>
                 `;
-                container.appendChild(row);
+                listContainer.appendChild(card);
             });
         }
 
-        function renderChatsList() {
-            const wrapper = document.getElementById('chats-list-wrapper');
-            wrapper.innerHTML = '';
+        function filterFriendsList() {
+            const val = document.getElementById('friends-filter-input').value.trim();
+            renderFriendsList(val);
+        }
 
-            friendsList.forEach(friend => {
-                const history = getMessages(friend.id);
-                const lastMsg = history.length > 0 ? history[history.length - 1].text : friend.bio;
-                const lastTime = history.length > 0 ? history[history.length - 1].time : 'الآن';
+        function openChatFromFriend(friendId) {
+            const f = friends.find(item => item.id === friendId);
+            if (f) openChatRoom(f);
+        }
 
-                const div = document.createElement('div');
-                div.className = 'chat-row';
-                div.onclick = () => openChatRoom(friend);
-                div.innerHTML = `
-                    <div class="chat-avatar">
-                        <span class="animated-emoji">${friend.avatar}</span>
-                        <div class="status-dot"></div>
+        /* Stories (Status) */
+        function renderStories() {
+            const strip = document.getElementById('stories-strip');
+            strip.innerHTML = '';
+
+            const myStory = document.createElement('div');
+            myStory.className = 'flex flex-col items-center gap-1 shrink-0 cursor-pointer';
+            myStory.innerHTML = `
+                <div class="w-12 h-12 rounded-full border-2 border-dashed border-tg-blue p-0.5 flex items-center justify-center bg-slate-800 text-tg-blue text-lg">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <span class="text-[11px] text-slate-300">قصتي</span>
+            `;
+            myStory.onclick = () => {
+                showToast('خاصية إضافة قصة جديدة متاحة ومحفوظة!', 'fa-circle-check');
+            };
+            strip.appendChild(myStory);
+
+            friends.slice(0, 4).forEach(contact => {
+                const item = document.createElement('div');
+                item.className = 'flex flex-col items-center gap-1 shrink-0 cursor-pointer';
+                item.innerHTML = `
+                    <div class="w-12 h-12 rounded-full border-2 border-tg-blue story-border p-0.5 flex items-center justify-center bg-slate-800 text-xl shadow-md">
+                        <span class="anim-emoji">${contact.avatar}</span>
                     </div>
-                    <div class="chat-details">
-                        <div class="chat-header-row">
-                            <span class="chat-name">${friend.name}</span>
-                            <span class="chat-time">${lastTime}</span>
+                    <span class="text-[11px] text-slate-300 truncate max-w-[50px]">${contact.name.split(' ')[0]}</span>
+                `;
+                item.onclick = () => {
+                    showToast(`حالة ${contact.name}: "${contact.status || 'أهلاً بالجميع!'}"`, 'fa-circle-info');
+                };
+                strip.appendChild(item);
+            });
+        }
+
+        /* Chat System (Telegram + WhatsApp Style) */
+        function getChatKey(contactId) {
+            return `chat_store_${currentUser.id}_${contactId}`;
+        }
+
+        function loadSavedMessages(contactId) {
+            const raw = localStorage.getItem(getChatKey(contactId));
+            if (!raw) {
+                return [
+                    { sender: 'them', text: `مرحباً بك يا ${currentUser.name}! أنا بانتظار تحديك في ساحة الألعاب 🎮`, time: 'الآن' }
+                ];
+            }
+            try { return JSON.parse(raw); } catch(e) { return []; }
+        }
+
+        function saveMessages(contactId, messages) {
+            localStorage.setItem(getChatKey(contactId), JSON.stringify(messages));
+        }
+
+        function renderConversationsList() {
+            const list = document.getElementById('conversations-list');
+            list.innerHTML = '';
+
+            friends.forEach(contact => {
+                const msgs = loadSavedMessages(contact.id);
+                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1] : { text: contact.bio, time: 'الآن' };
+
+                const row = document.createElement('div');
+                row.className = 'flex items-center px-4 py-3 hover:bg-slate-800/40 cursor-pointer transition tap-bounce';
+                row.innerHTML = `
+                    <div class="relative ml-3 shrink-0">
+                        <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-2xl border border-brand-border">
+                            <span class="anim-emoji">${contact.avatar}</span>
                         </div>
-                        <div class="chat-last-msg">
-                            <i class="fa-solid fa-check-double read-check" style="font-size: 10px;"></i>
-                            <span>${lastMsg}</span>
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 absolute bottom-0 left-0 border-2 border-brand-dark"></span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between mb-1">
+                            <h4 class="font-bold text-sm text-white truncate">${contact.name}</h4>
+                            <span class="text-[10px] text-slate-400">${lastMsg.time}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-slate-400 truncate">
+                            <i class="fa-solid fa-check-double text-wa-check text-[10px]"></i>
+                            <span class="truncate">${lastMsg.text}</span>
                         </div>
                     </div>
                 `;
-                wrapper.appendChild(div);
+                row.onclick = () => openChatRoom(contact);
+                list.appendChild(row);
             });
         }
 
-        function openChatRoomById(id) {
-            const friend = friendsList.find(f => f.id === id);
-            if (friend) openChatRoom(friend);
-        }
-
-        function openChatRoom(friend) {
-            currentChatPartner = friend;
-            document.getElementById('room-name').textContent = friend.name;
-            document.getElementById('room-avatar').innerHTML = `<span class="animated-emoji">${friend.avatar}</span>`;
-            renderMessages();
-            showScreen('chat-room');
+        function openChatRoom(contact) {
+            currentChatContact = contact;
+            document.getElementById('room-contact-name').textContent = contact.name;
+            document.getElementById('room-avatar').innerHTML = `<span class="anim-emoji">${contact.avatar}</span>`;
+            renderMessagesStream();
+            showScreen('chat-room-screen');
         }
 
         function closeChatRoom() {
-            renderChatsList();
+            renderConversationsList();
             switchTab('chat-tab');
         }
 
-        function getChatKey(targetId) {
-            return `chat_${currentUser.id}_${targetId}`;
-        }
-
-        function getMessages(targetId) {
-            return JSON.parse(localStorage.getItem(getChatKey(targetId))) || [];
-        }
-
-        function renderMessages() {
-            const container = document.getElementById('messages-box');
+        function renderMessagesStream() {
+            const container = document.getElementById('messages-stream');
             container.innerHTML = '';
-            const messages = getMessages(currentChatPartner.id);
+            const messages = loadSavedMessages(currentChatContact.id);
 
             messages.forEach(msg => {
+                const isMe = msg.sender === 'me';
                 const bubble = document.createElement('div');
-                bubble.className = `message-bubble ${msg.sender === 'me' ? 'outgoing' : 'incoming'}`;
-                const checkHtml = msg.sender === 'me' ? '<i class="fa-solid fa-check-double read-check"></i>' : '';
+                bubble.className = `max-w-[78%] px-3.5 py-2 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm break-words relative cursor-pointer ${
+                    isMe 
+                    ? 'self-end bg-wa-out text-white rounded-tl-none' 
+                    : 'self-start bg-wa-in text-slate-100 rounded-tr-none border border-slate-700/50'
+                }`;
                 bubble.innerHTML = `
                     <div>${msg.text}</div>
-                    <div class="message-meta">
+                    <div class="text-[9px] text-slate-300/80 text-left mt-1 flex items-center justify-end gap-1">
                         <span>${msg.time}</span>
-                        ${checkHtml}
+                        ${isMe ? '<i class="fa-solid fa-check-double text-wa-check text-[10px]"></i>' : ''}
                     </div>
                 `;
                 container.appendChild(bubble);
@@ -968,314 +995,998 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function sendMessage() {
-            const input = document.getElementById('msg-input');
+        function sendCurrentMessage() {
+            const input = document.getElementById('chat-input-field');
             const text = input.value.trim();
-            if (!text || !currentChatPartner) return;
+            if (!text || !currentChatContact) return;
 
             const now = new Date();
             const timeStr = `${now.getHours()}:${(now.getMinutes()<10?'0':'') + now.getMinutes()}`;
 
-            const messages = getMessages(currentChatPartner.id);
+            const messages = loadSavedMessages(currentChatContact.id);
             messages.push({ sender: 'me', text: text, time: timeStr });
-            localStorage.setItem(getChatKey(currentChatPartner.id), JSON.stringify(messages));
+            saveMessages(currentChatContact.id, messages);
 
             input.value = '';
-            renderMessages();
+            renderMessagesStream();
 
-            // مؤشر الكتابة ورد الصديق التفاعلي
-            const typingIndicator = document.getElementById('typing-status');
-            const roomStatus = document.getElementById('room-status');
-            roomStatus.style.display = 'none';
-            typingIndicator.style.display = 'inline-block';
+            // Typing indicator simulation
+            const typingTag = document.getElementById('room-typing-tag');
+            const onlineTag = document.getElementById('room-online-tag');
+            onlineTag.classList.add('hidden');
+            typingTag.classList.remove('hidden');
 
             setTimeout(() => {
-                typingIndicator.style.display = 'none';
-                roomStatus.style.display = 'inline-block';
+                typingTag.classList.add('hidden');
+                onlineTag.classList.remove('hidden');
 
-                const smartReplies = [
-                    'أهلاً بك! هيا بنا نتحدى في لعبة الآن 🔥',
-                    'رسالتك واضحة، ما رأيك بجولة في XO؟',
-                    'أنا جاهز تماماً!',
-                    'تحدي رائع، سأفوز هذه المرة 😎'
+                const botResponses = [
+                    'رسالتك وصلتني! ما رأيك في جولة XO سريعة؟ 🔥',
+                    'أنا جاهز ومستعد لمواجهتك في ألعاب الذكاء 🎮',
+                    'تحدي قوي، لن أستسلم بسهولة 😎',
+                    'شكراً على رسالتك! دعنا نلعب الآن ⚡'
                 ];
-                const reply = smartReplies[Math.floor(Math.random() * smartReplies.length)];
-                messages.push({ sender: 'partner', text: reply, time: timeStr });
-                localStorage.setItem(getChatKey(currentChatPartner.id), JSON.stringify(messages));
-                renderMessages();
+                const replyText = botResponses[Math.floor(Math.random() * botResponses.length)];
+                messages.push({ sender: 'them', text: replyText, time: timeStr });
+                saveMessages(currentChatContact.id, messages);
+                if (currentChatContact) renderMessagesStream();
             }, 1200);
         }
 
-        function sendGlobalChallenge() {
-            const text = `أطلق ${currentUser.name} (${currentUser.id}) تحدياً عالمياً في الألعاب للجميع! 🔥`;
-            alert('تم نشر التحدي في الخانة العالمية بنجاح لجميع المستخدمين!');
+        function launchQuickDuelWithCurrent() {
+            openGamePlayer(ALL_GAMES[0]);
         }
 
-        function viewStory(name, content) {
-            alert(`قصة ${name}:\n\n"${content}"`);
+        /* Global Challenge Broadcast */
+        function openGlobalChallengeModal() {
+            document.getElementById('global-modal').classList.remove('hidden');
+            document.getElementById('global-modal').classList.add('flex');
         }
 
-        function inviteToCurrentGame() {
-            alert(`تم إرسال بطاقة دعوة اللعب إلى ${currentChatPartner.name} في المحادثة!`);
+        function closeGlobalModal() {
+            document.getElementById('global-modal').classList.add('hidden');
+            document.getElementById('global-modal').classList.remove('flex');
         }
 
-        /* ================= 4. الـ 15 لعبة التفاعلية ================= */
-        function renderGamesList() {
-            const grid = document.getElementById('games-container');
+        function submitGlobalChallenge() {
+            const input = document.getElementById('global-custom-challenge-input');
+            const val = input.value.trim();
+            const text = val || `تحدي عام من ${currentUser.name} (${currentUser.id}) لجميع المتواجدين في التطبيق! 🔥`;
+
+            localStorage.setItem('le_jeux_global_challenge', text);
+            document.getElementById('global-banner-text').textContent = text;
+
+            closeGlobalModal();
+            input.value = '';
+            showToast('تم بث التحدي لجميع المستخدمين في الخانة العالمية! 📣', 'fa-tower-broadcast');
+        }
+
+        function acceptGlobalChallenge() {
+            showToast('تم قبول التحدي العالمي! الدخول إلى ساحة الألعاب...', 'fa-bolt');
+            switchTab('games-tab');
+        }
+
+        /* 15 Interactive Games Engine */
+        function renderGamesCatalogue() {
+            const grid = document.getElementById('games-catalogue');
             grid.innerHTML = '';
 
-            gamesList.forEach(game => {
+            ALL_GAMES.forEach(game => {
                 const card = document.createElement('div');
-                card.className = 'game-card';
-                card.onclick = () => openGameArena(game);
+                card.className = 'glass-panel p-3.5 rounded-2xl border border-brand-border flex flex-col items-center text-center cursor-pointer hover:border-brand-500 tap-bounce transition';
                 card.innerHTML = `
-                    <div class="game-icon-box"><i class="fa-solid ${game.icon}"></i></div>
-                    <div class="game-title">${game.name}</div>
-                    <div class="game-desc">${game.desc}</div>
+                    <div class="w-11 h-11 rounded-xl bg-brand-500/15 text-brand-500 flex items-center justify-center text-xl mb-2">
+                        <i class="fa-solid ${game.icon}"></i>
+                    </div>
+                    <h4 class="font-bold text-xs text-white mb-1 line-clamp-1">${game.name}</h4>
+                    <p class="text-[10px] text-slate-400 line-clamp-2 leading-tight">${game.desc}</p>
                 `;
+                card.onclick = () => openGamePlayer(game);
                 grid.appendChild(card);
             });
         }
 
-        function openGameArena(game) {
-            activeGameId = game.id;
-            document.getElementById('arena-title').textContent = game.name;
-            showScreen('game-arena-screen');
-            loadGameModule(game.id);
+        function openGamePlayer(game) {
+            activeGameInstance = game;
+            document.getElementById('current-game-title').textContent = game.name;
+            document.getElementById('current-game-subtitle').textContent = game.desc;
+            showScreen('game-player-screen');
+            launchSpecificGame(game.id);
         }
 
-        function closeGameArena() {
+        function closeActiveGame() {
             switchTab('games-tab');
         }
 
-        function resetCurrentGame() {
-            loadGameModule(activeGameId);
+        function restartCurrentGame() {
+            if (activeGameInstance) launchSpecificGame(activeGameInstance.id);
         }
 
-        function loadGameModule(gameId) {
-            const container = document.getElementById('arena-content');
-            container.innerHTML = '';
+        function rewardUserWin() {
+            currentUser.wins = (currentUser.wins || 0) + 1;
+            currentUser.matches = (currentUser.matches || 0) + 1;
+            saveUserData();
+            loadGamingProfile();
+            showToast('مبروك! تم تسجيل نقطة فوز جديدة في ملف ألعابك 🏆', 'fa-trophy');
+        }
 
-            if (gameId === 'tictactoe') {
-                runTicTacToe(container);
-            } else if (gameId === 'mathduel') {
-                runMathDuel(container);
-            } else if (gameId === 'speedclick') {
-                runSpeedClick(container);
-            } else if (gameId === 'rps') {
-                runRPS(container);
-            } else if (gameId === 'memory') {
-                runMemoryGame(container);
-            } else {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <i class="fa-solid fa-gamepad animated-emoji" style="font-size: 50px; color: var(--accent); margin-bottom: 16px;"></i>
-                        <h3>ساحة المواجهة: ${gameId.toUpperCase()}</h3>
-                        <p style="color: var(--text-muted); font-size: 13px; margin: 12px 0;">وضع اللعب لشخصين والذكاء متصل وجاهز للبدء.</p>
-                        <button class="main-btn" onclick="alert('أحسنت! فوز للاعب 1 🎉')">تسجيل نقطة فوز</button>
-                    </div>
-                `;
+        function launchSpecificGame(gameId) {
+            const box = document.getElementById('game-engine-viewport');
+            box.innerHTML = '';
+
+            switch(gameId) {
+                case 'tictactoe': runTicTacToe(box); break;
+                case 'speedclick': runSpeedClick(box); break;
+                case 'mathduel': runMathDuel(box); break;
+                case 'rps': runRPS(box); break;
+                case 'memory': runMemoryCards(box); break;
+                case 'reaction': runReactionTimer(box); break;
+                case 'colormatch': runColorMatch(box); break;
+                case 'guessnum': runGuessNumber(box); break;
+                case 'connect4': runConnect4(box); break;
+                case 'dotsboxes': runDotsBoxes(box); break;
+                case 'simon': runSimonSays(box); break;
+                case 'wordscramble': runWordScramble(box); break;
+                case 'oddone': runOddOneOut(box); break;
+                case 'pong': runPongDuel(box); break;
+                case 'sudokumini': runSudokuMini(box); break;
+                default: box.innerHTML = `<div class="text-center text-slate-300">جارٍ تشغيل اللعبة...</div>`;
             }
         }
 
-        function runTicTacToe(box) {
+        /* 1. Tic Tac Toe */
+        function runTicTacToe(container) {
             let board = Array(9).fill('');
-            let turn = 'X';
+            let current = 'X';
+            let active = true;
 
-            const boardDiv = document.createElement('div');
-            boardDiv.className = 'game-board';
-            boardDiv.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            const header = document.createElement('div');
+            header.className = 'text-sm font-bold mb-4 text-center text-brand-500';
+            header.textContent = `الدور الحالي: اللاعب (${current})`;
 
-            const status = document.createElement('div');
-            status.style.marginBottom = '14px';
-            status.style.fontWeight = 'bold';
-            status.textContent = `دور اللاعب: ${turn}`;
-
-            box.appendChild(status);
-            box.appendChild(boardDiv);
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-3 gap-2.5 max-w-[260px] mx-auto';
 
             for (let i = 0; i < 9; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'board-cell';
+                const cell = document.createElement('button');
+                cell.className = 'w-20 h-20 rounded-2xl bg-slate-900 border border-brand-border text-3xl font-black text-white flex items-center justify-center tap-bounce transition';
                 cell.onclick = () => {
-                    if (board[i] === '') {
-                        board[i] = turn;
-                        cell.textContent = turn;
-                        cell.style.color = turn === 'X' ? '#ec4899' : '#6366f1';
-                        if (checkWin(board, turn)) {
-                            status.textContent = `🎉 الفائز هو: ${turn}!`;
-                            boardDiv.style.pointerEvents = 'none';
-                            return;
-                        }
-                        turn = turn === 'X' ? 'O' : 'X';
-                        status.textContent = `دور اللاعب: ${turn}`;
+                    if (!active || board[i] !== '') return;
+                    board[i] = current;
+                    cell.textContent = current;
+                    cell.classList.add(current === 'X' ? 'text-brand-accent' : 'text-brand-500');
+
+                    if (checkWinner(board, current)) {
+                        header.textContent = `🎉 فاز اللاعب (${current}) بالجولة!`;
+                        active = false;
+                        rewardUserWin();
+                        return;
                     }
+                    if (!board.includes('')) {
+                        header.textContent = 'تعادل بين الطرفين!';
+                        active = false;
+                        return;
+                    }
+                    current = current === 'X' ? 'O' : 'X';
+                    header.textContent = `الدور الحالي: اللاعب (${current})`;
                 };
-                boardDiv.appendChild(cell);
+                grid.appendChild(cell);
             }
 
-            function checkWin(b, p) {
+            container.appendChild(header);
+            container.appendChild(grid);
+
+            function checkWinner(b, p) {
                 const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-                return wins.some(comb => comb.every(idx => b[idx] === p));
+                return wins.some(w => w.every(idx => b[idx] === p));
             }
         }
 
-        function runSpeedClick(box) {
+        /* 2. Speed Click */
+        function runSpeedClick(container) {
             let p1 = 0, p2 = 0;
-            box.innerHTML = `
-                <div style="width: 100%; display: flex; flex-direction: column; gap: 16px;">
-                    <div style="background: rgba(236,72,153,0.2); padding: 20px; border-radius: 14px; text-align: center;" onclick="this.querySelector('span').textContent = ++p1; if(p1>=25) alert('فاز اللاعب 1! 🏆');">
-                        <h4>اللاعب 1 (انقر هنا بسرعة)</h4>
-                        <span style="font-size: 32px; font-weight: bold;">0</span>
+            const target = 25;
+            let ended = false;
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs space-y-4 text-center">
+                    <p class="text-xs text-slate-400">أول من يصل إلى ${target} نقرة يفوز بالجولة!</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="btn-p1" class="py-12 bg-pink-500/20 border-2 border-brand-accent rounded-2xl flex flex-col items-center justify-center tap-bounce">
+                            <span class="text-xs font-bold text-brand-accent">لاعب 1 (أنت)</span>
+                            <span id="score-p1" class="text-4xl font-black text-white mt-1">0</span>
+                        </button>
+                        <button id="btn-p2" class="py-12 bg-indigo-500/20 border-2 border-brand-500 rounded-2xl flex flex-col items-center justify-center tap-bounce">
+                            <span class="text-xs font-bold text-brand-500">لاعب 2 (الخصم)</span>
+                            <span id="score-p2" class="text-4xl font-black text-white mt-1">0</span>
+                        </button>
                     </div>
-                    <div style="background: rgba(99,102,241,0.2); padding: 20px; border-radius: 14px; text-align: center;" onclick="this.querySelector('span').textContent = ++p2; if(p2>=25) alert('فاز اللاعب 2! 🏆');">
-                        <h4>اللاعب 2 (انقر هنا بسرعة)</h4>
-                        <span style="font-size: 32px; font-weight: bold;">0</span>
-                    </div>
+                    <div id="click-status" class="text-xs font-bold text-emerald-400">انقر بأسرع ما يمكن!</div>
                 </div>
             `;
-        }
 
-        function runMathDuel(box) {
-            const n1 = Math.floor(Math.random() * 20) + 4;
-            const n2 = Math.floor(Math.random() * 20) + 4;
-            const ans = n1 + n2;
+            document.getElementById('btn-p1').onclick = () => {
+                if (ended) return;
+                p1++;
+                document.getElementById('score-p1').textContent = p1;
+                if (p1 >= target) {
+                    ended = true;
+                    document.getElementById('click-status').textContent = '🎉 انتصر اللاعب 1!';
+                    rewardUserWin();
+                }
+            };
 
-            box.innerHTML = `
-                <div style="text-align: center; width: 100%;">
-                    <h2 style="font-size: 32px; margin-bottom: 20px;">${n1} + ${n2} = ؟</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 280px; margin: 0 auto;">
-                        <button class="main-btn" onclick="checkMath(${ans}, ${ans})">${ans}</button>
-                        <button class="main-btn" onclick="checkMath(${ans + 4}, ${ans})">${ans + 4}</button>
-                        <button class="main-btn" onclick="checkMath(${ans - 2}, ${ans})">${ans - 2}</button>
-                        <button class="main-btn" onclick="checkMath(${ans + 7}, ${ans})">${ans + 7}</button>
-                    </div>
-                </div>
-            `;
-            window.checkMath = (chosen, correct) => {
-                if (chosen === correct) alert('إجابة صحيحة وسريعة! 🧠');
-                else alert('إجابة خاطئة!');
-                runMathDuel(box);
+            document.getElementById('btn-p2').onclick = () => {
+                if (ended) return;
+                p2++;
+                document.getElementById('score-p2').textContent = p2;
+                if (p2 >= target) {
+                    ended = true;
+                    document.getElementById('click-status').textContent = '🎉 انتصر اللاعب 2!';
+                }
             };
         }
 
-        function runRPS(box) {
-            box.innerHTML = `
-                <div style="text-align: center;">
-                    <h3 style="margin-bottom: 16px;">اختر حركتك:</h3>
-                    <div style="display: flex; gap: 16px; font-size: 42px; cursor: pointer; justify-content: center;">
-                        <span class="animated-emoji" onclick="playRPS('حجر')">🪨</span>
-                        <span class="animated-emoji" onclick="playRPS('ورقة')">📄</span>
-                        <span class="animated-emoji" onclick="playRPS('مقص')">✂️</span>
+        /* 3. Math Duel */
+        function runMathDuel(container) {
+            const a = Math.floor(Math.random() * 25) + 6;
+            const b = Math.floor(Math.random() * 25) + 6;
+            const correct = a + b;
+            const answers = [correct, correct + 2, Math.max(1, correct - 3), correct + 5].sort(() => 0.5 - Math.random());
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-4">
+                    <span class="text-xs text-brand-accent font-bold">مبارزة الحساب السريع</span>
+                    <div class="text-4xl font-black text-white py-4 bg-slate-900 border border-brand-border rounded-2xl">
+                        ${a} + ${b} = ؟
                     </div>
-                    <div id="rps-res" style="margin-top: 20px; font-weight: bold; font-size: 15px;"></div>
+                    <div class="grid grid-cols-2 gap-2.5" id="math-options"></div>
+                    <p id="math-result" class="text-xs text-slate-400">اختر الإجابة الصحيحة قبل خصمك</p>
                 </div>
             `;
-            window.playRPS = (choice) => {
-                const moves = ['حجر', 'ورقة', 'مقص'];
-                const comp = moves[Math.floor(Math.random() * 3)];
-                let res = '';
-                if (choice === comp) res = 'تعادل!';
-                else if ((choice === 'حجر' && comp === 'مقص') || (choice === 'ورقة' && comp === 'حجر') || (choice === 'مقص' && comp === 'ورقة')) res = '🎉 أنت الفائز!';
-                else res = 'فاز الخصم!';
-                document.getElementById('rps-res').innerHTML = `أنت: ${choice} | الخصم: ${comp}<br>${res}`;
-            };
-        }
 
-        function runMemoryGame(box) {
-            const icons = ['⭐', '🔥', '🎮', '💡', '⭐', '🔥', '🎮', '💡'].sort(() => 0.5 - Math.random());
-            const board = document.createElement('div');
-            board.className = 'game-board';
-            board.style.gridTemplateColumns = 'repeat(4, 1fr)';
-            box.appendChild(board);
-
-            let selected = [];
-            icons.forEach((ic) => {
-                const cell = document.createElement('div');
-                cell.className = 'board-cell';
-                cell.textContent = '❓';
-                cell.onclick = () => {
-                    if (selected.length < 2 && cell.textContent === '❓') {
-                        cell.textContent = ic;
-                        selected.push({ cell, ic });
-                        if (selected.length === 2) {
-                            setTimeout(() => {
-                                if (selected[0].ic !== selected[1].ic) {
-                                    selected[0].cell.textContent = '❓';
-                                    selected[1].cell.textContent = '❓';
-                                }
-                                selected = [];
-                            }, 500);
-                        }
+            const optBox = document.getElementById('math-options');
+            answers.forEach(ans => {
+                const btn = document.createElement('button');
+                btn.className = 'py-3.5 bg-slate-900 border border-brand-border text-lg font-bold rounded-xl text-white tap-bounce hover:border-brand-500';
+                btn.textContent = ans;
+                btn.onclick = () => {
+                    if (ans === correct) {
+                        document.getElementById('math-result').textContent = 'إجابة صحيحة وذكية! 🧠';
+                        document.getElementById('math-result').className = 'text-xs font-bold text-emerald-400';
+                        rewardUserWin();
+                        setTimeout(() => runMathDuel(container), 800);
+                    } else {
+                        document.getElementById('math-result').textContent = 'إجابة خاطئة! حاول مجدداً';
+                        document.getElementById('math-result').className = 'text-xs font-bold text-rose-400';
                     }
                 };
-                board.appendChild(cell);
+                optBox.appendChild(btn);
             });
         }
 
-        /* ================= 5. الملف الشخصي الاجتماعي (فيسبوك) ================= */
-        function loadProfileData() {
-            if (!currentUser) return;
-            document.getElementById('fb-profile-name').textContent = currentUser.name;
-            document.getElementById('fb-author-name').textContent = currentUser.name;
-            document.getElementById('fb-profile-bio').textContent = currentUser.bio;
-            document.getElementById('fb-profile-email').textContent = currentUser.email;
-            document.getElementById('fb-profile-id').textContent = currentUser.id;
-            document.getElementById('fb-avatar-display').textContent = currentUser.avatar;
-        }
+        /* 4. Rock Paper Scissors */
+        function runRPS(container) {
+            const choices = [
+                { name: 'حجر', icon: '🪨' },
+                { name: 'ورقة', icon: '📄' },
+                { name: 'مقص', icon: '✂️' }
+            ];
 
-        function editBio() {
-            const newBio = prompt('اكتب نبذتك الشخصية الجديدة:', currentUser.bio);
-            if (newBio !== null && newBio.trim() !== '') {
-                currentUser.bio = newBio.trim();
-                localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
-                loadProfileData();
-            }
-        }
-
-        function changeAvatar() {
-            const avatars = ['😎', '🤠', '🥷', '👑', '🦁', '🤖', '👾', '🚀'];
-            const random = avatars[Math.floor(Math.random() * avatars.length)];
-            currentUser.avatar = random;
-            localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
-            loadProfileData();
-        }
-
-        function publishPost() {
-            const input = document.getElementById('fb-post-text');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const wall = document.getElementById('fb-wall-container');
-            const post = document.createElement('div');
-            post.className = 'fb-post-card';
-            post.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span class="animated-emoji" style="font-size: 24px;">${currentUser.avatar}</span>
-                    <div>
-                        <strong style="font-size: 13px;">${currentUser.name}</strong>
-                        <div style="font-size: 10px; color: var(--text-muted);">الآن • 🌍 عام</div>
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-5">
+                    <p class="text-xs text-slate-400">اختر حركتك لمواجهة الخصم:</p>
+                    <div class="flex justify-center gap-3">
+                        ${choices.map(c => `
+                            <button onclick="handleRPSPick('${c.name}')" class="w-20 h-20 bg-slate-900 border border-brand-border rounded-2xl text-4xl flex items-center justify-center hover:border-brand-accent tap-bounce">
+                                <span class="anim-emoji">${c.icon}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="rps-board" class="p-4 bg-slate-900 border border-brand-border rounded-2xl text-sm min-h-[90px] flex flex-col justify-center items-center">
+                        <span class="text-slate-400 text-xs">في انتظار اختيارك...</span>
                     </div>
                 </div>
-                <p style="font-size: 13px;">${text}</p>
-                <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--border-dark); padding-top: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted);">
-                    <span style="cursor: pointer;" onclick="toggleLike(this)"><i class="fa-regular fa-thumbs-up"></i> إعجاب</span>
-                    <span style="cursor: pointer;" onclick="alert('التعليقات مفتوحة!')"><i class="fa-regular fa-comment"></i> تعليق</span>
-                    <span style="cursor: pointer;" onclick="alert('تمت المشاركة!')"><i class="fa-solid fa-share"></i> مشاركة</span>
-                </div>
             `;
-            wall.prepend(post);
-            input.value = '';
+
+            window.handleRPSPick = (playerPick) => {
+                const comp = choices[Math.floor(Math.random() * choices.length)].name;
+                let outcome = '';
+                if (playerPick === comp) outcome = 'تعادل بين الطرفين!';
+                else if (
+                    (playerPick === 'حجر' && comp === 'مقص') ||
+                    (playerPick === 'ورقة' && comp === 'حجر') ||
+                    (playerPick === 'مقص' && comp === 'ورقة')
+                ) {
+                    outcome = '🎉 فزت بالجولة بجدارة!';
+                    rewardUserWin();
+                } else {
+                    outcome = 'فاز الخصم هذه المرة!';
+                }
+
+                document.getElementById('rps-board').innerHTML = `
+                    <div class="text-xs text-slate-300 mb-1">أنت: <b>${playerPick}</b> مقابل الخصم: <b>${comp}</b></div>
+                    <div class="text-sm font-bold text-brand-accent">${outcome}</div>
+                `;
+            };
         }
 
-        function toggleLike(el) {
-            if (el.style.color === 'rgb(24, 119, 242)') {
-                el.style.color = 'var(--text-muted)';
-                el.innerHTML = '<i class="fa-regular fa-thumbs-up"></i> إعجاب';
-            } else {
-                el.style.color = '#1877f2';
-                el.innerHTML = '<i class="fa-solid fa-thumbs-up"></i> تم الإعجاب';
+        /* 5. Memory Cards */
+        function runMemoryCards(container) {
+            const symbols = ['🦁', '🚀', '⭐', '💎', '🦁', '🚀', '⭐', '💎'].sort(() => 0.5 - Math.random());
+            let flipped = [];
+            let matched = 0;
+
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-4 gap-2.5 max-w-[260px] mx-auto';
+
+            symbols.forEach((sym) => {
+                const card = document.createElement('button');
+                card.className = 'w-14 h-14 bg-slate-900 border border-brand-border rounded-xl text-xl flex items-center justify-center text-transparent tap-bounce transition duration-200';
+                card.innerHTML = `<span class="anim-emoji">${sym}</span>`;
+                card.onclick = () => {
+                    if (flipped.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
+                        card.classList.add('flipped');
+                        card.classList.remove('text-transparent');
+                        card.classList.add('bg-brand-500/30', 'border-brand-500');
+                        flipped.push(card);
+
+                        if (flipped.length === 2) {
+                            if (flipped[0].textContent.trim() === flipped[1].textContent.trim()) {
+                                flipped.forEach(c => c.classList.add('matched', 'border-emerald-500'));
+                                matched += 2;
+                                flipped = [];
+                                if (matched === symbols.length) {
+                                    showToast('أحسنت! ذاكرة فولاذية ممتازة 🧠', 'fa-trophy');
+                                    rewardUserWin();
+                                }
+                            } else {
+                                setTimeout(() => {
+                                    flipped.forEach(c => {
+                                        c.classList.remove('flipped', 'bg-brand-500/30', 'border-brand-500');
+                                        c.classList.add('text-transparent');
+                                    });
+                                    flipped = [];
+                                }, 600);
+                            }
+                        }
+                    }
+                };
+                grid.appendChild(card);
+            });
+
+            container.innerHTML = `<p class="text-xs text-slate-400 mb-3 text-center">اكشف الأزواج المتطابقة</p>`;
+            container.appendChild(grid);
+        }
+
+        /* 6. Reaction Timer */
+        function runReactionTimer(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center">
+                    <div id="reaction-box" class="w-full h-48 bg-rose-600 rounded-3xl flex flex-col items-center justify-center cursor-pointer tap-bounce p-4 text-white font-bold select-none shadow-xl">
+                        <span id="reaction-label" class="text-lg">انتظر اللون الأخضر...</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">انقر فور تغير لون الشاشة</p>
+                </div>
+            `;
+
+            const box = document.getElementById('reaction-box');
+            const label = document.getElementById('reaction-label');
+            let state = 'waiting';
+            let startTime = 0;
+            let timer = setTimeout(() => {
+                state = 'ready';
+                box.className = 'w-full h-48 bg-emerald-500 rounded-3xl flex flex-col items-center justify-center cursor-pointer tap-bounce p-4 text-slate-900 font-black text-2xl select-none shadow-xl';
+                label.textContent = 'انقر الآن!';
+                startTime = Date.now();
+            }, Math.floor(Math.random() * 2000) + 1500);
+
+            box.onclick = () => {
+                if (state === 'waiting') {
+                    clearTimeout(timer);
+                    label.textContent = 'نقرت مبكراً جداً! ❌';
+                    box.className = 'w-full h-48 bg-amber-600 rounded-3xl flex flex-col items-center justify-center p-4 text-white font-bold';
+                } else if (state === 'ready') {
+                    const diff = Date.now() - startTime;
+                    label.textContent = `${diff} ميلي ثانية! ⚡`;
+                    box.className = 'w-full h-48 bg-indigo-600 rounded-3xl flex flex-col items-center justify-center p-4 text-white font-black text-2xl';
+                    if (diff < 350) rewardUserWin();
+                    state = 'done';
+                }
+            };
+        }
+
+        /* 7. Color Match */
+        function runColorMatch(container) {
+            const colors = [
+                { name: 'أحمر', color: '#ef4444' },
+                { name: 'أزرق', color: '#3b82f6' },
+                { name: 'أخضر', color: '#22c55e' },
+                { name: 'أصفر', color: '#eab308' }
+            ];
+
+            const textItem = colors[Math.floor(Math.random() * colors.length)];
+            const colorItem = colors[Math.floor(Math.random() * colors.length)];
+            const isMatch = Math.random() > 0.5 ? textItem.name === colorItem.name : false;
+            const finalColor = isMatch ? textItem.color : colorItem.color;
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-4">
+                    <p class="text-xs text-slate-400">هل معنى الكلمة يطابق لون خطها؟</p>
+                    <div class="py-10 bg-slate-900 border border-brand-border rounded-2xl">
+                        <span class="text-4xl font-black" style="color: ${finalColor};">${textItem.name}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="handleColorMatch(true, ${textItem.name === colors.find(c => c.color === finalColor).name})" class="py-3 bg-emerald-500/20 text-emerald-400 border border-emerald-500 rounded-xl font-bold tap-bounce">نعم (متطابق)</button>
+                        <button onclick="handleColorMatch(false, ${textItem.name === colors.find(c => c.color === finalColor).name})" class="py-3 bg-rose-500/20 text-rose-400 border border-rose-500 rounded-xl font-bold tap-bounce">لا (مختلف)</button>
+                    </div>
+                </div>
+            `;
+
+            window.handleColorMatch = (userGuess, actual) => {
+                if (userGuess === actual) {
+                    rewardUserWin();
+                    showToast('تركيز ذهني رائع!', 'fa-circle-check');
+                } else {
+                    showToast('إجابة غير صحيحة، ركز جيداً!', 'fa-circle-xmark');
+                }
+                runColorMatch(container);
+            };
+        }
+
+        /* 8. Guess Number */
+        function runGuessNumber(container) {
+            const secret = Math.floor(Math.random() * 50) + 1;
+            let attempts = 0;
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-4">
+                    <p class="text-xs text-slate-400">خمن الرقم السري من 1 إلى 50:</p>
+                    <div class="flex gap-2">
+                        <input id="num-guess-input" type="number" min="1" max="50" placeholder="رقمك..." class="flex-1 bg-slate-900 border border-brand-border rounded-xl px-4 py-2.5 text-center text-white text-lg font-bold outline-none focus:border-brand-500" />
+                        <button id="btn-submit-guess" class="px-5 py-2.5 bg-brand-500 text-white font-bold rounded-xl text-xs tap-bounce">تخمين</button>
+                    </div>
+                    <div id="guess-hint" class="p-3 bg-slate-900 border border-brand-border rounded-xl text-xs font-semibold text-slate-300">
+                        ابدأ بإدخال رقم
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('btn-submit-guess').onclick = () => {
+                const val = parseInt(document.getElementById('num-guess-input').value, 10);
+                if (!val) return;
+                attempts++;
+                const hint = document.getElementById('guess-hint');
+
+                if (val === secret) {
+                    hint.textContent = `🎉 مبروك! الرقم هو ${secret} (في ${attempts} محاولات)`;
+                    hint.className = 'p-3 bg-emerald-500/20 border border-emerald-500 rounded-xl text-xs font-bold text-emerald-400';
+                    rewardUserWin();
+                } else if (val < secret) {
+                    hint.textContent = `الرقم السري أكبر من ${val} ⬆️`;
+                } else {
+                    hint.textContent = `الرقم السري أصغر من ${val} ⬇️`;
+                }
+            };
+        }
+
+        /* 9. Connect 4 Mini */
+        function runConnect4(container) {
+            const rows = 5, cols = 5;
+            let grid = Array(rows).fill(null).map(() => Array(cols).fill(0));
+            let player = 1;
+
+            const boardDiv = document.createElement('div');
+            boardDiv.className = 'grid grid-cols-5 gap-1.5 p-3 bg-slate-900 border border-brand-border rounded-2xl max-w-[250px] mx-auto';
+
+            function render() {
+                boardDiv.innerHTML = '';
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const cell = document.createElement('button');
+                        cell.className = `w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center transition ${
+                            grid[r][c] === 1 ? 'bg-pink-500' : grid[r][c] === 2 ? 'bg-indigo-500' : 'bg-slate-950'
+                        }`;
+                        cell.onclick = () => dropPiece(c);
+                        boardDiv.appendChild(cell);
+                    }
+                }
             }
+
+            function dropPiece(col) {
+                for (let r = rows - 1; r >= 0; r--) {
+                    if (grid[r][col] === 0) {
+                        grid[r][col] = player;
+                        player = player === 1 ? 2 : 1;
+                        render();
+                        break;
+                    }
+                }
+            }
+
+            container.innerHTML = `<p class="text-xs text-slate-400 mb-3 text-center">انقر على العمود لإسقاط القرص</p>`;
+            container.appendChild(boardDiv);
+            render();
+        }
+
+        /* 10. Dots & Boxes */
+        function runDotsBoxes(container) {
+            container.innerHTML = `
+                <div class="text-center space-y-3">
+                    <p class="text-xs text-slate-400">انقر لتوصيل الخطوط واقتناص الصندوق:</p>
+                    <div class="inline-grid grid-cols-3 gap-3 p-4 bg-slate-900 border border-brand-border rounded-2xl">
+                        <button class="w-14 h-14 bg-slate-800 rounded-lg text-xs font-bold text-slate-300 tap-bounce" onclick="this.classList.toggle('bg-brand-accent'); this.textContent = '★';">▢</button>
+                        <button class="w-14 h-14 bg-slate-800 rounded-lg text-xs font-bold text-slate-300 tap-bounce" onclick="this.classList.toggle('bg-brand-500'); this.textContent = '★';">▢</button>
+                        <button class="w-14 h-14 bg-slate-800 rounded-lg text-xs font-bold text-slate-300 tap-bounce" onclick="this.classList.toggle('bg-brand-accent'); this.textContent = '★';">▢</button>
+                        <button class="w-14 h-14 bg-slate-800 rounded-lg text-xs font-bold text-slate-300 tap-bounce" onclick="this.classList.toggle('bg-brand-500'); this.textContent = '★';">▢</button>
+                        <button class="w-14 h-14 bg-slate-800 rounded-lg text-xs font-bold text-slate-300 tap-bounce" onclick="this.classList.toggle('bg-brand-accent'); this.textContent = '★';">▢</button>
+                        <button class="w-14 h-14 bg-slate-800 rounded-lg text-xs font-bold text-slate-300 tap-bounce" onclick="this.classList.toggle('bg-brand-500'); this.textContent = '★';">▢</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* 11. Simon Says Sequence */
+        function runSimonSays(container) {
+            let sequence = [];
+            let userStep = 0;
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-4">
+                    <p id="simon-status" class="text-xs text-slate-400">احفظ الومضات واضغط عليها بنفس الترتيب</p>
+                    <div class="grid grid-cols-2 gap-3 max-w-[200px] mx-auto">
+                        <button id="s-0" class="w-24 h-24 bg-rose-600 rounded-2xl tap-bounce border border-rose-400/30"></button>
+                        <button id="s-1" class="w-24 h-24 bg-blue-600 rounded-2xl tap-bounce border border-blue-400/30"></button>
+                        <button id="s-2" class="w-24 h-24 bg-emerald-600 rounded-2xl tap-bounce border border-emerald-400/30"></button>
+                        <button id="s-3" class="w-24 h-24 bg-amber-600 rounded-2xl tap-bounce border border-amber-400/30"></button>
+                    </div>
+                    <button id="simon-start-btn" class="px-6 py-2 bg-brand-500 text-white font-bold rounded-xl text-xs tap-bounce">بدء التتابع</button>
+                </div>
+            `;
+
+            document.getElementById('simon-start-btn').onclick = () => {
+                sequence = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), Math.floor(Math.random() * 4)];
+                userStep = 0;
+                flashSequence(0);
+            };
+
+            function flashSequence(idx) {
+                if (idx >= sequence.length) {
+                    document.getElementById('simon-status').textContent = 'دورك الآن! كرر التتابع';
+                    return;
+                }
+                const btn = document.getElementById(`s-${sequence[idx]}`);
+                btn.classList.add('brightness-200', 'scale-105');
+                setTimeout(() => {
+                    btn.classList.remove('brightness-200', 'scale-105');
+                    setTimeout(() => flashSequence(idx + 1), 300);
+                }, 400);
+            }
+
+            [0,1,2,3].forEach(id => {
+                document.getElementById(`s-${id}`).onclick = () => {
+                    if (sequence.length === 0) return;
+                    if (id === sequence[userStep]) {
+                        userStep++;
+                        if (userStep === sequence.length) {
+                            document.getElementById('simon-status').textContent = '🎉 تتابع متقن وذاكرة بطلة!';
+                            rewardUserWin();
+                            sequence = [];
+                        }
+                    } else {
+                        document.getElementById('simon-status').textContent = 'خطأ بالتتابع! اضغط بدء للمحاولة ثانية';
+                        sequence = [];
+                    }
+                };
+            });
+        }
+
+        /* 12. Word Scramble */
+        function runWordScramble(container) {
+            const list = [
+                { word: 'الجزائر', hint: 'بلد المليون ونصف شهيد' },
+                { word: 'برمجة', hint: 'لغة التكنولوجيا الحديثة' },
+                { word: 'شطرنج', hint: 'لعبة الملوك والاستراتيجية' }
+            ];
+            const item = list[Math.floor(Math.random() * list.length)];
+            const scrambled = item.word.split('').sort(() => 0.5 - Math.random()).join(' ');
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-4">
+                    <p class="text-xs text-slate-400">تلميح: ${item.hint}</p>
+                    <div class="text-2xl font-black text-brand-accent tracking-widest py-3 bg-slate-900 border border-brand-border rounded-2xl">
+                        ${scrambled}
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="word-input" type="text" placeholder="اكتب الكلمة الصحيحة..." class="flex-1 bg-slate-900 border border-brand-border rounded-xl px-3 py-2 text-center text-white text-sm outline-none" />
+                        <button id="btn-word-check" class="px-4 py-2 bg-brand-500 text-white font-bold rounded-xl text-xs">تحقق</button>
+                    </div>
+                    <p id="word-feedback" class="text-xs"></p>
+                </div>
+            `;
+
+            document.getElementById('btn-word-check').onclick = () => {
+                const ans = document.getElementById('word-input').value.trim();
+                const fb = document.getElementById('word-feedback');
+                if (ans === item.word) {
+                    fb.textContent = '🎉 أحسنت! الكلمة صحيحة تماماً';
+                    fb.className = 'text-xs font-bold text-emerald-400';
+                    rewardUserWin();
+                } else {
+                    fb.textContent = 'حاول مرة أخرى!';
+                    fb.className = 'text-xs font-bold text-rose-400';
+                }
+            };
+        }
+
+        /* 13. Odd One Out */
+        function runOddOneOut(container) {
+            const normal = '🐱';
+            const odd = '🐶';
+            let items = Array(8).fill(normal);
+            items.push(odd);
+            items.sort(() => 0.5 - Math.random());
+
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-4">
+                    <p class="text-xs text-slate-400">اعثر على الرمز المختلف سريعاً:</p>
+                    <div class="grid grid-cols-3 gap-2.5 max-w-[220px] mx-auto">
+                        ${items.map(ic => `
+                            <button onclick="checkOdd('${ic}')" class="w-16 h-16 bg-slate-900 border border-brand-border rounded-2xl text-2xl flex items-center justify-center tap-bounce">
+                                <span class="anim-emoji">${ic}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            window.checkOdd = (selected) => {
+                if (selected === odd) {
+                    showToast('قوة ملاحظة استثنائية! 👁️', 'fa-trophy');
+                    rewardUserWin();
+                    runOddOneOut(container);
+                } else {
+                    showToast('هذا الرمز عادي، ابحث عن المختلف!', 'fa-circle-xmark');
+                }
+            };
+        }
+
+        /* 14. Pong Duel Canvas */
+        function runPongDuel(container) {
+            container.innerHTML = `
+                <div class="w-full flex flex-col items-center">
+                    <canvas id="pong-canvas" width="280" height="230" class="bg-slate-950 border border-brand-border rounded-2xl shadow-xl"></canvas>
+                    <div class="flex gap-4 mt-3">
+                        <button id="p-up" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold">▲ للأعلى</button>
+                        <button id="p-down" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold">▼ للأسفل</button>
+                    </div>
+                </div>
+            `;
+
+            const canvas = document.getElementById('pong-canvas');
+            const ctx = canvas.getContext('2d');
+            let ballX = 140, ballY = 115, dx = 2, dy = 2;
+            let playerY = 85, aiY = 85;
+            const paddleHeight = 45;
+
+            document.getElementById('p-up').onclick = () => { playerY = Math.max(10, playerY - 20); };
+            document.getElementById('p-down').onclick = () => { playerY = Math.min(canvas.height - paddleHeight - 10, playerY + 20); };
+
+            function loop() {
+                if (!document.getElementById('pong-canvas')) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ballX += dx;
+                ballY += dy;
+                if (ballY <= 0 || ballY >= canvas.height) dy = -dy;
+
+                aiY += (ballY - (aiY + paddleHeight / 2)) * 0.08;
+
+                if (ballX <= 15 && ballY >= playerY && ballY <= playerY + paddleHeight) dx = -dx;
+                if (ballX >= canvas.width - 15 && ballY >= aiY && ballY <= aiY + paddleHeight) dx = -dx;
+
+                if (ballX < 0 || ballX > canvas.width) {
+                    ballX = 140;
+                    ballY = 115;
+                }
+
+                ctx.fillStyle = '#6366f1';
+                ctx.fillRect(8, playerY, 6, paddleHeight);
+
+                ctx.fillStyle = '#ec4899';
+                ctx.fillRect(canvas.width - 14, aiY, 6, paddleHeight);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, 5, 0, Math.PI * 2);
+                ctx.fill();
+
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+        }
+
+        /* 15. Mini Sudoku */
+        function runSudokuMini(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-xs text-center space-y-3">
+                    <p class="text-xs text-slate-400">أكمل الرقم الناقص (1 إلى 4) دون تكرار في السطر:</p>
+                    <div class="grid grid-cols-4 gap-1.5 p-3 bg-slate-900 border border-brand-border rounded-2xl max-w-[210px] mx-auto text-sm font-bold">
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">1</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">2</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">3</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">4</div>
+
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">3</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">4</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">1</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">2</div>
+
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">2</div>
+                        <input id="sudoku-cell" type="number" min="1" max="4" class="h-10 bg-brand-accent/20 border border-brand-accent rounded text-center text-white outline-none" placeholder="؟" />
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">4</div>
+                        <div class="h-10 bg-slate-800 rounded flex items-center justify-center text-white">3</div>
+                    </div>
+                    <button onclick="checkSudokuMini()" class="px-5 py-2 bg-brand-500 text-white font-bold rounded-xl text-xs">تأكيد الحل</button>
+                </div>
+            `;
+
+            window.checkSudokuMini = () => {
+                const val = document.getElementById('sudoku-cell').value.trim();
+                if (val === '1') {
+                    showToast('حل منطقي سليم 100%! 👏', 'fa-circle-check');
+                    rewardUserWin();
+                } else {
+                    showToast('الرقم 1 هو الصحيح لعدم التكرار بالسطر!', 'fa-circle-xmark');
+                }
+            };
+        }
+
+        /* Dedicated Gaming Profile Stats */
+        function loadGamingProfile() {
+            if (!currentUser) return;
+            const wins = currentUser.wins || 0;
+            const matches = currentUser.matches || Math.max(wins, 1);
+            const winrate = matches > 0 ? Math.round((wins / matches) * 100) : 100;
+            const level = Math.floor(wins / 2) + 1;
+
+            document.getElementById('gaming-player-name').textContent = currentUser.name;
+            document.getElementById('gaming-player-uid').textContent = currentUser.id;
+            document.getElementById('gaming-level-text').textContent = `المستوى ${level}`;
+            document.getElementById('gaming-wins-count').textContent = wins;
+            document.getElementById('gaming-matches-count').textContent = matches;
+            document.getElementById('gaming-winrate-count').textContent = `${winrate}%`;
+
+            let rankText = 'الرتبة: فضي 🛡️';
+            if (wins >= 10) rankText = 'الرتبة: أسطوري 👑';
+            else if (wins >= 5) rankText = 'الرتبة: ماسي 💎';
+            else if (wins >= 2) rankText = 'الرتبة: ذهبي ⭐';
+            document.getElementById('gaming-rank-badge').textContent = rankText;
+
+            const currentXp = (wins * 45) % 500;
+            document.getElementById('gaming-xp-label').textContent = `${currentXp} / 500 XP`;
+            document.getElementById('gaming-xp-bar').style.width = `${Math.min(100, Math.max(15, (currentXp / 500) * 100))}%`;
+        }
+
+        /* Facebook-Style Social Profile */
+        const COVER_GRADIENTS = [
+            'linear-gradient(to right, #1d4ed8, #4338ca, #6d28d9)',
+            'linear-gradient(to right, #0f172a, #1e293b, #334155)',
+            'linear-gradient(to right, #be185d, #7c3aed, #2563eb)'
+        ];
+
+        function loadFacebookProfile() {
+            if (!currentUser) return;
+            document.getElementById('fb-display-name').textContent = currentUser.name;
+            document.getElementById('fb-display-bio').textContent = currentUser.bio;
+            document.getElementById('fb-info-id').textContent = currentUser.id;
+            document.getElementById('fb-info-city').textContent = currentUser.city || 'الجزائر العاصمة';
+            document.getElementById('fb-info-work').textContent = currentUser.work || 'تطوير البرمجيات والتصميم';
+            document.getElementById('fb-info-email').textContent = currentUser.email;
+
+            document.getElementById('fb-avatar-emoji').textContent = currentUser.avatar;
+            document.getElementById('fb-creator-avatar').textContent = currentUser.avatar;
+
+            const coverEl = document.getElementById('fb-cover-photo');
+            const idx = currentUser.coverIndex || 0;
+            coverEl.style.background = COVER_GRADIENTS[idx % COVER_GRADIENTS.length];
+        }
+
+        function changeCoverPhoto() {
+            currentUser.coverIndex = ((currentUser.coverIndex || 0) + 1) % COVER_GRADIENTS.length;
+            saveUserData();
+            loadFacebookProfile();
+            showToast('تم تغيير صورة غلاف الفيسبوك بنجاح! 🎨', 'fa-image');
+        }
+
+        function openEditProfileModal() {
+            document.getElementById('edit-fb-name').value = currentUser.name;
+            document.getElementById('edit-fb-bio').value = currentUser.bio;
+            document.getElementById('edit-fb-city').value = currentUser.city || 'الجزائر العاصمة';
+            document.getElementById('edit-fb-work').value = currentUser.work || 'تطوير البرمجيات والتصميم';
+
+            document.getElementById('fb-edit-modal').classList.remove('hidden');
+            document.getElementById('fb-edit-modal').classList.add('flex');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('fb-edit-modal').classList.add('hidden');
+            document.getElementById('fb-edit-modal').classList.remove('flex');
+        }
+
+        function saveFacebookProfileChanges() {
+            const name = document.getElementById('edit-fb-name').value.trim();
+            const bio = document.getElementById('edit-fb-bio').value.trim();
+            const city = document.getElementById('edit-fb-city').value.trim();
+            const work = document.getElementById('edit-fb-work').value.trim();
+
+            if (name) currentUser.name = name;
+            if (bio) currentUser.bio = bio;
+            if (city) currentUser.city = city;
+            if (work) currentUser.work = work;
+
+            saveUserData();
+            loadFacebookProfile();
+            closeEditProfileModal();
+            showToast('تم تحديث ملف الفيسبوك الشخصي بنجاح!', 'fa-circle-check');
+        }
+
+        function openAvatarModal() {
+            document.getElementById('avatar-picker-modal').classList.remove('hidden');
+            document.getElementById('avatar-picker-modal').classList.add('flex');
+        }
+
+        function closeAvatarModal() {
+            document.getElementById('avatar-picker-modal').classList.add('hidden');
+            document.getElementById('avatar-picker-modal').classList.remove('flex');
+        }
+
+        function renderModalAvatars() {
+            const grid = document.getElementById('modal-avatar-grid');
+            grid.innerHTML = '';
+            AVATARS.forEach(av => {
+                const btn = document.createElement('button');
+                btn.className = 'w-12 h-12 rounded-2xl bg-slate-900 border border-brand-border flex items-center justify-center text-2xl hover:border-blue-500 tap-bounce';
+                btn.innerHTML = `<span class="anim-emoji">${av}</span>`;
+                btn.onclick = () => {
+                    currentUser.avatar = av;
+                    saveUserData();
+                    loadFacebookProfile();
+                    closeAvatarModal();
+                    showToast('تم تحديث صورتك الشخصية!', 'fa-circle-check');
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        /* Facebook Wall Feed */
+        function getSavedFacebookPosts() {
+            const raw = localStorage.getItem(`fb_posts_${currentUser.id}`);
+            if (!raw) {
+                return [
+                    {
+                        id: 1,
+                        author: currentUser.name,
+                        avatar: currentUser.avatar,
+                        time: 'منذ ساعتين',
+                        content: 'مرحباً بالجميع! سعيد بانضمامي إلى هذا التطبيق الرائع والمميز بقلم Mohamed Jalil ✨',
+                        likes: 12,
+                        liked: false
+                    }
+                ];
+            }
+            try { return JSON.parse(raw); } catch(e) { return []; }
+        }
+
+        function saveFacebookPosts(posts) {
+            localStorage.setItem(`fb_posts_${currentUser.id}`, JSON.stringify(posts));
+        }
+
+        function renderFacebookPosts() {
+            const feed = document.getElementById('fb-posts-feed');
+            feed.innerHTML = '';
+            const posts = getSavedFacebookPosts();
+
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-900 border border-brand-border rounded-2xl p-3.5 space-y-2.5 shadow-sm';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 border border-brand-border flex items-center justify-center text-xl">
+                                <span class="anim-emoji">${post.avatar}</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-white leading-tight">${post.author}</h4>
+                                <span class="text-[10px] text-slate-400">${post.time} • 🌍 عام</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-200 leading-relaxed font-normal">${post.content}</p>
+
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800">
+                        <span class="flex items-center gap-1">
+                            <span class="w-4 h-4 rounded-full bg-blue-600 text-white flex items-center justify-center text-[8px]"><i class="fa-solid fa-thumbs-up"></i></span>
+                            <span class="anim-emoji text-xs">❤️</span>
+                            <span>${post.likes}</span>
+                        </span>
+                        <span>تعليقان • مشاركة واحدة</span>
+                    </div>
+
+                    <div class="flex justify-around items-center pt-1 border-t border-slate-800/80 text-xs font-semibold">
+                        <button onclick="togglePostLike(${post.id})" class="flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-800 ${post.liked ? 'text-blue-500' : 'text-slate-400'} tap-bounce">
+                            <i class="fa-${post.liked ? 'solid' : 'regular'} fa-thumbs-up text-sm"></i>
+                            <span>أعجبني</span>
+                        </button>
+                        <button onclick="showToast('تم فتح التعليقات', 'fa-comment')" class="flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-800 text-slate-400 tap-bounce">
+                            <i class="fa-regular fa-comment text-sm"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button onclick="showToast('تمت مشاركة المنشور بنجاح!', 'fa-share')" class="flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-800 text-slate-400 tap-bounce">
+                            <i class="fa-solid fa-share text-sm"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+        }
+
+        function createFacebookPost() {
+            const input = document.getElementById('fb-post-input');
+            const text = input.value.trim();
+            if (!text) {
+                showToast('يرجى كتابة نص المنشور أولاً!', 'fa-circle-exclamation');
+                return;
+            }
+
+            const posts = getSavedFacebookPosts();
+            posts.unshift({
+                id: Date.now(),
+                author: currentUser.name,
+                avatar: currentUser.avatar,
+                time: 'الآن',
+                content: text,
+                likes: 1,
+                liked: true
+            });
+
+            saveFacebookPosts(posts);
+            renderFacebookPosts();
+            input.value = '';
+            showToast('تم نشر منشورك على الفيسبوك بنجاح! 🚀', 'fa-circle-check');
+        }
+
+        function togglePostLike(postId) {
+            const posts = getSavedFacebookPosts();
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            post.liked = !post.liked;
+            post.likes += post.liked ? 1 : -1;
+            saveFacebookPosts(posts);
+            renderFacebookPosts();
+        }
+
+        /* Toast Engine */
+        let toastTimer = null;
+        function showToast(msg, icon = 'fa-circle-check') {
+            const banner = document.getElementById('toast-notify');
+            const txt = document.getElementById('toast-message');
+            const ic = document.getElementById('toast-icon');
+
+            txt.textContent = msg;
+            ic.className = `fa-solid ${icon}`;
+
+            banner.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+            banner.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                banner.classList.remove('opacity-100', 'translate-y-0');
+                banner.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+            }, 2800);
         }
     </script>
 </body>
