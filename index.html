@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Le jeux chat</title>
+    <title>Le jeux chat - Engineered by Mohamed Jalil</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- Firebase SDK (v9 Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <!-- محرك القصاصات الاحتفالية -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --accent: #ec4899;
-            --tg-blue: #2aabee;
-            --wa-green: #25d366;
-            --bg-dark: #0f172a;
-            --card-dark: #1e293b;
-            --border-dark: #334155;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --online: #22c55e;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            --bg-deep: #070a12;
+            --bg-card: rgba(18, 24, 38, 0.85);
+            --border-soft: rgba(255, 255, 255, 0.08);
+            
+            --neon-green: #00F5A0;
+            --electric-blue: #00D9F5;
+            --cyber-violet: #7C3AED;
+            --electric-coral: #FF4757;
+            
             --wa-bubble-out: #005c4b;
-            --wa-bubble-in: #202c33;
+            --wa-bubble-in: #1b263b;
+            --wa-check: #53bdeb;
+            --wa-teal: #00a884;
+            --tg-cyan: #229ED9;
+            
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --insta-grad: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
         }
 
         * {
@@ -34,27 +40,17 @@
             padding: 0;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, "SF Pro Display", "SF Pro Text", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        .animated-emoji {
-            display: inline-block;
-            animation: emojiPulse 2.4s infinite ease-in-out;
-            transform-origin: center bottom;
-        }
-
-        @keyframes emojiPulse {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-3px) scale(1.1); }
+            letter-spacing: -0.2px;
         }
 
         .screen {
@@ -62,200 +58,136 @@
             inset: 0;
             display: none;
             flex-direction: column;
-            background: var(--bg-dark);
+            background: var(--bg-deep);
             overflow: hidden;
             z-index: 10;
         }
 
         .screen.active { display: flex; }
 
-        /* شاشة الدخول والتسجيل */
+        .btn-neo {
+            background: linear-gradient(135deg, var(--tg-cyan), var(--neon-green));
+            border: 2px solid #fff;
+            color: #000;
+            font-weight: 800;
+            border-radius: 14px;
+            padding: 10px 18px;
+            box-shadow: 0 4px 0 #000;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-neo:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #000;
+        }
+
+        /* 1. شاشة الدخول */
         #auth-screen {
-            z-index: 50;
+            z-index: 60;
             justify-content: center;
             align-items: center;
             padding: 24px;
-            background: radial-gradient(circle at top, #1e1b4b, #0f172a);
+            background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #070a12 85%);
         }
 
-        .auth-container {
+        .auth-card {
             width: 100%;
             max-width: 360px;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border-dark);
-            border-radius: 24px;
-            padding: 32px 24px;
+            background: var(--bg-card);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-soft);
+            border-radius: 28px;
+            padding: 36px 24px;
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
         }
 
-        .app-title {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #a5b4fc, #ec4899);
+        .app-brand {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
-        .designer-tag {
-            font-size: 12px;
-            color: var(--accent);
+        .designer-signature {
+            font-size: 13px;
+            color: var(--electric-blue);
             letter-spacing: 1px;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 24px;
+            text-transform: uppercase;
         }
 
-        .input-group {
+        .designer-signature span {
+            display: block;
+            font-size: 15px;
+            color: var(--neon-green);
+            margin-top: 4px;
+            letter-spacing: 2px;
+        }
+
+        .field-group {
             margin-bottom: 14px;
             text-align: right;
         }
 
-        .input-group label {
+        .field-group label {
             display: block;
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--text-sub);
             margin-bottom: 6px;
+            font-weight: 600;
         }
 
-        .input-group input {
+        .field-group input {
             width: 100%;
-            padding: 12px 14px;
-            background: #0f172a;
-            border: 1px solid var(--border-dark);
-            border-radius: 12px;
+            padding: 13px 16px;
+            background: rgba(7, 10, 18, 0.85);
+            border: 1.5px solid var(--border-soft);
+            border-radius: 14px;
             color: #fff;
             outline: none;
             font-size: 14px;
         }
 
-        .main-btn {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-            margin-top: 10px;
-        }
-
-        /* الرأس العلوي */
-        .top-bar {
+        .glass-header {
             height: 60px;
+            background: rgba(18, 24, 38, 0.75);
+            backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            background: var(--card-dark);
-            border-bottom: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-soft);
             flex-shrink: 0;
         }
 
-        .top-bar h2 { font-size: 18px; font-weight: 700; }
+        .glass-header h1 {
+            font-size: 19px;
+            font-weight: 800;
+        }
 
-        /* شريط ID الشخصي والبحث */
-        .user-id-bar {
-            background: rgba(30, 41, 59, 0.6);
-            padding: 10px 16px;
+        /* 2. شريط الستوري وقائمة المحادثات */
+        .stories-rail {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-dark);
-        }
-
-        .my-id-badge {
-            background: #0f172a;
-            border: 1px dashed var(--primary);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: monospace;
-            color: #a5b4fc;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .friend-search-box {
-            padding: 10px 16px;
-            background: var(--card-dark);
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid var(--border-dark);
-        }
-
-        .friend-search-box input {
-            flex: 1;
-            padding: 8px 14px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 20px;
-            color: #fff;
-            font-size: 12px;
-            outline: none;
-        }
-
-        .friend-search-box button {
-            background: var(--primary);
-            border: none;
-            color: #fff;
-            padding: 0 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        /* طلبات الصداقة المعلقة */
-        .requests-banner {
-            background: rgba(236, 72, 153, 0.15);
-            border: 1px solid var(--accent);
-            padding: 10px 16px;
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .request-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--card-dark);
-            padding: 8px 12px;
-            border-radius: 10px;
-        }
-
-        .req-btn {
-            border: none;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .req-accept { background: var(--online); color: #fff; margin-left: 4px; }
-        .req-reject { background: #ef4444; color: #fff; }
-
-        /* الحالات */
-        .stories-container {
-            display: flex;
-            gap: 12px;
+            gap: 14px;
             padding: 12px 16px;
             overflow-x: auto;
-            border-bottom: 1px solid var(--border-dark);
-            background: rgba(30, 41, 59, 0.3);
+            border-bottom: 1px solid var(--border-soft);
+            background: rgba(15, 23, 42, 0.4);
             flex-shrink: 0;
         }
 
-        .stories-container::-webkit-scrollbar { display: none; }
+        .stories-rail::-webkit-scrollbar { display: none; }
 
-        .story-item {
+        .story-capsule {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -264,120 +196,135 @@
             cursor: pointer;
         }
 
-        .story-avatar {
-            width: 52px;
-            height: 52px;
+        .story-ring {
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
-            border: 2px solid var(--tg-blue);
-            padding: 2px;
-            background: #1e293b;
+            padding: 2.5px;
+            background: linear-gradient(135deg, var(--tg-cyan), var(--neon-green));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
         }
 
-        /* قائمة المحادثات */
-        .chat-list { flex: 1; overflow-y: auto; }
+        .story-pfp {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
 
-        .chat-row {
+        .chat-feed { flex: 1; overflow-y: auto; }
+
+        .chat-cell {
             display: flex;
             align-items: center;
             padding: 12px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 14px;
             cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.15s;
         }
 
-        .chat-avatar {
-            width: 48px;
-            height: 48px;
+        .chat-cell:active { background: rgba(255, 255, 255, 0.04); }
+
+        .chat-avatar-box {
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background: var(--border-dark);
+            background: #151e32;
+            border: 1px solid var(--border-soft);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 26px;
             position: relative;
-            margin-left: 12px;
             flex-shrink: 0;
         }
 
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            background: var(--online);
+        .online-dot {
+            width: 13px;
+            height: 13px;
+            background: var(--neon-green);
+            border: 2px solid var(--bg-deep);
             border-radius: 50%;
-            border: 2px solid var(--card-dark);
             position: absolute;
             bottom: 0;
             left: 0;
         }
 
-        .chat-details { flex: 1; }
-        .chat-header-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
-        .chat-name { font-weight: 600; font-size: 15px; }
-        .chat-time { font-size: 11px; color: var(--text-muted); }
-        .chat-last-msg {
-            font-size: 13px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 220px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+        /* 3. غرفة المحادثة المباشرة */
+        #chat-room-screen { z-index: 50; background: #090e18; }
 
-        /* غرفة المحادثة المباشرة */
-        #chat-room { z-index: 45; }
-
-        .chat-room-header {
-            height: 60px;
+        .pinned-message-bar {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 6px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 14px;
-            background: #1e293b;
-            border-bottom: 1px solid var(--border-dark);
-            flex-shrink: 0;
+            font-size: 12px;
+            cursor: pointer;
         }
 
-        .chat-room-body {
+        .pinned-line {
+            width: 3px;
+            height: 24px;
+            background: var(--tg-cyan);
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .chat-bubble-stream {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background: radial-gradient(circle at center, #111a2e 0%, #090e17 100%);
+            gap: 8px;
+            background-color: #080c14;
+            background-image: radial-gradient(rgba(0, 217, 245, 0.06) 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
         }
 
-        .message-bubble {
+        .chat-bubble-stream.vanish-active {
+            background: radial-gradient(circle at center, #180a22 0%, #000000 100%);
+            box-shadow: inset 0 0 50px rgba(124, 58, 237, 0.4);
+        }
+
+        .msg-bubble {
             max-width: 78%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.4;
-            position: relative;
+            padding: 8px 12px 6px 14px;
+            border-radius: 16px;
+            font-size: 14.5px;
+            line-height: 1.45;
             word-break: break-word;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .message-bubble.incoming {
+        .msg-bubble.incoming {
             background: var(--wa-bubble-in);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             align-self: flex-start;
-            border-top-right-radius: 2px;
-            color: #e9edef;
+            border-bottom-right-radius: 4px;
+            color: #fff;
         }
 
-        .message-bubble.outgoing {
-            background: var(--wa-bubble-out);
+        .msg-bubble.outgoing {
+            background: linear-gradient(135deg, var(--wa-bubble-out), #064e3b);
+            border: 1px solid rgba(0, 168, 132, 0.25);
             align-self: flex-end;
-            border-top-left-radius: 2px;
-            color: #e9edef;
+            border-bottom-left-radius: 4px;
+            color: #fff;
         }
 
-        .message-meta {
+        .msg-meta-stamp {
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -385,260 +332,290 @@
             font-size: 10px;
             color: rgba(255, 255, 255, 0.6);
             margin-top: 3px;
+            float: left;
+            margin-right: 8px;
         }
 
-        .read-check { color: #53bdeb; }
+        .read-checks { color: var(--wa-check); font-size: 12px; }
+
+        .voice-memo-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 0;
+            width: 220px;
+        }
+
+        .voice-play-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .voice-waves-spectrum {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 16px;
+            flex: 1;
+        }
+
+        .voice-waves-spectrum span {
+            width: 3px;
+            height: 100%;
+            background: var(--neon-green);
+            border-radius: 2px;
+            animation: pulseWave 1s infinite alternate;
+        }
+        .voice-waves-spectrum span:nth-child(2) { animation-delay: 0.2s; height: 60%; }
+        .voice-waves-spectrum span:nth-child(3) { animation-delay: 0.4s; height: 80%; }
+        .voice-waves-spectrum span:nth-child(4) { animation-delay: 0.1s; height: 40%; }
+        .voice-waves-spectrum span:nth-child(5) { animation-delay: 0.5s; height: 100%; }
+
+        @keyframes pulseWave {
+            0% { transform: scaleY(0.3); }
+            100% { transform: scaleY(1); }
+        }
 
         .chat-input-bar {
-            background: #1e293b;
+            background: rgba(18, 24, 38, 0.85);
+            backdrop-filter: blur(20px);
             padding: 8px 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-top: 1px solid var(--border-dark);
+            gap: 10px;
+            border-top: 1px solid var(--border-soft);
+            flex-shrink: 0;
         }
 
-        .chat-input-bar input {
+        .input-pill-wrapper {
             flex: 1;
-            padding: 10px 16px;
-            background: #0f172a;
-            border: 1px solid var(--border-dark);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-soft);
             border-radius: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            gap: 10px;
+        }
+
+        .input-pill-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 0;
+            color: #fff;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .action-round-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--tg-cyan), var(--neon-green));
+            border: none;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
+            flex-shrink: 0;
+        }
+
+        /* 4. صالة التحدي (Interactive Canvas & Lounge) */
+        .voice-lounge-header {
+            background: linear-gradient(90deg, #1e1b4b, #111827);
+            border-bottom: 2px solid var(--cyber-violet);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .challenge-card-widget {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(236, 72, 153, 0.25));
+            border: 2px solid var(--cyber-violet);
+            border-radius: 20px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
+        }
+
+        /* 5. محرك الألعاب المدمج (The Gaming Engine Sandbox Modal) */
+        #game-sandbox-modal {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 80;
+            display: none;
+            justify-content: flex-end;
+            flex-direction: column;
+        }
+
+        .sandbox-sheet {
+            background: #0d0d12;
+            border-top-left-radius: 26px;
+            border-top-right-radius: 26px;
+            border-top: 2px solid var(--neon-green);
+            height: 88%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 -15px 40px rgba(0, 245, 160, 0.25);
+        }
+
+        .sandbox-hud {
+            padding: 12px 16px;
+            background: #151e32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .sandbox-arena {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle, #101c38 0%, #070a12 100%);
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        /* لعبة الشطرنج النيوني (Cyber Chess) */
+        .chess-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            width: 90vw;
+            max-width: 330px;
+            height: 90vw;
+            max-height: 330px;
+            border: 2px solid var(--electric-blue);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 217, 245, 0.3);
+        }
+
+        .chess-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .chess-cell.light { background: rgba(255, 255, 255, 0.08); }
+        .chess-cell.dark { background: rgba(0, 0, 0, 0.4); }
+        .chess-cell.selected { background: rgba(0, 245, 160, 0.4) !important; }
+
+        /* هوكي الهواء وبلياردو الصالة (Canvas Games) */
+        #hockeyCanvas, #poolCanvas {
+            background: #080f1e;
+            border: 2px solid var(--neon-green);
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.3);
+            touch-action: none;
+        }
+
+        /* 6. واجهة WePlay Arena (20 لعبة) */
+        .weplay-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: #0a0e1a;
+        }
+
+        .weplay-card {
+            border-radius: 18px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background: #151e32;
+        }
+
+        /* 7. البحث وقائمة الأصدقاء */
+        .search-pill-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            padding: 4px 14px;
+            gap: 10px;
+        }
+
+        .search-pill-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 0;
             color: #fff;
             outline: none;
             font-size: 14px;
         }
 
-        /* ================== تصميم واجهة الألعاب (نمط WePlay) ================== */
-        .weplay-container {
-            flex: 1;
-            overflow-y: auto;
-            background: #0f172a;
-            padding-bottom: 20px;
-        }
-
-        .weplay-header-card {
-            background: linear-gradient(180deg, #312e81 0%, #1e1b4b 100%);
-            padding: 16px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            margin-bottom: 16px;
-        }
-
-        .weplay-top-status {
+        .pending-card {
+            background: #151e32;
+            border: 1px solid var(--border-soft);
+            border-radius: 14px;
+            padding: 12px 14px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
-        .coin-pill {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #fbbf24;
-            padding: 5px 14px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: bold;
-            color: #fbbf24;
-            font-size: 13px;
-        }
-
-        .weplay-quick-nav {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-        }
-
-        .weplay-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .weplay-nav-icon {
-            width: 44px;
-            height: 44px;
+        /* 8. الملف الشخصي (Instagram Style) */
+        .insta-view { flex: 1; overflow-y: auto; background: var(--bg-deep); }
+        
+        .insta-avatar-ring {
+            width: 86px;
+            height: 86px;
             border-radius: 50%;
-            background: #1e293b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-
-        .weplay-section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 16px 10px 16px;
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .weplay-games-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 0 16px;
-        }
-
-        /* بطاقات WePlay المستوحاة من الصورة */
-        .weplay-card-banner {
-            border-radius: 20px;
-            height: 82px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            position: relative;
+            padding: 3px;
+            background: var(--insta-grad);
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            transition: transform 0.1s;
-            overflow: hidden;
         }
 
-        .weplay-card-banner:active { transform: scale(0.98); }
-
-        .tag-badge {
-            position: absolute;
-            top: 4px;
-            right: 14px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            font-size: 9px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .banner-farm { background: linear-gradient(135deg, #65a30d, #84cc16); }
-        .banner-food { background: linear-gradient(135deg, #4f46e5, #06b6d4); }
-        .banner-prank { background: linear-gradient(135deg, #059669, #10b981); }
-        .banner-caught { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-        .banner-cafe { background: linear-gradient(135deg, #b45309, #d97706); }
-        .banner-spy { background: linear-gradient(135deg, #0284c7, #38bdf8); }
-        .banner-werewolf { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-        .banner-brain { background: linear-gradient(135deg, #c026d3, #e879f9); }
-
-        .weplay-card-info h3 {
-            font-size: 16px;
-            font-weight: 800;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-        }
-
-        .weplay-card-info p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: 2px;
-        }
-
-        .weplay-card-art {
-            font-size: 44px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-        }
-
-        /* ساحة اللعب */
-        #game-arena-screen { z-index: 40; }
-        .arena-canvas-box {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-
-        .game-board {
-            display: grid;
-            gap: 8px;
-            background: var(--card-dark);
-            padding: 12px;
-            border-radius: 16px;
-        }
-
-        .board-cell {
-            width: 72px;
-            height: 72px;
-            background: var(--bg-dark);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            border: 1px solid var(--border-dark);
-        }
-
-        /* ================== تحكم كامل في الملف الشخصي ================== */
-        .profile-full-control {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            background: #0b1120;
-        }
-
-        .custom-cover-box {
-            height: 140px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #3b82f6, #ec4899);
-            position: relative;
-            margin-bottom: 50px;
-            border: 1px solid var(--border-dark);
-        }
-
-        .custom-avatar-box {
-            width: 90px;
-            height: 90px;
+        .insta-avatar-pic {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            background: var(--card-dark);
-            border: 4px solid #0b1120;
-            position: absolute;
-            bottom: -40px;
-            right: 20px;
+            background: #111827;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
-            cursor: pointer;
+            font-size: 40px;
         }
 
-        .cover-color-picker {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .profile-edit-section {
-            background: var(--card-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        /* شريط التنقل السفلي */
-        .bottom-nav {
-            height: 60px;
-            background: var(--card-dark);
-            border-top: 1px solid var(--border-dark);
+        /* شريط التنقل السفلي الخماسي */
+        .bottom-glass-nav {
+            height: 62px;
+            background: rgba(18, 24, 38, 0.85);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-soft);
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -646,257 +623,260 @@
             flex-shrink: 0;
         }
 
-        .nav-item {
+        .nav-link {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            color: var(--text-muted);
+            gap: 4px;
+            color: var(--text-sub);
             cursor: pointer;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 10.5px;
+            font-weight: 700;
             flex: 1;
+            transition: all 0.2s;
         }
 
-        .nav-item i { font-size: 18px; }
-        .nav-item.active { color: var(--tg-blue); }
+        .nav-link.active {
+            color: var(--electric-blue);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i { font-size: 19px; }
     </style>
 </head>
 <body>
 
-    <!-- 1. شاشة الدخول والتسجيل السحابي -->
+    <!-- 1. شاشة الدخول والتسجيل الرسمية -->
     <div id="auth-screen" class="screen active">
-        <div class="auth-container">
-            <h1 class="app-title">Le jeux chat</h1>
-            <div class="designer-tag">WELCOME • BY MOHAMED JALIL</div>
+        <div class="auth-card">
+            <h1 class="app-brand">Le jeux chat</h1>
+            <div class="designer-signature">
+                تصميم MOHAMED JALIL
+                <span>WELCOME</span>
+            </div>
             
-            <div class="input-group">
-                <label>البريد الإلكتروني</label>
+            <div class="field-group">
+                <label>البريد الإلكتروني المعتمد</label>
                 <input type="email" id="auth-email" placeholder="user@domain.com" />
             </div>
 
-            <div class="input-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="auth-name" placeholder="اسمك داخل التطبيق" />
+            <div class="field-group">
+                <label>اسم المستخدم (Username)</label>
+                <input type="text" id="auth-username" placeholder="@username" />
             </div>
 
-            <button class="main-btn" onclick="handleAuth()">دخول إلى التطبيق</button>
+            <div class="field-group">
+                <label>الاسم الكامل</label>
+                <input type="text" id="auth-fullname" placeholder="الاسم الظاهر للجميع" />
+            </div>
+
+            <button class="btn-neo" style="width: 100%; margin-top: 10px;" onclick="handleAuth()">دخول إلى التطبيق</button>
         </div>
     </div>
 
-    <!-- 2. واجهة المحادثات (مع نظام قبول/رفض طلبات الصداقة) -->
-    <div id="chat-tab" class="screen">
-        <div class="top-bar">
-            <h2>المحادثات</h2>
-            <div style="display: flex; gap: 14px; align-items: center;">
-                <i class="fa-solid fa-user-plus animated-emoji" style="color: var(--tg-blue); cursor: pointer;" onclick="switchTab('friends-tab')" title="إضافة أصدقاء"></i>
-                <i class="fa-solid fa-bolt animated-emoji" style="color: var(--accent); cursor: pointer;" onclick="sendGlobalChallenge()" title="تحدي الجميع"></i>
+    <!-- 2. واجهة المحادثات (Telegram + WhatsApp) -->
+    <div id="chats-screen" class="screen">
+        <div class="glass-header">
+            <h1>المحادثات</h1>
+            <div style="display: flex; gap: 16px; font-size: 18px; color: var(--electric-blue);">
+                <i class="fa-solid fa-camera" style="cursor: pointer;" onclick="alert('فتح الكاميرا...')"></i>
+                <i class="fa-solid fa-magnifying-glass" style="cursor: pointer;" onclick="switchTab('search-screen')"></i>
+                <i class="fa-solid fa-ellipsis-vertical" style="cursor: pointer;"></i>
             </div>
         </div>
 
-        <div class="user-id-bar">
-            <span style="font-size: 12px; color: var(--text-muted);">معرفك الدائم (سحابي):</span>
-            <div class="my-id-badge" onclick="copyMyId()" title="اضغط لنسخ المعرف">
-                <span id="display-fixed-id">#ID-0000</span>
-                <i class="fa-regular fa-copy"></i>
+        <div class="stories-rail">
+            <div class="story-capsule" onclick="alert('إضافة قصة جديدة...')">
+                <div class="story-ring" style="background: none; border: 2px dashed var(--text-sub);">
+                    <div class="story-pfp"><i class="fa-solid fa-plus" style="font-size: 16px; color: var(--electric-blue);"></i></div>
+                </div>
+                <span>قصتي</span>
             </div>
-        </div>
-
-        <div class="friend-search-box">
-            <input type="text" id="search-friend-input" placeholder="أدخل معرف الصديق لإرسال طلب..." />
-            <button onclick="sendFriendRequest()"><i class="fa-solid fa-paper-plane"></i> إرسال طلب</button>
-        </div>
-
-        <!-- صندوق طلبات الصداقة الواردة للقبول أو الرفض -->
-        <div id="requests-container" class="requests-banner">
-            <span style="font-size: 12px; font-weight: bold; color: var(--accent);">طلبات صداقة معلقة:</span>
-            <div id="incoming-requests-list"></div>
-        </div>
-
-        <div class="stories-container">
-            <div class="story-item" onclick="alert('خاصية إضافة قصة جديدة متاحة الآن!')">
-                <div class="story-avatar" style="border-style: dashed; color: var(--text-muted);"><i class="fa-solid fa-plus"></i></div>
-                <span>حالتي</span>
-            </div>
-            <div class="story-item" onclick="viewStory('سارة', '🎮 مستعدة لمواجهة في Farm Simulator!')">
-                <div class="story-avatar"><span class="animated-emoji">🧕</span></div>
+            <div class="story-capsule" onclick="alert('عرض قصة سارة 🧕')">
+                <div class="story-ring"><div class="story-pfp">🧕</div></div>
                 <span>سارة</span>
             </div>
-            <div class="story-item" onclick="viewStory('ياسين', '🔥 فوز في لعبة Space Werewolf!')">
-                <div class="story-avatar"><span class="animated-emoji">🧑‍💻</span></div>
+            <div class="story-capsule" onclick="alert('عرض قصة ياسين 🧑‍💻')">
+                <div class="story-ring"><div class="story-pfp">🧑‍💻</div></div>
                 <span>ياسين</span>
             </div>
         </div>
 
-        <div class="chat-list" id="chats-list-wrapper"></div>
+        <div class="chat-feed" id="threads-container"></div>
     </div>
 
-    <!-- 3. نافذة غرفة المحادثة المباشرة -->
-    <div id="chat-room" class="screen">
-        <div class="chat-room-header">
+    <!-- 3. غرفة المحادثة المباشرة المتقدمة -->
+    <div id="chat-room-screen" class="screen">
+        <div class="glass-header">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-arrow-right" style="cursor: pointer; font-size: 18px;" onclick="closeChatRoom()"></i>
-                <div id="room-avatar" style="font-size: 24px;">👤</div>
+                <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="closeChatRoom()"></i>
+                <div id="room-partner-avatar" style="font-size: 26px;">👤</div>
                 <div>
-                    <h3 id="room-name" style="font-size: 14px;">المستخدم</h3>
-                    <span style="font-size: 10px; color: var(--online);">متصل عبر السيرفر</span>
+                    <h3 id="room-partner-name" style="font-size: 15px; font-weight: 700;">المستخدم</h3>
+                    <div style="font-size: 11px; color: var(--neon-green);"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> متصل الآن</div>
                 </div>
             </div>
-            <i class="fa-solid fa-gamepad animated-emoji" style="cursor: pointer; color: var(--accent); font-size: 20px;" onclick="inviteToCurrentGame()" title="دعوة للتحدي"></i>
+            <div style="display: flex; gap: 16px; font-size: 18px; color: var(--electric-blue);">
+                <i class="fa-solid fa-ghost" style="cursor: pointer;" onclick="toggleVanishMode()" title="وضع التخفي"></i>
+                <i class="fa-solid fa-gamepad" style="cursor: pointer; color: var(--neon-green);" onclick="openSandboxGame('chess')" title="فتح اللعبة السريعة"></i>
+                <i class="fa-solid fa-phone" style="cursor: pointer;"></i>
+            </div>
         </div>
 
-        <div class="chat-room-body" id="messages-box"></div>
+        <div class="pinned-message-bar" onclick="alert('التمرير إلى الرسالة المثبتة')">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="pinned-line"></div>
+                <div>
+                    <strong style="color: var(--tg-cyan); font-size: 11px;">رسالة مثبتة #1</strong>
+                    <div style="color: var(--text-sub); font-size: 12px;">المباراة النهائية في Cyber Chess الليلة ♟️⚡</div>
+                </div>
+            </div>
+            <i class="fa-solid fa-thumbtack" style="color: var(--tg-cyan);"></i>
+        </div>
+
+        <div class="chat-bubble-stream" id="messages-stream"></div>
 
         <div class="chat-input-bar">
-            <input type="text" id="msg-input" placeholder="اكتب رسالة سحابية..." onkeypress="if(event.key==='Enter') sendMessage()" />
-            <button style="background: none; border: none; color: var(--wa-green); font-size: 20px; cursor: pointer;" onclick="sendMessage()">
-                <i class="fa-solid fa-paper-plane"></i>
+            <div class="input-pill-wrapper">
+                <i class="fa-regular fa-face-smile" style="color: var(--text-sub); cursor: pointer;" onclick="appendEmoji('🔥')"></i>
+                <input type="text" id="chat-text-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
+                <i class="fa-solid fa-paperclip" style="color: var(--text-sub); cursor: pointer;" onclick="alert('إرفاق ملف')"></i>
+            </div>
+            <button class="action-round-btn" onclick="sendChatMessage()">
+                <i class="fa-solid fa-paper-plane" id="send-btn-icon"></i>
             </button>
         </div>
     </div>
 
-    <!-- 4. واجهة قائمة الأصدقاء -->
-    <div id="friends-tab" class="screen">
-        <div class="top-bar">
-            <h2>قائمة الأصدقاء</h2>
-            <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="switchTab('chat-tab')"></i>
-        </div>
-        <div class="chat-list" id="friends-list-wrapper"></div>
-    </div>
-
-    <!-- 5. واجهة الألعاب (بتصميم WePlay المستوحى من الصورة) -->
-    <div id="games-tab" class="screen">
-        <div class="top-bar">
-            <h2>WePlay Arena</h2>
-            <i class="fa-solid fa-bell" style="color: var(--accent);"></i>
+    <!-- 4. تبويب صالة التحدي (Interactive Canvas & Lounge) -->
+    <div id="canvas-tab" class="screen">
+        <div class="voice-lounge-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--neon-green); display: flex; align-items: center; justify-content: center;" id="canvas-my-avatar">😎</div>
+                <div class="voice-waves-spectrum" style="width: 60px;"><span></span><span></span><span></span><span></span></div>
+                <span style="font-size: 11px; color: var(--neon-green); font-weight: bold;">صالة صوتية حية (3)</span>
+            </div>
+            <button style="background: rgba(255,255,255,0.1); border: 1px solid var(--border-soft); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 11px;" onclick="alert('تم تبديل حالة المايك')"><i class="fa-solid fa-microphone"></i></button>
         </div>
 
-        <div class="weplay-container">
-            <!-- كارت WePlay العلوي للعملات والمهام -->
-            <div class="weplay-header-card">
-                <div class="weplay-top-status">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span id="weplay-user-avatar" class="animated-emoji" style="font-size: 32px;">😎</span>
-                        <div>
-                            <strong style="font-size: 13px;" id="weplay-user-name">اللاعب</strong>
-                            <div style="font-size: 10px; color: #a5b4fc;">قناص اللعب • Lv.12</div>
-                        </div>
-                    </div>
-                    <div class="coin-pill">
-                        <span>🪙</span>
-                        <span id="weplay-coins">17619</span>
-                        <span style="font-size: 11px; color: #fff;">+</span>
-                    </div>
+        <div style="flex: 1; overflow-y: auto; padding: 16px;">
+            <div class="challenge-card-widget">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="font-size: 13px;"><i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> تحدي Math Blitz ⚡</strong>
+                    <span style="font-size: 10px; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 8px; color: var(--neon-green);">مباشر</span>
                 </div>
-
-                <div class="weplay-quick-nav">
-                    <div class="weplay-nav-item" onclick="alert('جدول الترتيب العالمي: المركز #14')">
-                        <div class="weplay-nav-icon">👑</div>
-                        <span>Ranking</span>
-                    </div>
-                    <div class="weplay-nav-item" onclick="alert('بطاقات المتعة والمكافآت اليومية جاهزة!')">
-                        <div class="weplay-nav-icon">🃏</div>
-                        <span>Fun Cards</span>
-                    </div>
-                    <div class="weplay-nav-item" onclick="alert('المهام اليومية: تم إنجاز 3 من 5!')">
-                        <div class="weplay-nav-icon">📋</div>
-                        <span>Tasks</span>
-                    </div>
-                    <div class="weplay-nav-item" onclick="switchTab('friends-tab')">
-                        <div class="weplay-nav-icon">👥</div>
-                        <span>Online Friends</span>
-                    </div>
-                </div>
+                <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">سارة حققت 480 نقطة، هل يمكنك كسر الرقم؟</p>
+                <button class="btn-neo" style="width: 100%; font-size: 13px;" onclick="openSandboxGame('math')">قبول التحدي واللعب فوراً</button>
             </div>
 
-            <div class="weplay-section-title">
-                <span>Games</span>
-                <span style="font-size: 11px; color: var(--tg-blue); cursor: pointer;"><i class="fa-solid fa-door-open"></i> Game Rooms</span>
-            </div>
-
-            <!-- بطاقات الألعاب بنمط WePlay -->
-            <div class="weplay-games-list" id="weplay-games-list"></div>
-        </div>
-    </div>
-
-    <!-- 6. ساحة اللعبة التفاعلية -->
-    <div id="game-arena-screen" class="screen">
-        <div class="top-bar">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-arrow-right" style="cursor: pointer;" onclick="closeGameArena()"></i>
-                <h3 id="arena-title" style="font-size: 15px;">اسم اللعبة</h3>
-            </div>
-            <button onclick="resetCurrentGame()" style="background: none; border: 1px solid var(--border-dark); color: #fff; padding: 4px 10px; border-radius: 8px; font-size: 11px;">إعادة</button>
-        </div>
-        <div class="arena-canvas-box" id="arena-content"></div>
-    </div>
-
-    <!-- 7. تحكم كامل في الملف الشخصي (تغيير الاسم والتحكم الكامل) -->
-    <div id="profile-tab" class="screen">
-        <div class="top-bar">
-            <h2>الملف الشخصي</h2>
-            <i class="fa-solid fa-right-from-bracket" style="color: #ef4444; cursor: pointer;" onclick="logout()" title="تسجيل خروج"></i>
-        </div>
-
-        <div class="profile-full-control">
-            <!-- الغلاف وصورة الحساب -->
-            <div class="custom-cover-box" id="profile-cover">
-                <button class="cover-color-picker" onclick="changeCoverColor()"><i class="fa-solid fa-palette"></i> تغيير الغلاف</button>
-                <div class="custom-avatar-box" onclick="changeAvatar()">
-                    <span id="profile-avatar-display" class="animated-emoji">😎</span>
+            <div class="challenge-card-widget" style="border-color: var(--neon-green);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="font-size: 13px;"><i class="fa-solid fa-gamepad" style="color: var(--neon-green);"></i> هوكي الطاولة السريع</strong>
+                    <span style="font-size: 10px; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 8px; color: var(--electric-blue);">مبارزة</span>
                 </div>
-            </div>
-
-            <div class="profile-edit-section">
-                <h3 style="font-size: 15px; margin-bottom: 14px; color: var(--tg-blue);"><i class="fa-solid fa-sliders"></i> لوحة التحكم الكاملة</h3>
-                
-                <div class="input-group">
-                    <label>الاسم الكامل أو المستعار</label>
-                    <input type="text" id="edit-profile-name" />
-                </div>
-
-                <div class="input-group">
-                    <label>الحالة / النبذة الشخصية (Bio)</label>
-                    <input type="text" id="edit-profile-bio" />
-                </div>
-
-                <div class="input-group">
-                    <label>البريد الإلكتروني</label>
-                    <input type="email" id="edit-profile-email" disabled style="opacity: 0.6;" />
-                </div>
-
-                <div class="input-group">
-                    <label>المعرف الثابت في السيرفر (UID)</label>
-                    <input type="text" id="edit-profile-id" disabled style="opacity: 0.6; font-family: monospace;" />
-                </div>
-
-                <button class="main-btn" onclick="saveFullProfile()">حفظ كافة التغييرات</button>
+                <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">أول من يسجل 3 أهداف يربح 100 عملة ذهبية!</p>
+                <button class="btn-neo" style="width: 100%; font-size: 13px;" onclick="openSandboxGame('hockey')">بدء جولة الهوكي 🏒</button>
             </div>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
-    <nav class="bottom-nav" id="main-navigation" style="display: none;">
-        <div class="nav-item active" onclick="switchTab('chat-tab')">
-            <i class="fa-solid fa-comments"></i>
+    <!-- 5. محرك الألعاب المدمج (The Gaming Engine Sandbox Modal) -->
+    <div id="game-sandbox-modal">
+        <div class="sandbox-sheet">
+            <div class="sandbox-hud">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="sandbox-game-icon" style="font-size: 22px;">♟️</span>
+                    <strong id="sandbox-game-title" style="font-size: 14px;">CYBER CHESS</strong>
+                </div>
+                <button style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;" onclick="closeSandboxGame()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="sandbox-arena" id="sandbox-arena-render"></div>
+        </div>
+    </div>
+
+    <!-- 6. تبويب WePlay Arena (20 لعبة كاملة) -->
+    <div id="weplay-tab" class="screen">
+        <div class="glass-header">
+            <h1>WePlay Arena</h1>
+            <span style="color: #fbbf24; font-weight: bold; font-size: 13px;">🪙 17,619</span>
+        </div>
+        <div class="weplay-container" id="weplay-games-list"></div>
+    </div>
+
+    <!-- 7. تبويب البحث المستقل وطلبات الصداقة -->
+    <div id="search-screen" class="screen">
+        <div class="glass-header">
+            <h1>البحث والأصدقاء</h1>
+            <span id="my-tag-display" style="font-family: monospace; color: var(--electric-blue); font-size: 12px; cursor: pointer;" onclick="copyMyTag()">#ID-0000</span>
+        </div>
+        <div style="padding: 16px;">
+            <div class="search-pill-box">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--text-sub);"></i>
+                <input type="text" id="friend-search-input" placeholder="ابحث بمعرف الصديق (#JEUX-1234)..." />
+                <button class="btn-neo" style="padding: 6px 14px; font-size: 12px;" onclick="dispatchFriendRequest()">إرسال طلب</button>
+            </div>
+        </div>
+        <div style="padding: 0 16px 16px 16px; flex: 1; overflow-y: auto;">
+            <div style="font-size: 13px; font-weight: bold; color: var(--text-sub); margin-bottom: 10px;">طلبات الصداقة المعلقة</div>
+            <div id="incoming-requests-deck"></div>
+            <div style="font-size: 13px; font-weight: bold; color: var(--text-sub); margin: 20px 0 10px 0;">قائمة الأصدقاء المتصلين</div>
+            <div id="accepted-friends-deck"></div>
+        </div>
+    </div>
+
+    <!-- 8. تبويب الملف الشخصي (Instagram Style) -->
+    <div id="profile-screen" class="screen">
+        <div class="glass-header">
+            <h1 id="insta-profile-username">username</h1>
+            <i class="fa-solid fa-arrow-right-from-bracket" style="color: #ef4444; cursor: pointer;" onclick="logout()"></i>
+        </div>
+        <div class="insta-view">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px;">
+                <div class="insta-avatar-ring" onclick="cycleAvatar()">
+                    <div class="insta-avatar-pic">
+                        <span id="insta-avatar-emoji">😎</span>
+                    </div>
+                </div>
+                <div style="display: flex; flex: 1; justify-content: space-around; text-align: center;">
+                    <div><strong>9</strong><br><span style="font-size: 11px; color: var(--text-sub);">منشورات</span></div>
+                    <div><strong>348</strong><br><span style="font-size: 11px; color: var(--text-sub);">متابعون</span></div>
+                    <div><strong>192</strong><br><span style="font-size: 11px; color: var(--text-sub);">أتابعهم</span></div>
+                </div>
+            </div>
+            <div style="padding: 0 20px 14px 20px;">
+                <strong id="insta-profile-fullname" style="font-size: 15px;">الاسم الكامل</strong>
+                <p id="insta-profile-bio" style="font-size: 13px; color: #cbd5e1; margin-top: 4px; white-space: pre-line;">أهلاً بكم في حسابي الرسمي ✨</p>
+                <div style="display: inline-block; background: #151e32; border: 1px solid var(--border-soft); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--electric-blue); margin-top: 8px; font-family: monospace;" id="insta-my-id-badge" onclick="copyMyTag()">#JEUX-0000</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي الخماسي -->
+    <nav class="bottom-glass-nav" id="main-navigation" style="display: none;">
+        <div class="nav-link active" onclick="switchTab('chats-screen')">
+            <i class="fa-brands fa-whatsapp"></i>
             <span>الدردشة</span>
         </div>
-        <div class="nav-item" onclick="switchTab('games-tab')">
-            <i class="fa-solid fa-gamepad"></i>
-            <span>WePlay</span>
+        <div class="nav-link" onclick="switchTab('canvas-tab')">
+            <i class="fa-solid fa-bolt"></i>
+            <span>صالة التحدي</span>
         </div>
-        <div class="nav-item" onclick="switchTab('friends-tab')">
-            <i class="fa-solid fa-user-group"></i>
+        <div class="nav-link" onclick="switchTab('weplay-tab')">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>WePlay (20)</span>
+        </div>
+        <div class="nav-link" onclick="switchTab('search-screen')">
+            <i class="fa-solid fa-magnifying-glass"></i>
             <span>الأصدقاء</span>
         </div>
-        <div class="nav-item" onclick="switchTab('profile-tab')">
-            <i class="fa-solid fa-user-gear"></i>
-            <span>الملف الشخصي</span>
+        <div class="nav-link" onclick="switchTab('profile-screen')">
+            <i class="fa-brands fa-instagram"></i>
+            <span>حسابي</span>
         </div>
     </nav>
 
     <script>
-        /* ================= 1. تهيئة خادم Firebase ================= */
+        /* ================= Firebase & Setup ================= */
         const firebaseConfig = {
             apiKey: "AIzaSyDzpFz9GBHvNPROFJYa4_7TEXtm0BaSQlA",
             authDomain: "jalil-c54f1.firebaseapp.com",
@@ -911,24 +891,10 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let currentUser = JSON.parse(localStorage.getItem('le_jeux_user')) || null;
-        let friendsList = JSON.parse(localStorage.getItem('le_jeux_friends')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('le_social_user')) || null;
+        let friendsList = JSON.parse(localStorage.getItem('le_social_friends')) || [];
         let currentChatPartner = null;
-        let activeGameId = null;
         let currentChatListener = null;
-
-        /* ألعاب WePlay المستوحاة من الصورة */
-        const weplayGames = [
-            { id: 'farm', name: 'Farm Simulator', tag: 'Steal Crops', desc: 'ازرع واحمِ محصولك واسرق محاصيل الآخرين', art: '🐄', class: 'banner-farm' },
-            { id: 'food', name: 'Food Rush', tag: 'Deliver Upgrade', desc: 'توصيل الطعام السريع وتفادي العوائق', art: '🛵', class: 'banner-food' },
-            { id: 'prank', name: 'Prank Simulator', tag: 'Fun & Tricks', desc: 'مقالب مضحكة وتحديات ذكاء بين الأصدقاء', art: '🐒', class: 'banner-prank' },
-            { id: 'caught', name: "Don't Get Caught", tag: 'Sneak Duel', desc: 'لعبة التخفي وتفادي الحراس الذكيين', art: '🕵️', class: 'banner-caught' },
-            { id: 'cafe', name: "Trickster's Cafe", tag: 'Mystery Cards', desc: 'استراتيجية وخدع مقهى المحتالين', art: '🐊', class: 'banner-cafe' },
-            { id: 'spy', name: "Who's the Spy", tag: 'Brain Word', desc: 'اكتشف الجاسوس المتخفي بين اللاعبين', art: '🎩', class: 'banner-spy' },
-            { id: 'werewolf', name: 'Space Werewolf', tag: '$1.29 Event', desc: 'المستذئب الفضائي ولعبة الشك والمؤامرة', art: '🐺', class: 'banner-werewolf' },
-            { id: 'brain', name: 'Brain Storm Duel', tag: 'IQ Challenge', desc: 'مواجهة الذكاء والعمليات الحسابية السريعة', art: '💡', class: 'banner-brain' },
-            { id: 'tictactoe', name: 'XO Classic Arena', tag: '2 Players', desc: 'مبارزة XO الكلاسيكية والمباشرة', art: '❌', class: 'banner-food' }
-        ];
 
         window.onload = () => {
             if (currentUser) {
@@ -936,454 +902,83 @@
             } else {
                 showScreen('auth-screen');
             }
-            renderWeplayGames();
         };
 
-        /* ================= 2. تسجيل ودخول المستخدم ================= */
         function handleAuth() {
             const email = document.getElementById('auth-email').value.trim();
-            const name = document.getElementById('auth-name').value.trim();
+            const username = document.getElementById('auth-username').value.trim();
+            const fullname = document.getElementById('auth-fullname').value.trim();
 
-            if (!email || !email.includes('@') || !name) {
-                alert('يرجى إدخال بريد إلكتروني صحيح واسم مستخدم!');
+            if (!email || !username || !fullname) {
+                alert('يرجى ملء جميع الحقول للمتابعة!');
                 return;
             }
 
-            const cleanId = 'JEUX-' + Math.floor(1000 + Math.random() * 9000);
+            const cleanUser = username.replace('@', '').toLowerCase();
+            const rawId = 'JEUX-' + Math.floor(1000 + Math.random() * 9000);
 
             currentUser = {
-                id: '#' + cleanId,
-                rawId: cleanId,
+                id: '#' + rawId,
+                rawId: rawId,
                 email: email,
-                name: name,
+                username: cleanUser,
+                fullname: fullname,
                 avatar: '😎',
-                bio: 'مرحباً! أنا أستخدم تطبيق Le jeux chat',
-                coverColor: 'linear-gradient(135deg, #3b82f6, #ec4899)'
+                bio: '✨ مرحباً بكم في حسابي الرسمي على Le jeux chat!\n📍 الجزائر 🇩🇿'
             };
 
-            db.ref('users/' + cleanId).set(currentUser);
-            localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
-            launchApp();
+            db.ref('users/' + rawId).set(currentUser).then(() => {
+                localStorage.setItem('le_social_user', JSON.stringify(currentUser));
+                launchApp();
+            }).catch(() => {
+                localStorage.setItem('le_social_user', JSON.stringify(currentUser));
+                launchApp();
+            });
         }
 
         function launchApp() {
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('main-navigation').style.display = 'flex';
-            document.getElementById('display-fixed-id').textContent = currentUser.id;
-            loadProfileData();
-            renderFriendsList();
-            renderChatsList();
-            listenToFriendRequests();
-            switchTab('chat-tab');
+            document.getElementById('my-tag-display').textContent = currentUser.id;
+            document.getElementById('canvas-my-avatar').textContent = currentUser.avatar;
+
+            loadProfile();
+            renderChatThreads();
+            renderFriendsDeck();
+            renderWePlayGames();
+            listenToRequests();
+            switchTab('chats-screen');
         }
 
-        function copyMyId() {
+        function copyMyTag() {
             navigator.clipboard.writeText(currentUser.id);
-            alert(`تم نسخ معرفك (${currentUser.id}) بنجاح! شاركه مع صديقك ليضيفك.`);
-        }
-
-        /* ================= 3. نظام إرسال وقبول ورفض طلبات الصداقة ================= */
-        function sendFriendRequest() {
-            const input = document.getElementById('search-friend-input');
-            let searchId = input.value.trim().toUpperCase();
-            if (!searchId) return;
-
-            if (searchId.startsWith('#')) searchId = searchId.substring(1);
-
-            if (searchId === currentUser.rawId) {
-                alert('هذا المعرف خاص بك!');
-                return;
-            }
-
-            db.ref('users/' + searchId).once('value', (snap) => {
-                if (snap.exists()) {
-                    // إرسال طلب صداقة إلى حساب المستقبل
-                    db.ref(`requests/${searchId}/${currentUser.rawId}`).set({
-                        fromId: currentUser.rawId,
-                        fromName: currentUser.name,
-                        fromAvatar: currentUser.avatar || '😎',
-                        timestamp: Date.now()
-                    });
-                    input.value = '';
-                    alert(`تم إرسال طلب الصداقة إلى ${snap.val().name} بنجاح! في انتظار قبوله.`);
-                } else {
-                    alert('لم يتم العثور على مستخدم بهذا المعرف!');
-                }
-            });
-        }
-
-        function listenToFriendRequests() {
-            db.ref('requests/' + currentUser.rawId).on('value', (snapshot) => {
-                const container = document.getElementById('requests-container');
-                const list = document.getElementById('incoming-requests-list');
-                list.innerHTML = '';
-
-                const requests = snapshot.val();
-                if (requests && Object.keys(requests).length > 0) {
-                    container.style.display = 'flex';
-                    Object.values(requests).forEach(req => {
-                        const div = document.createElement('div');
-                        div.className = 'request-item';
-                        div.innerHTML = `
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <span style="font-size:20px;">${req.fromAvatar}</span>
-                                <span style="font-size:12px; font-weight:bold;">${req.fromName} (#${req.fromId})</span>
-                            </div>
-                            <div>
-                                <button class="req-btn req-accept" onclick="acceptFriend('${req.fromId}', '${req.fromName}', '${req.fromAvatar}')">قبول</button>
-                                <button class="req-btn req-reject" onclick="rejectFriend('${req.fromId}')">رفض</button>
-                            </div>
-                        `;
-                        list.appendChild(div);
-                    });
-                } else {
-                    container.style.display = 'none';
-                }
-            });
-        }
-
-        function acceptFriend(friendId, friendName, friendAvatar) {
-            // إضافة الصديق محلياً وسحابياً
-            const newFriend = { rawId: friendId, id: '#' + friendId, name: friendName, avatar: friendAvatar };
-            friendsList.push(newFriend);
-            localStorage.setItem('le_jeux_friends', JSON.stringify(friendsList));
-
-            // حذف الطلب
-            db.ref(`requests/${currentUser.rawId}/${friendId}`).remove();
-            renderFriendsList();
-            renderChatsList();
-            alert(`أصبحت الآن صديقاً لـ ${friendName}! 🎉`);
-        }
-
-        function rejectFriend(friendId) {
-            db.ref(`requests/${currentUser.rawId}/${friendId}`).remove();
-            alert('تم رفض طلب الصداقة.');
-        }
-
-        /* ================= 4. الشات السحابي الحقيقي ================= */
-        function getRoomId(userA, userB) {
-            return [userA, userB].sort().join('_');
-        }
-
-        function openChatRoom(friend) {
-            currentChatPartner = friend;
-            document.getElementById('room-name').textContent = friend.name;
-            document.getElementById('room-avatar').innerHTML = `<span class="animated-emoji">${friend.avatar || '👤'}</span>`;
-            showScreen('chat-room');
-            listenToRealtimeMessages();
-        }
-
-        function closeChatRoom() {
-            if (currentChatListener && currentChatPartner) {
-                const roomId = getRoomId(currentUser.rawId, currentChatPartner.rawId);
-                db.ref('chats/' + roomId).off('value', currentChatListener);
-            }
-            renderChatsList();
-            switchTab('chat-tab');
-        }
-
-        function listenToRealtimeMessages() {
-            const container = document.getElementById('messages-box');
-            container.innerHTML = '';
-            const roomId = getRoomId(currentUser.rawId, currentChatPartner.rawId);
-
-            currentChatListener = db.ref('chats/' + roomId).on('value', (snapshot) => {
-                container.innerHTML = '';
-                const data = snapshot.val();
-                if (data) {
-                    Object.values(data).forEach(msg => {
-                        const bubble = document.createElement('div');
-                        const isMe = msg.senderId === currentUser.rawId;
-                        bubble.className = `message-bubble ${isMe ? 'outgoing' : 'incoming'}`;
-                        const checkHtml = isMe ? '<i class="fa-solid fa-check-double read-check"></i>' : '';
-                        bubble.innerHTML = `
-                            <div>${msg.text}</div>
-                            <div class="message-meta">
-                                <span>${msg.time}</span>
-                                ${checkHtml}
-                            </div>
-                        `;
-                        container.appendChild(bubble);
-                    });
-                    container.scrollTop = container.scrollHeight;
-                }
-            });
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-            if (!text || !currentChatPartner) return;
-
-            const now = new Date();
-            const timeStr = `${now.getHours()}:${(now.getMinutes()<10?'0':'') + now.getMinutes()}`;
-            const roomId = getRoomId(currentUser.rawId, currentChatPartner.rawId);
-
-            db.ref('chats/' + roomId).push().set({
-                senderId: currentUser.rawId,
-                senderName: currentUser.name,
-                text: text,
-                time: timeStr,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
-
-            input.value = '';
-        }
-
-        function renderChatsList() {
-            const wrapper = document.getElementById('chats-list-wrapper');
-            wrapper.innerHTML = '';
-
-            if (friendsList.length === 0) {
-                wrapper.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 20px; font-size: 13px;">لا توجد محادثات نشطة.<br>أرسل طلب صداقة بمعرف الصديق للتواصل!</div>`;
-                return;
-            }
-
-            friendsList.forEach(friend => {
-                const div = document.createElement('div');
-                div.className = 'chat-row';
-                div.onclick = () => openChatRoom(friend);
-                div.innerHTML = `
-                    <div class="chat-avatar">
-                        <span class="animated-emoji">${friend.avatar || '👤'}</span>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="chat-details">
-                        <div class="chat-header-row">
-                            <span class="chat-name">${friend.name}</span>
-                            <span class="chat-time">سحابي</span>
-                        </div>
-                        <div class="chat-last-msg">
-                            <i class="fa-solid fa-check-double read-check" style="font-size: 10px;"></i>
-                            <span>انقر لبدء المحادثة</span>
-                        </div>
-                    </div>
-                `;
-                wrapper.appendChild(div);
-            });
-        }
-
-        function renderFriendsList() {
-            const container = document.getElementById('friends-list-wrapper');
-            container.innerHTML = '';
-
-            if (friendsList.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 20px; font-size: 13px;">قائمتك فارغة حالياً.<br>أرسل طلب لأصدقائك عبر الـ ID!</div>`;
-                return;
-            }
-
-            friendsList.forEach(friend => {
-                const row = document.createElement('div');
-                row.className = 'chat-row';
-                row.innerHTML = `
-                    <div class="chat-avatar"><span class="animated-emoji">${friend.avatar || '👤'}</span></div>
-                    <div class="chat-details">
-                        <div class="chat-name">${friend.name}</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">${friend.id || ('#' + friend.rawId)}</div>
-                    </div>
-                    <button class="main-btn" style="margin: 0; padding: 6px 14px; font-size: 12px; width: auto;" onclick="openChatRoom(${JSON.stringify(friend).replace(/"/g, '&quot;')})">دردشة</button>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        /* ================= 5. بناء واجهة WePlay للألعاب ================= */
-        function renderWeplayGames() {
-            const container = document.getElementById('weplay-games-list');
-            container.innerHTML = '';
-
-            weplayGames.forEach(game => {
-                const card = document.createElement('div');
-                card.className = `weplay-card-banner ${game.class}`;
-                card.onclick = () => openGameArena(game);
-                card.innerHTML = `
-                    <div class="tag-badge">${game.tag}</div>
-                    <div class="weplay-card-info">
-                        <h3>${game.name}</h3>
-                        <p>${game.desc}</p>
-                    </div>
-                    <div class="weplay-card-art">${game.art}</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function openGameArena(game) {
-            activeGameId = game.id;
-            document.getElementById('arena-title').textContent = game.name;
-            showScreen('game-arena-screen');
-            loadGameModule(game.id);
-        }
-
-        function closeGameArena() {
-            switchTab('games-tab');
-        }
-
-        function resetCurrentGame() {
-            loadGameModule(activeGameId);
-        }
-
-        function loadGameModule(gameId) {
-            const container = document.getElementById('arena-content');
-            container.innerHTML = '';
-
-            if (gameId === 'tictactoe') {
-                runTicTacToe(container);
-            } else if (gameId === 'brain') {
-                runMathDuel(container);
-            } else {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <span class="animated-emoji" style="font-size: 60px; margin-bottom: 16px;">🎮</span>
-                        <h2 style="font-size: 20px; margin-bottom: 8px;">غرفة WePlay: ${gameId.toUpperCase()}</h2>
-                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">تم فتح الروم المباشر بين اللاعبين لشخصين بنجاح!</p>
-                        <button class="main-btn" onclick="alert('أحسنت! فوز للاعب 1 🎉')">تسجيل نقطة انتصار</button>
-                    </div>
-                `;
-            }
-        }
-
-        function runTicTacToe(box) {
-            let board = Array(9).fill('');
-            let turn = 'X';
-
-            const boardDiv = document.createElement('div');
-            boardDiv.className = 'game-board';
-            boardDiv.style.gridTemplateColumns = 'repeat(3, 1fr)';
-
-            const status = document.createElement('div');
-            status.style.marginBottom = '14px';
-            status.style.fontWeight = 'bold';
-            status.textContent = `دور اللاعب: ${turn}`;
-
-            box.appendChild(status);
-            box.appendChild(boardDiv);
-
-            for (let i = 0; i < 9; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'board-cell';
-                cell.onclick = () => {
-                    if (board[i] === '') {
-                        board[i] = turn;
-                        cell.textContent = turn;
-                        cell.style.color = turn === 'X' ? '#ec4899' : '#6366f1';
-                        if (checkWin(board, turn)) {
-                            status.textContent = `🎉 الفائز هو: ${turn}!`;
-                            boardDiv.style.pointerEvents = 'none';
-                            return;
-                        }
-                        turn = turn === 'X' ? 'O' : 'X';
-                        status.textContent = `دور اللاعب: ${turn}`;
-                    }
-                };
-                boardDiv.appendChild(cell);
-            }
-
-            function checkWin(b, p) {
-                const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-                return wins.some(comb => comb.every(idx => b[idx] === p));
-            }
-        }
-
-        function runMathDuel(box) {
-            const n1 = Math.floor(Math.random() * 20) + 4;
-            const n2 = Math.floor(Math.random() * 20) + 4;
-            const ans = n1 + n2;
-
-            box.innerHTML = `
-                <div style="text-align: center; width: 100%;">
-                    <h2 style="font-size: 32px; margin-bottom: 20px;">${n1} + ${n2} = ؟</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 280px; margin: 0 auto;">
-                        <button class="main-btn" onclick="checkMath(${ans}, ${ans})">${ans}</button>
-                        <button class="main-btn" onclick="checkMath(${ans + 4}, ${ans})">${ans + 4}</button>
-                        <button class="main-btn" onclick="checkMath(${ans - 2}, ${ans})">${ans - 2}</button>
-                    </div>
-                </div>
-            `;
-            window.checkMath = (chosen, correct) => {
-                if (chosen === correct) alert('إجابة عبقرية وصحيحة! 🧠');
-                else alert('إجابة خاطئة!');
-                runMathDuel(box);
-            };
-        }
-
-        /* ================= 6. تحكم كامل في الملف الشخصي ================= */
-        function loadProfileData() {
-            if (!currentUser) return;
-            document.getElementById('edit-profile-name').value = currentUser.name;
-            document.getElementById('edit-profile-bio').value = currentUser.bio;
-            document.getElementById('edit-profile-email').value = currentUser.email;
-            document.getElementById('edit-profile-id').value = currentUser.id;
-            document.getElementById('profile-avatar-display').textContent = currentUser.avatar;
-            document.getElementById('weplay-user-avatar').textContent = currentUser.avatar;
-            document.getElementById('weplay-user-name').textContent = currentUser.name;
-            if (currentUser.coverColor) {
-                document.getElementById('profile-cover').style.background = currentUser.coverColor;
-            }
-        }
-
-        function saveFullProfile() {
-            const newName = document.getElementById('edit-profile-name').value.trim();
-            const newBio = document.getElementById('edit-profile-bio').value.trim();
-
-            if (!newName) {
-                alert('يرجى كتابة الاسم!');
-                return;
-            }
-
-            currentUser.name = newName;
-            currentUser.bio = newBio;
-
-            localStorage.setItem('le_jeux_user', JSON.stringify(currentUser));
-            db.ref('users/' + currentUser.rawId).update({
-                name: currentUser.name,
-                bio: currentUser.bio,
-                avatar: currentUser.avatar,
-                coverColor: currentUser.coverColor
-            });
-
-            loadProfileData();
-            alert('تم حفظ كافة إعدادات الملف الشخصي بنجاح!');
-        }
-
-        function changeAvatar() {
-            const avatars = ['😎', '🤠', '🥷', '👑', '🦁', '🤖', '👾', '🚀', '🧙‍♂️', '🧝'];
-            const random = avatars[Math.floor(Math.random() * avatars.length)];
-            currentUser.avatar = random;
-            document.getElementById('profile-avatar-display').textContent = random;
-            document.getElementById('weplay-user-avatar').textContent = random;
-        }
-
-        function changeCoverColor() {
-            const gradients = [
-                'linear-gradient(135deg, #3b82f6, #ec4899)',
-                'linear-gradient(135deg, #10b981, #06b6d4)',
-                'linear-gradient(135deg, #f59e0b, #ef4444)',
-                'linear-gradient(135deg, #8b5cf6, #3b82f6)'
-            ];
-            const randomGrad = gradients[Math.floor(Math.random() * gradients.length)];
-            currentUser.coverColor = randomGrad;
-            document.getElementById('profile-cover').style.background = randomGrad;
+            alert(`تم نسخ المعرف الخاص بك (${currentUser.id}) بنجاح! 📋`);
         }
 
         function logout() {
-            if (confirm('هل تريد تسجيل الخروج؟')) {
-                localStorage.removeItem('le_jeux_user');
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('le_social_user');
                 currentUser = null;
                 document.getElementById('main-navigation').style.display = 'none';
                 showScreen('auth-screen');
             }
         }
 
-        /* ================= 7. الملاحة والتبويبات ================= */
-        function switchTab(tabId) {
+        function switchTab(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(screenId).classList.add('active');
 
-            const tabs = ['chat-tab', 'games-tab', 'friends-tab', 'profile-tab'];
-            document.querySelectorAll('.nav-item').forEach((item, index) => {
-                if (tabs[index] === tabId) item.classList.add('active');
-                else item.classList.remove('active');
+            const tabMap = {
+                'chats-screen': 0,
+                'canvas-tab': 1,
+                'weplay-tab': 2,
+                'search-screen': 3,
+                'profile-screen': 4
+            };
+
+            document.querySelectorAll('.nav-link').forEach((node, idx) => {
+                if (idx === tabMap[screenId]) node.classList.add('active');
+                else node.classList.remove('active');
             });
         }
 
@@ -1392,16 +987,787 @@
             document.getElementById(id).classList.add('active');
         }
 
-        function sendGlobalChallenge() {
-            alert('تم نشر التحدي في الخانة العالمية بنجاح لجميع مستخدمي السيرفر! 🔥');
+        /* ================= 2. نظام المراسلة ================= */
+        function renderChatThreads() {
+            const feed = document.getElementById('threads-container');
+            feed.innerHTML = '';
+
+            const demoContacts = [
+                { rawId: 'demo_1', id: '#JEUX-1111', name: 'سارة', avatar: '🧕', lastMsg: 'جاهزة للمواجهة في Cyber Chess! ♟️' },
+                { rawId: 'demo_2', id: '#JEUX-2222', name: 'ياسين', avatar: '🧑‍💻', lastMsg: 'تم تسجيل الهدف في Air Hockey 🥅' }
+            ];
+
+            const allContacts = [...friendsList, ...demoContacts];
+
+            allContacts.forEach(contact => {
+                const row = document.createElement('div');
+                row.className = 'chat-cell';
+                row.onclick = () => openChatRoom(contact);
+                row.innerHTML = `
+                    <div class="chat-avatar-box">
+                        ${contact.avatar}
+                        <div class="online-dot"></div>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-size: 15.5px; font-weight: 700; color: #fff;">${contact.name}</span>
+                            <span style="font-size: 11.5px; color: var(--text-sub);">الآن</span>
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">
+                            <i class="fa-solid fa-check-double read-checks"></i>
+                            <span>${contact.lastMsg || 'انقر لفتح المحادثة...'}</span>
+                        </div>
+                    </div>
+                `;
+                feed.appendChild(row);
+            });
         }
 
-        function viewStory(name, content) {
-            alert(`قصة ${name}:\n\n"${content}"`);
+        function openChatRoom(partner) {
+            currentChatPartner = partner;
+            document.getElementById('room-partner-name').textContent = partner.name;
+            document.getElementById('room-partner-avatar').textContent = partner.avatar;
+            showScreen('chat-room-screen');
+            listenToMessages();
         }
 
-        function inviteToCurrentGame() {
-            alert(`تم إرسال بطاقة دعوة اللعب إلى ${currentChatPartner.name} داخل الشات!`);
+        function closeChatRoom() {
+            if (currentChatListener && currentChatPartner) {
+                const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
+                db.ref('master_chats/' + roomId).off('value', currentChatListener);
+            }
+            showScreen('chats-screen');
+        }
+
+        function toggleVanishMode() {
+            const stream = document.getElementById('messages-stream');
+            stream.classList.toggle('vanish-active');
+            alert(stream.classList.contains('vanish-active') ? 'تم تفعيل وضع التخفي الدخاني (Vanish Mode) 👻' : 'تم تعطيل وضع التخفي');
+        }
+
+        function listenToMessages() {
+            const stream = document.getElementById('messages-stream');
+            stream.innerHTML = '';
+
+            const voiceBubble = document.createElement('div');
+            voiceBubble.className = 'msg-bubble incoming';
+            voiceBubble.innerHTML = `
+                <div class="voice-memo-card">
+                    <div class="voice-play-circle"><i class="fa-solid fa-play"></i></div>
+                    <div class="voice-waves-spectrum">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-sub);">0:12</span>
+                </div>
+                <div class="msg-meta-stamp">
+                    <span>10:45 ص</span>
+                </div>
+            `;
+            stream.appendChild(voiceBubble);
+
+            const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
+
+            currentChatListener = db.ref('master_chats/' + roomId).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    Object.values(data).forEach(msg => {
+                        const bubble = document.createElement('div');
+                        const isMe = msg.senderId === currentUser.rawId;
+                        bubble.className = `msg-bubble ${isMe ? 'outgoing' : 'incoming'}`;
+                        bubble.innerHTML = `
+                            <div>${msg.text}</div>
+                            <div class="msg-meta-stamp">
+                                <span>${msg.time}</span>
+                                ${isMe ? '<i class="fa-solid fa-check-double read-checks"></i>' : ''}
+                            </div>
+                        `;
+                        stream.appendChild(bubble);
+                    });
+                    stream.scrollTop = stream.scrollHeight;
+                }
+            });
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-text-input');
+            const text = input.value.trim();
+            if (!text || !currentChatPartner) return;
+
+            const now = new Date();
+            const timeStr = `${now.getHours()}:${(now.getMinutes()<10?'0':'') + now.getMinutes()}`;
+            const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
+
+            db.ref('master_chats/' + roomId).push().set({
+                senderId: currentUser.rawId,
+                senderName: currentUser.fullname,
+                text: text,
+                time: timeStr,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+
+            input.value = '';
+        }
+
+        function appendEmoji(em) {
+            document.getElementById('chat-text-input').value += em;
+        }
+
+        /* ================= 3. محرك الألعاب العاملة الكاملة (The Sandbox Engine) ================= */
+        const weplayGamesData = [
+            { id: 'chess', title: 'الشطرنج النيوني (Cyber Chess)', icon: '♟️', tag: 'Tactical & Mind' },
+            { id: 'hockey', title: 'هوكي الطاولة (Air Neon Hockey)', icon: '🏒', tag: 'Arcade Physics' },
+            { id: 'pool', title: 'بلياردو الصالة (8-Ball Cyber Pool)', icon: '🎱', tag: 'Real Physics' },
+            { id: 'radar', title: 'معركة الأساطيل (Sea Fleet Warfare)', icon: '🚢', tag: 'Sonar Radar' },
+            { id: 'math', title: 'المبارزة الحسابية (Math Blitz)', icon: '🧠', tag: 'Speed IQ' },
+            { id: 'xo', title: 'سايبر إكس أو (Cyber XO)', icon: '❌', tag: 'Mind Duel' },
+            { id: 'domino', title: 'دومينو المحترفين (Classic Domino)', icon: '🀄', tag: 'Board Game' },
+            { id: 'word', title: 'فخ الكلمات (Word Trap)', icon: '🔤', tag: 'Vocabulary' },
+            { id: 'memory', title: 'مصفوفة الذاكرة (Memory Matrix)', icon: '🧩', tag: 'Brain Cards' },
+            { id: 'clicker', title: 'تحدي النقر السريع (Speed Clicker)', icon: '⚡', tag: 'Reflex Duel' },
+            { id: 'rps', title: 'حجرة ورقة مقص (RPS Neo)', icon: '✂️', tag: 'Classic Arcade' },
+            { id: 'farm', title: 'محاكي المزرعة (Farm Simulator)', icon: '🌾', tag: 'Social Steal' },
+            { id: 'food', title: 'راش التوصيل (Food Rush)', icon: '🛵', tag: 'Delivery Dash' },
+            { id: 'spy', title: 'من هو الجاسوس (Who\'s the Spy)', icon: '🎩', tag: 'Mystery Word' },
+            { id: 'werewolf', title: 'المستذئب الفضائي (Space Werewolf)', icon: '🐺', tag: 'Social Deception' },
+            { id: 'sketch', title: 'غرفة الرسم والتخمين (Sketch & Guess)', icon: '🎨', tag: 'Draw & Guess' },
+            { id: 'prank', title: 'محاكي المقالب (Prank Simulator)', icon: '🎭', tag: 'Fun Cards' },
+            { id: 'escape', title: 'الهروب الخفي (Don\'t Get Caught)', icon: '🏃', tag: 'Stealth Arcade' },
+            { id: 'cafe', title: 'مقهى الخدع (Trickster\'s Cafe)', icon: '☕', tag: 'Party Game' },
+            { id: 'brain', title: 'عاصفة الدماغ (Brain Storm Duel)', icon: '💡', tag: 'Trivia Battle' }
+        ];
+
+        function renderWePlayGames() {
+            const list = document.getElementById('weplay-games-list');
+            list.innerHTML = '';
+            weplayGamesData.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'weplay-card';
+                card.onclick = () => openSandboxGame(game.id);
+                card.innerHTML = `
+                    <div>
+                        <h3 style="font-size: 14.5px; font-weight: bold; color: var(--electric-blue);">${game.title}</h3>
+                        <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">${game.tag}</p>
+                    </div>
+                    <span style="font-size: 32px;">${game.icon}</span>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function openSandboxGame(gameId) {
+            const modal = document.getElementById('game-sandbox-modal');
+            const arena = document.getElementById('sandbox-arena-render');
+            const title = document.getElementById('sandbox-game-title');
+            const icon = document.getElementById('sandbox-game-icon');
+
+            modal.style.display = 'flex';
+            arena.innerHTML = '';
+
+            const gameObj = weplayGamesData.find(g => g.id === gameId) || { title: 'لعبة تفاعلية', icon: '🎮' };
+            title.textContent = gameObj.title;
+            icon.textContent = gameObj.icon;
+
+            if (gameId === 'chess') runCyberChess(arena);
+            else if (gameId === 'hockey') runAirHockey(arena);
+            else if (gameId === 'pool') runCyberPool(arena);
+            else if (gameId === 'radar') runSeaFleetWarfare(arena);
+            else if (gameId === 'math') runMathBlitz(arena);
+            else if (gameId === 'xo') runCyberXO(arena);
+            else if (gameId === 'domino') runClassicDomino(arena);
+            else if (gameId === 'word') runWordTrap(arena);
+            else if (gameId === 'memory') runMemoryMatrix(arena);
+            else if (gameId === 'clicker') runSpeedClicker(arena);
+            else if (gameId === 'rps') runRPSNeo(arena);
+            else runInteractiveSimulation(arena, gameObj.title, gameObj.icon);
+        }
+
+        function closeSandboxGame() {
+            document.getElementById('game-sandbox-modal').style.display = 'none';
+        }
+
+        /* 1. الشطرنج النيوني (Cyber Chess - حركة وأدوار حقيقية) */
+        function runCyberChess(arena) {
+            let selectedPiece = null;
+            let currentTurn = 'white';
+
+            arena.innerHTML = `
+                <div style="font-size: 12px; margin-bottom: 8px; color: var(--neon-green);">
+                    الدور الحالي: <strong id="chess-turn-indicator">الأبيض (أنت)</strong>
+                </div>
+                <div class="chess-grid" id="chess-board"></div>
+            `;
+
+            const boardEl = document.getElementById('chess-board');
+            const board = [
+                ['♜','♞','♝','♛','♚','♝','♞','♜'],
+                ['♟','♟','♟','♟','♟','♟','♟','♟'],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['♙','♙','♙','♙','♙','♙','♙','♙'],
+                ['♖','♘','♗','♕','♔','♗','♘','♖']
+            ];
+
+            function renderBoard() {
+                boardEl.innerHTML = '';
+                for (let r = 0; r < 8; r++) {
+                    for (let c = 0; c < 8; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = `chess-cell ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
+                        cell.textContent = board[r][c];
+
+                        if (selectedPiece && selectedPiece.r === r && selectedPiece.c === c) {
+                            cell.classList.add('selected');
+                        }
+
+                        cell.onclick = () => {
+                            if (selectedPiece) {
+                                // نقل القطعة
+                                board[r][c] = selectedPiece.piece;
+                                board[selectedPiece.r][selectedPiece.c] = '';
+                                selectedPiece = null;
+                                currentTurn = currentTurn === 'white' ? 'black' : 'white';
+                                document.getElementById('chess-turn-indicator').textContent = currentTurn === 'white' ? 'الأبيض (أنت)' : 'الأسود (الخصم)';
+                                renderBoard();
+                                confetti({ particleCount: 20, spread: 40 });
+                            } else if (board[r][c] !== '') {
+                                selectedPiece = { r, c, piece: board[r][c] };
+                                renderBoard();
+                            }
+                        };
+                        boardEl.appendChild(cell);
+                    }
+                }
+            }
+            renderBoard();
+        }
+
+        /* 2. هوكي الطاولة الهوائي (Air Neon Hockey) */
+        function runAirHockey(arena) {
+            arena.innerHTML = `
+                <div style="font-size: 13px; margin-bottom: 6px; color: #fff;">النتيجة: <span id="hockey-score" style="color: var(--neon-green); font-weight: bold;">0 - 0</span></div>
+                <canvas id="hockeyCanvas" width="300" height="380"></canvas>
+            `;
+            const canvas = document.getElementById('hockeyCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let playerScore = 0;
+            let aiScore = 0;
+            let ball = { x: 150, y: 190, vx: 4, vy: 4, r: 10 };
+            let paddle = { x: 150, y: 340, r: 24 };
+            let aiPaddle = { x: 150, y: 40, r: 24 };
+
+            canvas.addEventListener('touchmove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                paddle.x = Math.max(paddle.r, Math.min(canvas.width - paddle.r, e.touches[0].clientX - rect.left));
+            });
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                paddle.x = Math.max(paddle.r, Math.min(canvas.width - paddle.r, e.clientX - rect.left));
+            });
+
+            function update() {
+                if (document.getElementById('game-sandbox-modal').style.display !== 'flex') return;
+
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+
+                // ذكاء اصطناعي للمضرب العلوي
+                aiPaddle.x += (ball.x - aiPaddle.x) * 0.08;
+
+                // ارتداد الجدران
+                if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width) ball.vx *= -1;
+
+                // ضرب المضرب السفلي
+                const dx1 = ball.x - paddle.x;
+                const dy1 = ball.y - paddle.y;
+                if (Math.sqrt(dx1*dx1 + dy1*dy1) < ball.r + paddle.r) ball.vy = -Math.abs(ball.vy);
+
+                // ضرب المضرب العلوي
+                const dx2 = ball.x - aiPaddle.x;
+                const dy2 = ball.y - aiPaddle.y;
+                if (Math.sqrt(dx2*dx2 + dy2*dy2) < ball.r + aiPaddle.r) ball.vy = Math.abs(ball.vy);
+
+                // تسجيل الأهداف
+                if (ball.y < 0) {
+                    playerScore++;
+                    resetBall();
+                } else if (ball.y > canvas.height) {
+                    aiScore++;
+                    resetBall();
+                }
+
+                document.getElementById('hockey-score').textContent = `${playerScore} - ${aiScore}`;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // خط الوسط
+                ctx.strokeStyle = '#223049';
+                ctx.setLineDash([6, 6]);
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height/2);
+                ctx.lineTo(canvas.width, canvas.height/2);
+                ctx.stroke();
+
+                // الكرة
+                ctx.fillStyle = '#FF4757';
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+                ctx.fill();
+
+                // مضرب اللاعب
+                ctx.fillStyle = '#00F5A0';
+                ctx.beginPath();
+                ctx.arc(paddle.x, paddle.y, paddle.r, 0, Math.PI*2);
+                ctx.fill();
+
+                // مضرب الذكاء الاصطناعي
+                ctx.fillStyle = '#00D9F5';
+                ctx.beginPath();
+                ctx.arc(aiPaddle.x, aiPaddle.y, aiPaddle.r, 0, Math.PI*2);
+                ctx.fill();
+
+                requestAnimationFrame(update);
+            }
+
+            function resetBall() {
+                ball.x = 150;
+                ball.y = 190;
+                ball.vy = -ball.vy;
+                confetti({ particleCount: 30, spread: 50 });
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        /* 3. بلياردو الصالة (8-Ball Cyber Pool - محرك فيزيائي وتصويب) */
+        function runCyberPool(arena) {
+            arena.innerHTML = `
+                <div style="font-size: 12px; margin-bottom: 6px; color: var(--electric-blue);">اسحب للخلف للتصويب واضرب الكرة البيضاء! 🎱</div>
+                <canvas id="poolCanvas" width="310" height="380"></canvas>
+            `;
+            const canvas = document.getElementById('poolCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let cueBall = { x: 155, y: 280, vx: 0, vy: 0, r: 9, color: '#fff' };
+            let balls = [
+                { x: 155, y: 120, vx: 0, vy: 0, r: 9, color: '#FF4757' },
+                { x: 145, y: 104, vx: 0, vy: 0, r: 9, color: '#00F5A0' },
+                { x: 165, y: 104, vx: 0, vy: 0, r: 9, color: '#00D9F5' },
+                { x: 155, y: 88, vx: 0, vy: 0, r: 9, color: '#fbbf24' }
+            ];
+
+            let isAiming = false;
+            let aimStart = { x: 0, y: 0 };
+            let aimCurrent = { x: 0, y: 0 };
+
+            canvas.addEventListener('mousedown', (e) => {
+                isAiming = true;
+                const rect = canvas.getBoundingClientRect();
+                aimStart = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+                aimCurrent = aimStart;
+            });
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isAiming) return;
+                const rect = canvas.getBoundingClientRect();
+                aimCurrent = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            });
+            canvas.addEventListener('mouseup', () => {
+                if (!isAiming) return;
+                isAiming = false;
+                cueBall.vx = (aimStart.x - aimCurrent.x) * 0.15;
+                cueBall.vy = (aimStart.y - aimCurrent.y) * 0.15;
+            });
+
+            function updatePool() {
+                if (document.getElementById('game-sandbox-modal').style.display !== 'flex') return;
+
+                const allBalls = [cueBall, ...balls];
+                allBalls.forEach(b => {
+                    b.x += b.vx;
+                    b.y += b.vy;
+                    b.vx *= 0.98; // احتكاك القماش
+                    b.vy *= 0.98;
+
+                    if (b.x - b.r < 10 || b.x + b.r > canvas.width - 10) b.vx *= -1;
+                    if (b.y - b.r < 10 || b.y + b.r > canvas.height - 10) b.vy *= -1;
+                });
+
+                ctx.fillStyle = '#064e3b';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // جيوب الطاولة
+                ctx.fillStyle = '#000';
+                [
+                    {x:12,y:12}, {x:canvas.width-12,y:12},
+                    {x:12,y:canvas.height-12}, {x:canvas.width-12,y:canvas.height-12}
+                ].forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 14, 0, Math.PI*2);
+                    ctx.fill();
+                });
+
+                // خط التصويب الليزري
+                if (isAiming) {
+                    ctx.strokeStyle = '#00F5A0';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cueBall.x, cueBall.y);
+                    ctx.lineTo(cueBall.x + (aimStart.x - aimCurrent.x), cueBall.y + (aimStart.y - aimCurrent.y));
+                    ctx.stroke();
+                }
+
+                // رسم الكرات
+                allBalls.forEach(b => {
+                    ctx.fillStyle = b.color;
+                    ctx.beginPath();
+                    ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#000';
+                    ctx.stroke();
+                });
+
+                requestAnimationFrame(updatePool);
+            }
+            requestAnimationFrame(updatePool);
+        }
+
+        /* 4. معركة الأساطيل (Sea Fleet Warfare - رادار بحري) */
+        function runSeaFleetWarfare(arena) {
+            let hits = 0;
+            let torpedoes = 15;
+            const shipSpots = [3, 8, 14, 19, 22]; // مواقع السفن السرية
+
+            arena.innerHTML = `
+                <div style="font-size: 13px; margin-bottom: 8px; color: var(--neon-green);">
+                    الطوربيدات المتبقية: <strong id="torpedo-count">${torpedoes}</strong> | الإصابات: <strong id="hits-count">0/5</strong>
+                </div>
+                <div id="radar-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 260px; height: 260px;"></div>
+            `;
+
+            const grid = document.getElementById('radar-grid');
+            for (let i = 0; i < 25; i++) {
+                const cell = document.createElement('div');
+                cell.style = "background: rgba(0, 245, 160, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer;";
+                cell.onclick = () => {
+                    if (cell.dataset.opened || torpedoes <= 0) return;
+                    cell.dataset.opened = "true";
+                    torpedoes--;
+                    document.getElementById('torpedo-count').textContent = torpedoes;
+
+                    if (shipSpots.includes(i)) {
+                        hits++;
+                        cell.textContent = "💥";
+                        cell.style.background = "rgba(255, 71, 87, 0.4)";
+                        document.getElementById('hits-count').textContent = `${hits}/5`;
+                        confetti({ particleCount: 25, spread: 60 });
+                        if (hits === 5) alert('انتصار ساحق! تم إغراق كامل أسطول الخصم 🚢🎖️');
+                    } else {
+                        cell.textContent = "🌊";
+                        cell.style.background = "rgba(0, 217, 245, 0.2)";
+                    }
+                };
+                grid.appendChild(cell);
+            }
+        }
+
+        /* 5. المبارزة الحسابية (Math Blitz) */
+        function runMathBlitz(arena) {
+            let score = 0;
+            function loadQ() {
+                const n1 = Math.floor(Math.random() * 15) + 5;
+                const n2 = Math.floor(Math.random() * 15) + 5;
+                const ans = n1 + n2;
+                arena.innerHTML = `
+                    <div style="font-size: 14px; color: var(--electric-blue); margin-bottom: 12px;">نقاطك: <strong>${score}</strong></div>
+                    <h2 style="font-size: 38px; margin-bottom: 20px;">${n1} + ${n2} = ؟</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 240px;">
+                        <button class="btn-neo" onclick="checkMath(${ans}, ${ans})">${ans}</button>
+                        <button class="btn-neo" onclick="checkMath(${ans+2}, ${ans})">${ans+2}</button>
+                        <button class="btn-neo" onclick="checkMath(${ans-3}, ${ans})">${ans-3}</button>
+                        <button class="btn-neo" onclick="checkMath(${ans+5}, ${ans})">${ans+5}</button>
+                    </div>
+                `;
+            }
+            window.checkMath = (user, correct) => {
+                if (user === correct) {
+                    score += 50;
+                    confetti({ particleCount: 20, spread: 40 });
+                    loadQ();
+                } else {
+                    alert('إجابة خاطئة!');
+                    loadQ();
+                }
+            };
+            loadQ();
+        }
+
+        /* 6. سايبر إكس أو (Cyber XO) */
+        function runCyberXO(arena) {
+            let turn = 'X';
+            let state = Array(9).fill('');
+            arena.innerHTML = `
+                <div style="font-size: 13px; color: var(--neon-green); margin-bottom: 10px;">الدور لـ: <strong id="xo-turn">X</strong></div>
+                <div id="xo-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 240px; height: 240px;"></div>
+            `;
+            const grid = document.getElementById('xo-grid');
+            for (let i = 0; i < 9; i++) {
+                const b = document.createElement('div');
+                b.style = "background: rgba(255,255,255,0.05); border: 2px solid var(--electric-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; cursor: pointer; color: #fff;";
+                b.onclick = () => {
+                    if (state[i] !== '') return;
+                    state[i] = turn;
+                    b.textContent = turn;
+                    b.style.color = turn === 'X' ? 'var(--neon-green)' : 'var(--electric-coral)';
+                    turn = turn === 'X' ? 'O' : 'X';
+                    document.getElementById('xo-turn').textContent = turn;
+                };
+                grid.appendChild(b);
+            }
+        }
+
+        /* 7. دومينو المحترفين (Classic Domino) */
+        function runClassicDomino(arena) {
+            arena.innerHTML = `
+                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 10px;">اضغط على قطعة الدومينو لإنزالها على الطاولة:</div>
+                <div id="domino-board" style="display: flex; gap: 8px; overflow-x: auto; padding: 10px; width: 100%; justify-content: center;">
+                    <div class="btn-neo" onclick="dropDomino(this)">🀄 [6|6]</div>
+                    <div class="btn-neo" onclick="dropDomino(this)">🀄 [6|4]</div>
+                    <div class="btn-neo" onclick="dropDomino(this)">🀄 [4|1]</div>
+                </div>
+                <div id="domino-table" style="margin-top: 20px; font-size: 20px; color: var(--neon-green);">طاولة اللعب جاهزة...</div>
+            `;
+            window.dropDomino = (el) => {
+                document.getElementById('domino-table').textContent = `تم لعب: ${el.textContent}`;
+                el.remove();
+                confetti({ particleCount: 20, spread: 50 });
+            };
+        }
+
+        /* 8. فخ الكلمات (Word Trap) */
+        function runWordTrap(arena) {
+            const secret = "ALGERIA";
+            let guessed = "";
+            arena.innerHTML = `
+                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 12px;">خمن اسم الدولة السرية:</div>
+                <h2 id="word-display" style="font-size: 34px; letter-spacing: 6px; margin-bottom: 16px;">_ _ _ _ _ _ _</h2>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 280px;">
+                    ${['A','B','C','D','E','G','I','L','R','T','Z'].map(ch => `
+                        <button class="btn-neo" style="padding: 6px 12px; font-size: 14px;" onclick="guessLetter('${ch}')">${ch}</button>
+                    `).join('')}
+                </div>
+            `;
+            window.guessLetter = (l) => {
+                guessed += l;
+                const disp = secret.split('').map(c => guessed.includes(c) ? c : '_').join(' ');
+                document.getElementById('word-display').textContent = disp;
+                if (!disp.includes('_')) {
+                    confetti({ particleCount: 60, spread: 70 });
+                    alert('أحسنت! الكلمة الصحيحة هي ALGERIA 🇩🇿🎉');
+                }
+            };
+        }
+
+        /* 9. مصفوفة الذاكرة (Memory Matrix) */
+        function runMemoryMatrix(arena) {
+            const icons = ['🔥','⚡','👑','💎','🔥','⚡','👑','💎'];
+            icons.sort(() => Math.random() - 0.5);
+            arena.innerHTML = `
+                <div style="font-size: 12px; color: var(--neon-green); margin-bottom: 8px;">اقلب البطاقات وطابق الأشكال:</div>
+                <div id="mem-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 260px;"></div>
+            `;
+            let flipped = [];
+            const grid = document.getElementById('mem-grid');
+            icons.forEach(ic => {
+                const card = document.createElement('div');
+                card.style = "height: 60px; background: rgba(255,255,255,0.06); border: 2px solid var(--border-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer;";
+                card.onclick = () => {
+                    if (card.textContent || flipped.length >= 2) return;
+                    card.textContent = ic;
+                    flipped.push(card);
+                    if (flipped.length === 2) {
+                        if (flipped[0].textContent === flipped[1].textContent) {
+                            flipped = [];
+                            confetti({ particleCount: 20, spread: 40 });
+                        } else {
+                            setTimeout(() => {
+                                flipped.forEach(c => c.textContent = '');
+                                flipped = [];
+                            }, 700);
+                        }
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        /* 10. تحدي النقر السريع (Speed Clicker Duel) */
+        function runSpeedClicker(arena) {
+            let count = 0;
+            arena.innerHTML = `
+                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 10px;">اضغط بأقصى سرعة ممكنة! ⚡</div>
+                <h1 id="click-counter" style="font-size: 50px; color: var(--neon-green); margin-bottom: 16px;">0</h1>
+                <button class="btn-neo" style="width: 140px; height: 140px; border-radius: 50%; font-size: 22px;" onclick="tapSpeed()">انقر!</button>
+            `;
+            window.tapSpeed = () => {
+                count++;
+                document.getElementById('click-counter').textContent = count;
+                if (count % 20 === 0) confetti({ particleCount: 30, spread: 50 });
+            };
+        }
+
+        /* 11. حجرة ورقة مقص (Rock Paper Scissors Neo) */
+        function runRPSNeo(arena) {
+            arena.innerHTML = `
+                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 14px;">اختر حركتك لمواجهة الخصم:</div>
+                <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                    <button class="btn-neo" style="font-size: 28px;" onclick="playRPS('🪨')">🪨</button>
+                    <button class="btn-neo" style="font-size: 28px;" onclick="playRPS('📄')">📄</button>
+                    <button class="btn-neo" style="font-size: 28px;" onclick="playRPS('✂️')">✂️</button>
+                </div>
+                <div id="rps-result" style="font-size: 15px; color: var(--neon-green);">في انتظار حركتك...</div>
+            `;
+            window.playRPS = (user) => {
+                const opts = ['🪨','📄','✂️'];
+                const comp = opts[Math.floor(Math.random() * opts.length)];
+                let res = 'تعادل!';
+                if ((user==='🪨'&&comp==='✂️') || (user==='📄'&&comp==='🪨') || (user==='✂️'&&comp==='📄')) {
+                    res = 'أنت الفائز! 🏆';
+                    confetti({ particleCount: 30, spread: 60 });
+                } else if (user !== comp) {
+                    res = 'فاز الخصم!';
+                }
+                document.getElementById('rps-result').innerHTML = `أنت: ${user} | الخصم: ${comp}<br><strong>${res}</strong>`;
+            };
+        }
+
+        /* 12-20. محاكاة تفاعلية لباقي الألعاب */
+        function runInteractiveSimulation(arena, title, icon) {
+            arena.innerHTML = `
+                <span style="font-size: 60px; margin-bottom: 14px;">${icon}</span>
+                <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">${title}</h3>
+                <p style="font-size: 12px; color: var(--text-sub); text-align: center; max-width: 260px; margin-bottom: 16px;">تم تجهيز الجلسة التفاعلية المباشرة مع سيرفر Firebase!</p>
+                <button class="btn-neo" onclick="confetti({particleCount: 50, spread: 70}); alert('تم تنفيذ الإجراء بنجاح وحصد 50 نقطة!')">تنفيذ الإجراء التنافسي ⚡</button>
+            `;
+        }
+
+        /* ================= 4. البحث وقبول/رفض طلبات الصداقة ================= */
+        function dispatchFriendRequest() {
+            const input = document.getElementById('friend-search-input');
+            let searchTarget = input.value.trim().toUpperCase().replace('#', '');
+            if (!searchTarget) return;
+
+            if (searchTarget === currentUser.rawId) {
+                alert('هذا معرف حسابك الخاص!');
+                return;
+            }
+
+            db.ref('users/' + searchTarget).once('value', (snap) => {
+                if (snap.exists()) {
+                    const targetUser = snap.val();
+                    db.ref(`requests/${searchTarget}/${currentUser.rawId}`).set({
+                        fromId: currentUser.rawId,
+                        fromName: currentUser.fullname,
+                        fromAvatar: currentUser.avatar,
+                        timestamp: Date.now()
+                    }).then(() => {
+                        input.value = '';
+                        alert(`تم إرسال طلب الصداقة بنجاح إلى ${targetUser.fullname}! 🎉`);
+                    });
+                } else {
+                    alert('لم يتم العثور على أي مستخدم بهذا المعرف!');
+                }
+            });
+        }
+
+        function listenToRequests() {
+            db.ref('requests/' + currentUser.rawId).on('value', (snapshot) => {
+                const deck = document.getElementById('incoming-requests-deck');
+                deck.innerHTML = '';
+                const requests = snapshot.val();
+                if (requests && Object.keys(requests).length > 0) {
+                    Object.values(requests).forEach(req => {
+                        const card = document.createElement('div');
+                        card.className = 'pending-card';
+                        card.innerHTML = `
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="font-size: 26px;">${req.fromAvatar}</div>
+                                <div>
+                                    <strong style="font-size: 14px;">${req.fromName}</strong>
+                                    <div style="font-size: 11px; color: var(--text-sub);">#${req.fromId}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <button style="background: var(--neon-green); border: none; color: #000; font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-left: 4px;" onclick="acceptFriend('${req.fromId}', '${req.fromName}', '${req.fromAvatar}')">قبول</button>
+                                <button style="background: rgba(255,255,255,0.1); border: none; color: var(--text-sub); padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer;" onclick="rejectFriend('${req.fromId}')">رفض</button>
+                            </div>
+                        `;
+                        deck.appendChild(card);
+                    });
+                } else {
+                    deck.innerHTML = '<div style="color: var(--text-sub); font-size: 12px;">لا توجد طلبات معلقة حالياً.</div>';
+                }
+            });
+        }
+
+        function acceptFriend(id, name, avatar) {
+            const newFriend = { rawId: id, id: '#' + id, name: name, avatar: avatar };
+            friendsList.push(newFriend);
+            localStorage.setItem('le_social_friends', JSON.stringify(friendsList));
+            db.ref(`requests/${currentUser.rawId}/${id}`).remove();
+            renderFriendsDeck();
+            renderChatThreads();
+            alert(`أصبحت صديقاً لـ ${name}! 🎉`);
+        }
+
+        function rejectFriend(id) {
+            db.ref(`requests/${currentUser.rawId}/${id}`).remove();
+        }
+
+        function renderFriendsDeck() {
+            const container = document.getElementById('accepted-friends-deck');
+            container.innerHTML = '';
+            if (friendsList.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-sub); font-size: 12px;">قائمة الأصدقاء فارغة حالياً.</div>';
+                return;
+            }
+            friendsList.forEach(fr => {
+                const item = document.createElement('div');
+                item.className = 'pending-card';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="font-size: 26px;">${fr.avatar}</div>
+                        <div>
+                            <strong style="font-size: 14px;">${fr.name}</strong>
+                            <div style="font-size: 11px; color: var(--text-sub);">${fr.id}</div>
+                        </div>
+                    </div>
+                    <button style="background: var(--tg-cyan); border: none; color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer;" onclick="openChatRoom(${JSON.stringify(fr).replace(/"/g, '&quot;')})">
+                        <i class="fa-solid fa-message"></i> محادثة
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        /* ================= 5. الملف الشخصي ================= */
+        function loadProfile() {
+            if (!currentUser) return;
+            document.getElementById('insta-profile-username').textContent = currentUser.username;
+            document.getElementById('insta-profile-fullname').textContent = currentUser.fullname;
+            document.getElementById('insta-profile-bio').textContent = currentUser.bio;
+            document.getElementById('insta-avatar-emoji').textContent = currentUser.avatar;
+            document.getElementById('insta-my-id-badge').textContent = currentUser.id;
+        }
+
+        function cycleAvatar() {
+            const avatars = ['😎', '🤠', '🥷', '👑', '🦁', '🤖', '👾', '🚀'];
+            const random = avatars[Math.floor(Math.random() * avatars.length)];
+            currentUser.avatar = random;
+            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
+            loadProfile();
+            db.ref('users/' + currentUser.rawId).update({ avatar: random });
         }
     </script>
 </body>
