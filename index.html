@@ -432,7 +432,7 @@
             flex-shrink: 0;
         }
 
-        /* 4. غرفة صالة التحدي التفاعلية (Interactive Canvas Stream) */
+        /* 4. صالة التحدي (Interactive Canvas Stream) */
         .voice-lounge-header {
             background: linear-gradient(90deg, #1e1b4b, #111827);
             border-bottom: 2px solid var(--cyber-violet);
@@ -521,7 +521,7 @@
             100% { transform: translateY(-240px) scale(1); opacity: 0; }
         }
 
-        /* 5. محرك الألعاب المدمج (The Gaming Engine Sandbox Modal) */
+        /* 5. محرك الألعاب المدمج أونلاين */
         #game-sandbox-modal {
             position: absolute;
             inset: 0;
@@ -600,7 +600,7 @@
             touch-action: none;
         }
 
-        /* 6. WePlay Arena (20 لعبة) */
+        /* 6. WePlay Arena */
         .weplay-container {
             flex: 1;
             overflow-y: auto;
@@ -654,7 +654,7 @@
             margin-bottom: 10px;
         }
 
-        /* 8. الملف الشخصي بأسلوب Instagram المكتمل */
+        /* 8. الملف الشخصي بأسلوب Instagram */
         .insta-view { flex: 1; overflow-y: auto; background: var(--bg-deep); }
         
         .insta-avatar-ring {
@@ -847,10 +847,10 @@
                     <div style="font-size: 11px; color: var(--neon-green);"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> متصل الآن</div>
                 </div>
             </div>
-            <div style="display: flex; gap: 16px; font-size: 18px; color: var(--electric-blue);">
+            <div style="display: flex; gap: 12px; font-size: 16px; color: var(--electric-blue);">
                 <i class="fa-solid fa-ghost" style="cursor: pointer;" onclick="toggleVanishMode()" title="وضع التخفي"></i>
-                <i class="fa-solid fa-gamepad" style="cursor: pointer; color: var(--neon-green);" onclick="openSandboxGame('chess')" title="فتح اللعبة السريعة"></i>
-                <i class="fa-solid fa-phone" style="cursor: pointer;"></i>
+                <button class="btn-neo" style="padding: 4px 8px; font-size: 11px;" onclick="launchGameDuelOnline('xo')">تحدي XO ❌</button>
+                <button class="btn-neo" style="padding: 4px 8px; font-size: 11px;" onclick="launchGameDuelOnline('chess')">شطرنج ♟️</button>
             </div>
         </div>
 
@@ -894,7 +894,6 @@
         </div>
 
         <div class="canvas-stream-container" id="canvas-stream-box" ondblclick="burstLiveReaction('❤️', event.clientX, event.clientY)">
-            <!-- بطاقة التحدي الحية الكبيرة -->
             <div class="challenge-vs-card">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span style="font-size: 12px; font-weight: bold; color: #fff;"><i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> تحدي الـ 60 ثانية: Math Blitz</span>
@@ -918,7 +917,6 @@
                 </button>
             </div>
 
-            <!-- رسالة صوتية بمؤثرات النبرة -->
             <div class="msg-bubble incoming">
                 <div class="voice-memo-card">
                     <div class="voice-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -934,7 +932,6 @@
             </div>
         </div>
 
-        <!-- درج الألعاب السريع لصالة التحدي -->
         <div class="games-drawer-modal" id="canvas-games-drawer">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <strong style="font-size: 13px; color: #fff;"><i class="fa-solid fa-gamepad" style="color: var(--neon-green);"></i> ألعاب التحدي السريعة (60s)</strong>
@@ -956,7 +953,6 @@
             </div>
         </div>
 
-        <!-- شريط الإدخال مع زر الشعلة وقرص الإجراء السريع -->
         <div class="chat-input-bar">
             <button class="action-round-btn" style="background: linear-gradient(135deg, var(--electric-coral), var(--cyber-violet)); color: #fff;" onclick="toggleCanvasDrawer()" title="قرص الألعاب">
                 <i class="fa-solid fa-fire"></i>
@@ -970,7 +966,7 @@
         </div>
     </div>
 
-    <!-- 5. محرك الألعاب المدمج (The Gaming Engine Sandbox Modal) -->
+    <!-- 5. محرك الألعاب المدمج أونلاين -->
     <div id="game-sandbox-modal">
         <div class="sandbox-sheet">
             <div class="sandbox-hud">
@@ -982,7 +978,6 @@
             </div>
             <div class="sandbox-arena" id="sandbox-arena-render"></div>
 
-            <!-- أزرار التفاعل الحي أثناء اللعب -->
             <div style="display: flex; justify-content: center; gap: 12px; padding: 10px; background: rgba(0,0,0,0.5);">
                 <button style="background:none; border:none; font-size: 24px; cursor:pointer;" onclick="burstLiveReaction('😂')">😂</button>
                 <button style="background:none; border:none; font-size: 24px; cursor:pointer;" onclick="burstLiveReaction('🔥')">🔥</button>
@@ -1023,7 +1018,7 @@
         </div>
     </div>
 
-    <!-- 8. الملف الشخصي بأسلوب Instagram المكتمل -->
+    <!-- 8. الملف الشخصي بأسلوب Instagram -->
     <div id="profile-screen" class="screen">
         <div class="glass-header">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -1037,7 +1032,6 @@
         </div>
 
         <div class="insta-view">
-            <!-- رأس الحساب وإحصاءات إنستغرام -->
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px 20px;">
                 <div class="insta-avatar-ring" onclick="cycleAvatar()">
                     <div class="insta-avatar-pic">
@@ -1051,7 +1045,6 @@
                 </div>
             </div>
 
-            <!-- البايو الكامل والمعلومات -->
             <div style="padding: 0 20px 10px 20px;">
                 <strong id="insta-profile-fullname" style="font-size: 15px;">الاسم الكامل</strong>
                 <div style="font-size: 12px; color: var(--text-sub); margin-top: 2px;">حساب شخصي • تصميم & ألعاب 🎮</div>
@@ -1059,13 +1052,11 @@
                 <div style="display: inline-block; background: #151e32; border: 1px solid var(--border-soft); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--electric-blue); margin-top: 8px; font-family: monospace; cursor: pointer;" id="insta-my-id-badge" onclick="copyMyTag()">#JEUX-0000</div>
             </div>
 
-            <!-- أزرار الإجراءات بنمط إنستغرام -->
             <div style="display: flex; gap: 8px; padding: 0 20px 12px 20px;">
                 <button class="btn-neo" style="flex: 1; padding: 8px; font-size: 13px;" onclick="openEditProfileModal()"><i class="fa-solid fa-pen"></i> تعديل الملف الشخصي</button>
                 <button class="btn-neo" style="flex: 1; padding: 8px; font-size: 13px;" onclick="copyMyTag()"><i class="fa-solid fa-share-nodes"></i> مشاركة الملف</button>
             </div>
 
-            <!-- القصص البارزة (Story Highlights) -->
             <div class="insta-highlights-strip">
                 <div class="highlight-item" onclick="alert('هايلايت: رحلات ومغامرات ✈️')">
                     <div class="highlight-circle">✈️</div>
@@ -1085,14 +1076,12 @@
                 </div>
             </div>
 
-            <!-- تبويبات إنستغرام الثلاثية -->
             <div class="insta-grid-nav">
                 <div class="insta-tab-btn active"><i class="fa-solid fa-table-cells"></i></div>
                 <div class="insta-tab-btn"><i class="fa-solid fa-clapperboard"></i></div>
                 <div class="insta-tab-btn"><i class="fa-regular fa-id-badge"></i></div>
             </div>
 
-            <!-- شبكة المنشورات الثلاثية (9 منشورات) -->
             <div class="insta-media-grid">
                 <div class="insta-grid-cell" onclick="alert('عرض المنشور 1 📸')">📸</div>
                 <div class="insta-grid-cell" onclick="alert('عرض المنشور 2 🌅')">🌅</div>
@@ -1151,6 +1140,8 @@
         let friendsList = JSON.parse(localStorage.getItem('le_social_friends')) || [];
         let currentChatPartner = null;
         let currentChatListener = null;
+        let activeGameRoomId = null;
+        let gameRoomListener = null;
 
         window.onload = () => {
             if (currentUser) {
@@ -1328,17 +1319,31 @@
             currentChatListener = db.ref('master_chats/' + roomId).on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
+                    stream.innerHTML = '';
                     Object.values(data).forEach(msg => {
                         const bubble = document.createElement('div');
                         const isMe = msg.senderId === currentUser.rawId;
                         bubble.className = `msg-bubble ${isMe ? 'outgoing' : 'incoming'}`;
-                        bubble.innerHTML = `
-                            <div>${msg.text}</div>
-                            <div class="msg-meta-stamp">
-                                <span>${msg.time}</span>
-                                ${isMe ? '<i class="fa-solid fa-check-double read-checks"></i>' : ''}
-                            </div>
-                        `;
+                        
+                        if (msg.isGameInvite) {
+                            bubble.style.background = "linear-gradient(135deg, #1e1b4b, #312e81)";
+                            bubble.style.border = "1px solid var(--electric-blue)";
+                            bubble.innerHTML = `
+                                <div>${msg.text}</div>
+                                <button class="btn-neo" style="margin-top: 6px; padding: 4px 10px; font-size: 11px;" onclick="openOnlineGameModal('${msg.gameType}', '${roomId}')">
+                                    انضمام للعبة 🎮
+                                </button>
+                                <div class="msg-meta-stamp"><span>${msg.time}</span></div>
+                            `;
+                        } else {
+                            bubble.innerHTML = `
+                                <div>${msg.text}</div>
+                                <div class="msg-meta-stamp">
+                                    <span>${msg.time}</span>
+                                    ${isMe ? '<i class="fa-solid fa-check-double read-checks"></i>' : ''}
+                                </div>
+                            `;
+                        }
                         stream.appendChild(bubble);
                     });
                     stream.scrollTop = stream.scrollHeight;
@@ -1400,661 +1405,74 @@
             setTimeout(() => el.remove(), 1800);
         }
 
-        /* ================= 4. محرك الألعاب الكامل (20 لعبة) ================= */
-        const weplayGamesData = [
-            { id: 'chess', title: 'الشطرنج النيوني (Cyber Chess)', icon: '♟️', tag: 'Tactical & Mind' },
-            { id: 'hockey', title: 'هوكي الطاولة (Air Neon Hockey)', icon: '🏒', tag: 'Arcade Physics' },
-            { id: 'pool', title: 'بلياردو الصالة (8-Ball Cyber Pool)', icon: '🎱', tag: 'Real Physics' },
-            { id: 'radar', title: 'معركة الأساطيل (Sea Fleet Warfare)', icon: '🚢', tag: 'Sonar Radar' },
-            { id: 'math', title: 'المبارزة الحسابية (Math Blitz)', icon: '🧠', tag: 'Speed IQ' },
-            { id: 'xo', title: 'سايبر إكس أو (Cyber XO)', icon: '❌', tag: 'Mind Duel' },
-            { id: 'domino', title: 'دومينو المحترفين (Classic Domino)', icon: '🀄', tag: 'Board Game' },
-            { id: 'word', title: 'فخ الكلمات (Word Trap)', icon: '🔤', tag: 'Vocabulary' },
-            { id: 'memory', title: 'مصفوفة الذاكرة (Memory Matrix)', icon: '🧩', tag: 'Brain Cards' },
-            { id: 'clicker', title: 'تحدي النقر السريع (Speed Clicker)', icon: '⚡', tag: 'Reflex Duel' },
-            { id: 'rps', title: 'حجرة ورقة مقص (RPS Neo)', icon: '✂️', tag: 'Classic Arcade' },
-            { id: 'farm', title: 'محاكي المزرعة (Farm Simulator)', icon: '🌾', tag: 'Social Steal' },
-            { id: 'food', title: 'راش التوصيل (Food Rush)', icon: '🛵', tag: 'Delivery Dash' },
-            { id: 'spy', title: 'من هو الجاسوس (Who\'s the Spy)', icon: '🎩', tag: 'Mystery Word' },
-            { id: 'werewolf', title: 'المستذئب الفضائي (Space Werewolf)', icon: '🐺', tag: 'Social Deception' },
-            { id: 'sketch', title: 'غرفة الرسم والتخمين (Sketch & Guess)', icon: '🎨', tag: 'Draw & Guess' },
-            { id: 'prank', title: 'محاكي المقالب (Prank Simulator)', icon: '🎭', tag: 'Fun Cards' },
-            { id: 'escape', title: 'الهروب الخفي (Don\'t Get Caught)', icon: '🏃', tag: 'Stealth Arcade' },
-            { id: 'cafe', title: 'مقهى الخدع (Trickster\'s Cafe)', icon: '☕', tag: 'Party Game' },
-            { id: 'brain', title: 'عاصفة الدماغ (Brain Storm Duel)', icon: '💡', tag: 'Trivia Battle' }
-        ];
+        /* ================= 4. محرك الألعاب ومزامنة أونلاين ================= */
+        function launchGameDuelOnline(gameType) {
+            if (!currentChatPartner) {
+                alert('يرجى فتح محادثة مع صديقك أولاً لبدء اللعبة معه!');
+                return;
+            }
 
-        function renderWePlayGames() {
-            const list = document.getElementById('weplay-games-list');
-            list.innerHTML = '';
-            weplayGamesData.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'weplay-card';
-                card.onclick = () => openSandboxGame(game.id);
-                card.innerHTML = `
-                    <div>
-                        <h3 style="font-size: 14.5px; font-weight: bold; color: var(--electric-blue);">${game.title}</h3>
-                        <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">${game.tag}</p>
-                    </div>
-                    <span style="font-size: 32px;">${game.icon}</span>
-                `;
-                list.appendChild(card);
+            const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
+            activeGameRoomId = roomId;
+
+            let initialState = {};
+            if (gameType === 'xo') {
+                initialState = {
+                    gameType: 'xo',
+                    board: Array(9).fill(''),
+                    turn: currentUser.rawId,
+                    playerX: currentUser.rawId,
+                    playerO: currentChatPartner.rawId
+                };
+            } else if (gameType === 'chess') {
+                initialState = {
+                    gameType: 'chess',
+                    board: [
+                        ['♜','♞','♝','♛','♚','♝','♞','♜'],
+                        ['♟','♟','♟','♟','♟','♟','♟','♟'],
+                        ['','','','','','','',''],
+                        ['','','','','','','',''],
+                        ['','','','','','','',''],
+                        ['','','','','','','',''],
+                        ['♙','♙','♙','♙','♙','♙','♙','♙'],
+                        ['♖','♘','♗','♕','♔','♗','♘','♖']
+                    ],
+                    turn: currentUser.rawId,
+                    playerWhite: currentUser.rawId,
+                    playerBlack: currentChatPartner.rawId
+                };
+            }
+
+            db.ref('active_matches/' + roomId).set(initialState).then(() => {
+                db.ref('master_chats/' + roomId).push().set({
+                    senderId: currentUser.rawId,
+                    senderName: currentUser.fullname,
+                    text: `🎮 بدأت معك تحدي أونلاين في ${gameType.toUpperCase()}! اضغط للانضمام.`,
+                    isGameInvite: true,
+                    gameType: gameType,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                openOnlineGameModal(gameType, roomId);
             });
         }
 
-        function openSandboxGame(gameId) {
+        function openOnlineGameModal(gameType, roomId) {
+            activeGameRoomId = roomId;
             const modal = document.getElementById('game-sandbox-modal');
             const arena = document.getElementById('sandbox-arena-render');
             const title = document.getElementById('sandbox-game-title');
-            const icon = document.getElementById('sandbox-game-icon');
-
             modal.style.display = 'flex';
             arena.innerHTML = '';
+            title.textContent = `مباراة أونلاين: ${gameType.toUpperCase()}`;
 
-            const gameObj = weplayGamesData.find(g => g.id === gameId) || { title: 'لعبة تفاعلية', icon: '🎮' };
-            title.textContent = gameObj.title;
-            icon.textContent = gameObj.icon;
-
-            if (gameId === 'chess') runCyberChess(arena);
-            else if (gameId === 'hockey') runAirHockey(arena);
-            else if (gameId === 'pool') runCyberPool(arena);
-            else if (gameId === 'radar') runSeaFleetWarfare(arena);
-            else if (gameId === 'math') runMathBlitz(arena);
-            else if (gameId === 'xo') runCyberXO(arena);
-            else if (gameId === 'domino') runClassicDomino(arena);
-            else if (gameId === 'word') runWordTrap(arena);
-            else if (gameId === 'memory') runMemoryMatrix(arena);
-            else if (gameId === 'clicker') runSpeedClicker(arena);
-            else if (gameId === 'rps') runRPSNeo(arena);
-            else runInteractiveSimulation(arena, gameObj.title, gameObj.icon);
-        }
-
-        function closeSandboxGame() {
-            document.getElementById('game-sandbox-modal').style.display = 'none';
-        }
-
-        /* 1. الشطرنج النيوني */
-        function runCyberChess(arena) {
-            let selectedPiece = null;
-            let currentTurn = 'white';
-
-            arena.innerHTML = `
-                <div style="font-size: 12px; margin-bottom: 8px; color: var(--neon-green);">
-                    الدور: <strong id="chess-turn-indicator">الأبيض (أنت)</strong>
-                </div>
-                <div class="chess-grid" id="chess-board"></div>
-            `;
-
-            const boardEl = document.getElementById('chess-board');
-            const board = [
-                ['♜','♞','♝','♛','♚','♝','♞','♜'],
-                ['♟','♟','♟','♟','♟','♟','♟','♟'],
-                ['','','','','','','',''],
-                ['','','','','','','',''],
-                ['','','','','','','',''],
-                ['','','','','','','',''],
-                ['♙','♙','♙','♙','♙','♙','♙','♙'],
-                ['♖','♘','♗','♕','♔','♗','♘','♖']
-            ];
-
-            function renderBoard() {
-                boardEl.innerHTML = '';
-                for (let r = 0; r < 8; r++) {
-                    for (let c = 0; c < 8; c++) {
-                        const cell = document.createElement('div');
-                        cell.className = `chess-cell ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
-                        cell.textContent = board[r][c];
-
-                        if (selectedPiece && selectedPiece.r === r && selectedPiece.c === c) {
-                            cell.classList.add('selected');
-                        }
-
-                        cell.onclick = () => {
-                            if (selectedPiece) {
-                                board[r][c] = selectedPiece.piece;
-                                board[selectedPiece.r][selectedPiece.c] = '';
-                                selectedPiece = null;
-                                currentTurn = currentTurn === 'white' ? 'black' : 'white';
-                                document.getElementById('chess-turn-indicator').textContent = currentTurn === 'white' ? 'الأبيض (أنت)' : 'الأسود (الخصم)';
-                                renderBoard();
-                                confetti({ particleCount: 20, spread: 40 });
-                            } else if (board[r][c] !== '') {
-                                selectedPiece = { r, c, piece: board[r][c] };
-                                renderBoard();
-                            }
-                        };
-                        boardEl.appendChild(cell);
-                    }
-                }
-            }
-            renderBoard();
-        }
-
-        /* 2. هوكي الطاولة */
-        function runAirHockey(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; margin-bottom: 6px; color: #fff;">النتيجة: <span id="hockey-score" style="color: var(--neon-green); font-weight: bold;">0 - 0</span></div>
-                <canvas id="hockeyCanvas" width="300" height="380"></canvas>
-            `;
-            const canvas = document.getElementById('hockeyCanvas');
-            const ctx = canvas.getContext('2d');
-
-            let playerScore = 0;
-            let aiScore = 0;
-            let ball = { x: 150, y: 190, vx: 4, vy: 4, r: 10 };
-            let paddle = { x: 150, y: 340, r: 24 };
-            let aiPaddle = { x: 150, y: 40, r: 24 };
-
-            canvas.addEventListener('touchmove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                paddle.x = Math.max(paddle.r, Math.min(canvas.width - paddle.r, e.touches[0].clientX - rect.left));
-            });
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                paddle.x = Math.max(paddle.r, Math.min(canvas.width - paddle.r, e.clientX - rect.left));
-            });
-
-            function update() {
-                if (document.getElementById('game-sandbox-modal').style.display !== 'flex') return;
-
-                ball.x += ball.vx;
-                ball.y += ball.vy;
-
-                aiPaddle.x += (ball.x - aiPaddle.x) * 0.08;
-
-                if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width) ball.vx *= -1;
-
-                const dx1 = ball.x - paddle.x;
-                const dy1 = ball.y - paddle.y;
-                if (Math.sqrt(dx1*dx1 + dy1*dy1) < ball.r + paddle.r) ball.vy = -Math.abs(ball.vy);
-
-                const dx2 = ball.x - aiPaddle.x;
-                const dy2 = ball.y - aiPaddle.y;
-                if (Math.sqrt(dx2*dx2 + dy2*dy2) < ball.r + aiPaddle.r) ball.vy = Math.abs(ball.vy);
-
-                if (ball.y < 0) {
-                    playerScore++;
-                    ball = { x: 150, y: 190, vx: 4, vy: 4, r: 10 };
-                    confetti({ particleCount: 30, spread: 50 });
-                } else if (ball.y > canvas.height) {
-                    aiScore++;
-                    ball = { x: 150, y: 190, vx: -4, vy: -4, r: 10 };
-                }
-
-                document.getElementById('hockey-score').textContent = `${playerScore} - ${aiScore}`;
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                ctx.strokeStyle = '#223049';
-                ctx.setLineDash([6, 6]);
-                ctx.beginPath();
-                ctx.moveTo(0, canvas.height/2);
-                ctx.lineTo(canvas.width, canvas.height/2);
-                ctx.stroke();
-
-                ctx.fillStyle = '#FF4757';
-                ctx.beginPath();
-                ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
-                ctx.fill();
-
-                ctx.fillStyle = '#00F5A0';
-                ctx.beginPath();
-                ctx.arc(paddle.x, paddle.y, paddle.r, 0, Math.PI*2);
-                ctx.fill();
-
-                ctx.fillStyle = '#00D9F5';
-                ctx.beginPath();
-                ctx.arc(aiPaddle.x, aiPaddle.y, aiPaddle.r, 0, Math.PI*2);
-                ctx.fill();
-
-                requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-        }
-
-        /* 3. بلياردو الصالة */
-        function runCyberPool(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 12px; margin-bottom: 6px; color: var(--electric-blue);">اسحب للخلف للتصويب واضرب الكرة البيضاء! 🎱</div>
-                <canvas id="poolCanvas" width="310" height="380"></canvas>
-            `;
-            const canvas = document.getElementById('poolCanvas');
-            const ctx = canvas.getContext('2d');
-
-            let cueBall = { x: 155, y: 280, vx: 0, vy: 0, r: 9, color: '#fff' };
-            let balls = [
-                { x: 155, y: 120, vx: 0, vy: 0, r: 9, color: '#FF4757' },
-                { x: 145, y: 104, vx: 0, vy: 0, r: 9, color: '#00F5A0' },
-                { x: 165, y: 104, vx: 0, vy: 0, r: 9, color: '#00D9F5' },
-                { x: 155, y: 88, vx: 0, vy: 0, r: 9, color: '#fbbf24' }
-            ];
-
-            let isAiming = false;
-            let aimStart = { x: 0, y: 0 };
-            let aimCurrent = { x: 0, y: 0 };
-
-            canvas.addEventListener('mousedown', (e) => {
-                isAiming = true;
-                const rect = canvas.getBoundingClientRect();
-                aimStart = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-                aimCurrent = aimStart;
-            });
-            canvas.addEventListener('mousemove', (e) => {
-                if (!isAiming) return;
-                const rect = canvas.getBoundingClientRect();
-                aimCurrent = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-            });
-            canvas.addEventListener('mouseup', () => {
-                if (!isAiming) return;
-                isAiming = false;
-                cueBall.vx = (aimStart.x - aimCurrent.x) * 0.15;
-                cueBall.vy = (aimStart.y - aimCurrent.y) * 0.15;
-            });
-
-            function updatePool() {
-                if (document.getElementById('game-sandbox-modal').style.display !== 'flex') return;
-
-                const allBalls = [cueBall, ...balls];
-                allBalls.forEach(b => {
-                    b.x += b.vx;
-                    b.y += b.vy;
-                    b.vx *= 0.98;
-                    b.vy *= 0.98;
-
-                    if (b.x - b.r < 10 || b.x + b.r > canvas.width - 10) b.vx *= -1;
-                    if (b.y - b.r < 10 || b.y + b.r > canvas.height - 10) b.vy *= -1;
-                });
-
-                ctx.fillStyle = '#064e3b';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = '#000';
-                [{x:12,y:12}, {x:canvas.width-12,y:12}, {x:12,y:canvas.height-12}, {x:canvas.width-12,y:canvas.height-12}].forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 14, 0, Math.PI*2);
-                    ctx.fill();
-                });
-
-                if (isAiming) {
-                    ctx.strokeStyle = '#00F5A0';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.moveTo(cueBall.x, cueBall.y);
-                    ctx.lineTo(cueBall.x + (aimStart.x - aimCurrent.x), cueBall.y + (aimStart.y - aimCurrent.y));
-                    ctx.stroke();
-                }
-
-                allBalls.forEach(b => {
-                    ctx.fillStyle = b.color;
-                    ctx.beginPath();
-                    ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
-                    ctx.fill();
-                    ctx.strokeStyle = '#000';
-                    ctx.stroke();
-                });
-
-                requestAnimationFrame(updatePool);
-            }
-            requestAnimationFrame(updatePool);
-        }
-
-        /* 4. معركة الأساطيل */
-        function runSeaFleetWarfare(arena) {
-            let hits = 0;
-            let torpedoes = 15;
-            const shipSpots = [3, 8, 14, 19, 22];
-
-            arena.innerHTML = `
-                <div style="font-size: 13px; margin-bottom: 8px; color: var(--neon-green);">
-                    الطوربيدات: <strong id="torpedo-count">${torpedoes}</strong> | الإصابات: <strong id="hits-count">0/5</strong>
-                </div>
-                <div id="radar-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 260px; height: 260px;"></div>
-            `;
-
-            const grid = document.getElementById('radar-grid');
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.style = "background: rgba(0, 245, 160, 0.1); border: 1px solid var(--neon-green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer;";
-                cell.onclick = () => {
-                    if (cell.dataset.opened || torpedoes <= 0) return;
-                    cell.dataset.opened = "true";
-                    torpedoes--;
-                    document.getElementById('torpedo-count').textContent = torpedoes;
-
-                    if (shipSpots.includes(i)) {
-                        hits++;
-                        cell.textContent = "💥";
-                        cell.style.background = "rgba(255, 71, 87, 0.4)";
-                        document.getElementById('hits-count').textContent = `${hits}/5`;
-                        confetti({ particleCount: 25, spread: 60 });
-                        if (hits === 5) alert('انتصار ساحق! تم إغراق كامل أسطول الخصم 🚢🎖️');
-                    } else {
-                        cell.textContent = "🌊";
-                        cell.style.background = "rgba(0, 217, 245, 0.2)";
-                    }
-                };
-                grid.appendChild(cell);
-            }
-        }
-
-        /* 5. Math Blitz */
-        function runMathBlitz(arena) {
-            let score = 0;
-            function loadQ() {
-                const n1 = Math.floor(Math.random() * 15) + 5;
-                const n2 = Math.floor(Math.random() * 15) + 5;
-                const ans = n1 + n2;
-                arena.innerHTML = `
-                    <div style="font-size: 14px; color: var(--electric-blue); margin-bottom: 12px;">نقاطك: <strong>${score}</strong></div>
-                    <h2 style="font-size: 38px; margin-bottom: 20px;">${n1} + ${n2} = ؟</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 240px;">
-                        <button class="btn-neo" onclick="checkMath(${ans}, ${ans})">${ans}</button>
-                        <button class="btn-neo" onclick="checkMath(${ans+2}, ${ans})">${ans+2}</button>
-                        <button class="btn-neo" onclick="checkMath(${ans-3}, ${ans})">${ans-3}</button>
-                        <button class="btn-neo" onclick="checkMath(${ans+5}, ${ans})">${ans+5}</button>
-                    </div>
-                `;
-            }
-            window.checkMath = (user, correct) => {
-                if (user === correct) {
-                    score += 50;
-                    document.getElementById('canvas-my-score').textContent = `${score} نقطة`;
-                    confetti({ particleCount: 20, spread: 40 });
-                    loadQ();
-                } else {
-                    alert('إجابة خاطئة!');
-                    loadQ();
-                }
-            };
-            loadQ();
-        }
-
-        /* 6. Cyber XO */
-        function runCyberXO(arena) {
-            let turn = 'X';
-            let state = Array(9).fill('');
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-green); margin-bottom: 10px;">الدور لـ: <strong id="xo-turn">X</strong></div>
-                <div id="xo-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 240px; height: 240px;"></div>
-            `;
-            const grid = document.getElementById('xo-grid');
-            for (let i = 0; i < 9; i++) {
-                const b = document.createElement('div');
-                b.style = "background: rgba(255,255,255,0.05); border: 2px solid var(--electric-blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; cursor: pointer; color: #fff;";
-                b.onclick = () => {
-                    if (state[i] !== '') return;
-                    state[i] = turn;
-                    b.textContent = turn;
-                    b.style.color = turn === 'X' ? 'var(--neon-green)' : 'var(--electric-coral)';
-                    turn = turn === 'X' ? 'O' : 'X';
-                    document.getElementById('xo-turn').textContent = turn;
-                };
-                grid.appendChild(b);
-            }
-        }
-
-        /* 7. Classic Domino */
-        function runClassicDomino(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 10px;">انقر على قطعة لإنزالها:</div>
-                <div style="display: flex; gap: 8px; justify-content: center;">
-                    <div class="btn-neo" onclick="dropDomino(this)">🀄 [6|6]</div>
-                    <div class="btn-neo" onclick="dropDomino(this)">🀄 [6|4]</div>
-                    <div class="btn-neo" onclick="dropDomino(this)">🀄 [4|1]</div>
-                </div>
-                <div id="domino-table" style="margin-top: 20px; font-size: 18px; color: var(--neon-green);">الطاولة جاهزة...</div>
-            `;
-            window.dropDomino = (el) => {
-                document.getElementById('domino-table').textContent = `تم لعب: ${el.textContent}`;
-                el.remove();
-                confetti({ particleCount: 20, spread: 50 });
-            };
-        }
-
-        /* 8. Word Trap */
-        function runWordTrap(arena) {
-            const secret = "ALGERIA";
-            let guessed = "";
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 12px;">خمن اسم الدولة السرية:</div>
-                <h2 id="word-display" style="font-size: 34px; letter-spacing: 6px; margin-bottom: 16px;">_ _ _ _ _ _ _</h2>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 280px;">
-                    ${['A','B','C','D','E','G','I','L','R','T','Z'].map(ch => `
-                        <button class="btn-neo" style="padding: 6px 12px; font-size: 14px;" onclick="guessLetter('${ch}')">${ch}</button>
-                    `).join('')}
-                </div>
-            `;
-            window.guessLetter = (l) => {
-                guessed += l;
-                const disp = secret.split('').map(c => guessed.includes(c) ? c : '_').join(' ');
-                document.getElementById('word-display').textContent = disp;
-                if (!disp.includes('_')) {
-                    confetti({ particleCount: 60, spread: 70 });
-                    alert('أحسنت! الكلمة هي ALGERIA 🇩🇿🎉');
-                }
-            };
-        }
-
-        /* 9. Memory Matrix */
-        function runMemoryMatrix(arena) {
-            const icons = ['🔥','⚡','👑','💎','🔥','⚡','👑','💎'].sort(() => Math.random() - 0.5);
-            arena.innerHTML = `
-                <div style="font-size: 12px; color: var(--neon-green); margin-bottom: 8px;">طابق البطاقات المتشابهة:</div>
-                <div id="mem-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 260px;"></div>
-            `;
-            let flipped = [];
-            const grid = document.getElementById('mem-grid');
-            icons.forEach(ic => {
-                const card = document.createElement('div');
-                card.style = "height: 60px; background: rgba(255,255,255,0.06); border: 2px solid var(--border-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer;";
-                card.onclick = () => {
-                    if (card.textContent || flipped.length >= 2) return;
-                    card.textContent = ic;
-                    flipped.push(card);
-                    if (flipped.length === 2) {
-                        if (flipped[0].textContent === flipped[1].textContent) {
-                            flipped = [];
-                            confetti({ particleCount: 20, spread: 40 });
-                        } else {
-                            setTimeout(() => {
-                                flipped.forEach(c => c.textContent = '');
-                                flipped = [];
-                            }, 700);
-                        }
-                    }
-                };
-                grid.appendChild(card);
-            });
-        }
-
-        /* 10. Speed Clicker */
-        function runSpeedClicker(arena) {
-            let count = 0;
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 10px;">اضغط بأقصى سرعة ممكنة! ⚡</div>
-                <h1 id="click-counter" style="font-size: 50px; color: var(--neon-green); margin-bottom: 16px;">0</h1>
-                <button class="btn-neo" style="width: 140px; height: 140px; border-radius: 50%; font-size: 22px;" onclick="tapSpeed()">انقر!</button>
-            `;
-            window.tapSpeed = () => {
-                count++;
-                document.getElementById('click-counter').textContent = count;
-                if (count % 20 === 0) confetti({ particleCount: 30, spread: 50 });
-            };
-        }
-
-        /* 11. RPS Neo */
-        function runRPSNeo(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--electric-blue); margin-bottom: 14px;">اختر حركتك:</div>
-                <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-                    <button class="btn-neo" style="font-size: 28px;" onclick="playRPS('🪨')">🪨</button>
-                    <button class="btn-neo" style="font-size: 28px;" onclick="playRPS('📄')">📄</button>
-                    <button class="btn-neo" style="font-size: 28px;" onclick="playRPS('✂️')">✂️</button>
-                </div>
-                <div id="rps-result" style="font-size: 15px; color: var(--neon-green);">في انتظار حركتك...</div>
-            `;
-            window.playRPS = (user) => {
-                const opts = ['🪨','📄','✂️'];
-                const comp = opts[Math.floor(Math.random() * opts.length)];
-                let res = 'تعادل!';
-                if ((user==='🪨'&&comp==='✂️') || (user==='📄'&&comp==='🪨') || (user==='✂️'&&comp==='📄')) {
-                    res = 'أنت الفائز! 🏆';
-                    confetti({ particleCount: 30, spread: 60 });
-                } else if (user !== comp) {
-                    res = 'فاز الخصم!';
-                }
-                document.getElementById('rps-result').innerHTML = `أنت: ${user} | الخصم: ${comp}<br><strong>${res}</strong>`;
-            };
-        }
-
-        /* 12-20. محاكاة الألعاب */
-        function runInteractiveSimulation(arena, title, icon) {
-            arena.innerHTML = `
-                <span style="font-size: 60px; margin-bottom: 14px;">${icon}</span>
-                <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">${title}</h3>
-                <p style="font-size: 12px; color: var(--text-sub); text-align: center; max-width: 260px; margin-bottom: 16px;">الجلسة متزامنة مع Firebase Realtime!</p>
-                <button class="btn-neo" onclick="confetti({particleCount: 50, spread: 70}); alert('تم حصد 50 نقطة!')">تنفيذ الإجراء التنافسي ⚡</button>
-            `;
-        }
-
-        /* ================= 5. البحث وطلبات الصداقة ================= */
-        function dispatchFriendRequest() {
-            const input = document.getElementById('friend-search-input');
-            let searchTarget = input.value.trim().toUpperCase().replace('#', '');
-            if (!searchTarget) return;
-
-            if (searchTarget === currentUser.rawId) {
-                alert('هذا معرف حسابك الخاص!');
-                return;
+            if (gameRoomListener) {
+                db.ref('active_matches/' + activeGameRoomId).off('value', gameRoomListener);
             }
 
-            db.ref('users/' + searchTarget).once('value', (snap) => {
-                if (snap.exists()) {
-                    const targetUser = snap.val();
-                    db.ref(`requests/${searchTarget}/${currentUser.rawId}`).set({
-                        fromId: currentUser.rawId,
-                        fromName: currentUser.fullname,
-                        fromAvatar: currentUser.avatar,
-                        timestamp: Date.now()
-                    }).then(() => {
-                        input.value = '';
-                        alert(`تم إرسال طلب الصداقة بنجاح إلى ${targetUser.fullname}! 🎉`);
-                    });
-                } else {
-                    alert('لم يتم العثور على أي مستخدم بهذا المعرف!');
-                }
-            });
+            if (gameType === 'xo') setupOnlineXO(arena, roomId);
+            else if (gameType === 'chess') setupOnlineChess(arena, roomId);
         }
 
-        function listenToRequests() {
-            db.ref('requests/' + currentUser.rawId).on('value', (snapshot) => {
-                const deck = document.getElementById('incoming-requests-deck');
-                deck.innerHTML = '';
-                const requests = snapshot.val();
-                if (requests && Object.keys(requests).length > 0) {
-                    Object.values(requests).forEach(req => {
-                        const card = document.createElement('div');
-                        card.className = 'pending-card';
-                        card.innerHTML = `
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="font-size: 26px;">${req.fromAvatar}</div>
-                                <div>
-                                    <strong style="font-size: 14px;">${req.fromName}</strong>
-                                    <div style="font-size: 11px; color: var(--text-sub);">#${req.fromId}</div>
-                                </div>
-                            </div>
-                            <div>
-                                <button style="background: var(--neon-green); border: none; color: #000; font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-left: 4px;" onclick="acceptFriend('${req.fromId}', '${req.fromName}', '${req.fromAvatar}')">قبول</button>
-                                <button style="background: rgba(255,255,255,0.1); border: none; color: var(--text-sub); padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer;" onclick="rejectFriend('${req.fromId}')">رفض</button>
-                            </div>
-                        `;
-                        deck.appendChild(card);
-                    });
-                } else {
-                    deck.innerHTML = '<div style="color: var(--text-sub); font-size: 12px;">لا توجد طلبات معلقة حالياً.</div>';
-                }
-            });
-        }
-
-        function acceptFriend(id, name, avatar) {
-            const newFriend = { rawId: id, id: '#' + id, name: name, avatar: avatar };
-            friendsList.push(newFriend);
-            localStorage.setItem('le_social_friends', JSON.stringify(friendsList));
-            db.ref(`requests/${currentUser.rawId}/${id}`).remove();
-            renderFriendsDeck();
-            renderChatThreads();
-            alert(`أصبحت صديقاً لـ ${name}! 🎉`);
-        }
-
-        function rejectFriend(id) {
-            db.ref(`requests/${currentUser.rawId}/${id}`).remove();
-        }
-
-        function renderFriendsDeck() {
-            const container = document.getElementById('accepted-friends-deck');
-            container.innerHTML = '';
-            if (friendsList.length === 0) {
-                container.innerHTML = '<div style="color: var(--text-sub); font-size: 12px;">قائمة الأصدقاء فارغة حالياً.</div>';
-                return;
-            }
-            friendsList.forEach(fr => {
-                const item = document.createElement('div');
-                item.className = 'pending-card';
-                item.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="font-size: 26px;">${fr.avatar}</div>
-                        <div>
-                            <strong style="font-size: 14px;">${fr.name}</strong>
-                            <div style="font-size: 11px; color: var(--text-sub);">${fr.id}</div>
-                        </div>
-                    </div>
-                    <button style="background: var(--tg-cyan); border: none; color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer;" onclick="openChatRoom(${JSON.stringify(fr).replace(/"/g, '&quot;')})">
-                        <i class="fa-solid fa-message"></i> محادثة
-                    </button>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        /* ================= 6. الملف الشخصي بأسلوب Instagram ================= */
-        function loadProfile() {
-            if (!currentUser) return;
-            document.getElementById('insta-profile-username').textContent = currentUser.username;
-            document.getElementById('insta-profile-fullname').textContent = currentUser.fullname;
-            document.getElementById('insta-profile-bio').textContent = currentUser.bio;
-            document.getElementById('insta-avatar-emoji').textContent = currentUser.avatar;
-            document.getElementById('insta-my-id-badge').textContent = currentUser.id;
-            document.getElementById('insta-posts-num').textContent = currentUser.postsCount || 9;
-            document.getElementById('insta-followers-num').textContent = currentUser.followersCount || 348;
-            document.getElementById('insta-following-num').textContent = currentUser.followingCount || 192;
-        }
-
-        function cycleAvatar() {
-            const avatars = ['😎', '🤠', '🥷', '👑', '🦁', '🤖', '👾', '🚀'];
-            const random = avatars[Math.floor(Math.random() * avatars.length)];
-            currentUser.avatar = random;
-            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
-            loadProfile();
-            document.getElementById('canvas-my-avatar').textContent = random;
-            document.getElementById('canvas-my-avatar-mini').textContent = random;
-            db.ref('users/' + currentUser.rawId).update({ avatar: random });
-        }
-
-        function openEditProfileModal() {
-            const newName = prompt('تعديل الاسم الكامل:', currentUser.fullname);
-            if (newName && newName.trim() !== '') currentUser.fullname = newName.trim();
-
-            const newBio = prompt('تعديل النبذة الشخصية (Bio):', currentUser.bio);
-            if (newBio !== null) currentUser.bio = newBio.trim();
-
-            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
-            db.ref('users/' + currentUser.rawId).update({
-                fullname: currentUser.fullname,
-                bio: currentUser.bio
-            });
-            loadProfile();
-            alert('تم حفظ تعديلات الملف الشخصي بنجاح! ✨');
-        }
-    </script>
-</body>
-</html>
+        function setupOnlineXO(arena, roomId) {
+            arena.innerHTML = 
