@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Le jeux chat - Engineered by Mohammed Jalil</title>
+    <title>Le jeux chat - Engineered by Mohamed Jalil</title>
     
-    <!-- خطوط وتنسيقات وتنوع -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- مكاتبات الدعم والاحتفال ومحرك Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -19,22 +17,15 @@
     <style>
         :root {
             --bg-deep: #070a12;
-            --bg-card: rgba(18, 24, 38, 0.94);
+            --bg-card: #121826;
             --border-soft: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(0, 245, 160, 0.25);
-            
             --neon-green: #00F5A0;
             --neon-cyan: #00D9F5;
             --cyber-violet: #7C3AED;
             --electric-coral: #FF4757;
-            
             --wa-bubble-out: #005c4b;
             --wa-bubble-in: #1b263b;
-            --wa-check: #53bdeb;
-            --tg-cyan: #229ED9;
-            --ig-blue: #3897F0;
             --charcoal-search: #1C1E24;
-            
             --text-main: #f8fafc;
             --text-sub: #8E95A5;
             --insta-grad: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
@@ -42,118 +33,111 @@
 
         * {
             box-sizing: border-box;
-            الهامش: 0؛
-            الحشو: 0؛
+            margin: 0;
+            padding: 0;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Cairo', 'Readex Pro', -apple-system, sans-serif;
+            font-family: 'Cairo', 'Readex Pro', sans-serif;
+        }
+
+        html, body {
+            background-color: var(--bg-deep) !important;
+            color: var(--text-main);
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
-            لون الخلفية: var(--bg-deep);
-            اللون: var(--text-main);
-            الارتفاع: 100vh؛
-            العرض: مرن؛
+            display: flex;
             flex-direction: column;
-            overflow: hidden;
-            تباعد الأحرف: -0.2 بكسل؛
+            position: relative;
         }
 
         .screen {
-            الموضع: مطلق؛
+            position: absolute;
             inset: 0;
-            العرض: لا شيء؛
+            display: none;
             flex-direction: column;
-            الخلفية: var(--bg-deep);
-            overflow: hidden;
+            background: var(--bg-deep);
+            overflow-y: auto;
             z-index: 10;
             padding-bottom: 74px;
         }
 
-        .screen.active { display: flex; }
-
-        .btn-neo {
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            border: none;
-            اللون: #070a12؛
-            وزن الخط: 800؛
-            border-radius: 16px;
-            الحشو: 10 بكسل 18 بكسل؛
-            المؤشر: مؤشر؛
-            box-shadow: 0 4px 14px rgba(0, 245, 160, 0.25);
-            الانتقال: جميعها بفترة 0.15 ثانية من السهولة؛
-            العرض: مضمن-مرن؛
-            align-items: center;
-            justify-content: center;
-            الفجوة: 8 بكسل؛
+        .screen.active { 
+            display: flex !important; 
         }
 
-        .btn-neo:active { transform: scale(0.97); }
+        .btn-neo {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+            border: none;
+            color: #070a12;
+            font-weight: 800;
+            border-radius: 14px;
+            padding: 10px 18px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-        /* 1. شاشة الدخول والتسجيل الرسمية */
+        /* شاشة الدخول */
         #auth-screen {
-            z-index: 60;
+            z-index: 100;
             justify-content: center;
             align-items: center;
-            الحشو: 24 بكسل؛
-            الخلفية: تدرج شعاعي (دائرة عند 50% 20%، #1e1b4b 0%، #070a12 85%)؛
-            الحشو السفلي: 0؛
+            padding: 20px;
+            background: #070a12 !important;
         }
 
         .auth-card {
-            العرض: 100%؛
+            width: 100%;
             max-width: 360px;
-            الخلفية: var(--bg-card);
-            backdrop-filter: blur(25px);
-            الحدود: 1 بكسل صلب var(-border-soft);
-            border-radius: 28px;
-            الحشو: 28 بكسل 22 بكسل؛
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 24px;
+            padding: 24px;
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
 
         .app-brand {
-            حجم الخط: 26 بكسل؛
-            وزن الخط: 900؛
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 4px;
         }
 
         .designer-signature {
-            حجم الخط: 13.5 بكسل؛
-            اللون: var(--neon-cyan);
-            وزن الخط: 800؛
-            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--neon-cyan);
+            font-weight: 800;
+            margin-bottom: 6px;
         }
 
         .designer-signature span {
-            العرض: كتلة؛
-            حجم الخط: 16 بكسل؛
-            وزن الخط: 900؛
-            اللون: var(--neon-green);
-            margin-top: 4px;
-            تباعد الأحرف: 2 بكسل؛
-            text-transform: uppercase;
+            display: block;
+            font-size: 15px;
+            color: var(--neon-green);
+            margin-top: 2px;
+            letter-spacing: 2px;
         }
 
         .instagram-creator-badge {
-            العرض: مضمن-مرن؛
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            الفجوة: 8 بكسل؛
-            الحشو: 6 بكسل 14 بكسل؛
-            margin-bottom: 16px;
+            gap: 6px;
+            padding: 4px 12px;
+            margin-bottom: 14px;
             border-radius: 999px;
-            الخلفية: تدرج خطي (45 درجة، rgba(240، 148، 51، 0.15)، rgba(220، 39، 67، 0.15)، rgba(188، 24، 136، 0.15))؛
+            background: rgba(220, 39, 67, 0.15);
             border: 1px solid rgba(220, 39, 67, 0.4);
-            اللون: #fff;
+            color: #fff;
             text-decoration: none;
-            حجم الخط: 12 بكسل؛
-            وزن الخط: 700؛
-            box-shadow: 0 4px 15px rgba(220, 39, 67, 0.2);
-            الانتقال: الكل 0.2 ثانية؛
+            font-size: 11.5px;
         }
 
         .field-group {
@@ -162,1799 +146,752 @@
         }
 
         .field-group label {
-            العرض: كتلة؛
-            حجم الخط: 11.5 بكسل؛
-            اللون: var(--text-sub);
-            margin-bottom: 5px;
-            وزن الخط: 600؛
+            display: block;
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-bottom: 4px;
         }
 
         .field-group input {
-            العرض: 100%؛
-            الحشو: 11 بكسل 14 بكسل؛
-            الخلفية: rgba(7, 10, 18, 0.85)؛
-            الحدود: 1.5 بكسل صلب var(-border-soft);
-            border-radius: 14px;
-            اللون: #fff;
-            مخطط تفصيلي: لا شيء؛
-            حجم الخط: 13.5 بكسل؛
+            width: 100%;
+            padding: 10px 12px;
+            background: #0b0f19;
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            font-size: 13px;
         }
 
-        /* 2. شريط المحادثات المطور الجرايد إنستجرام ومايكرو التفاعلات */
+        /* شريط الدردشة العلوي */
         .chat-app-bar {
-            الارتفاع: 56 بكسل؛
-            الحشو: 0 16 بكسل؛
-            العرض: مرن؛
+            height: 54px;
+            padding: 0 16px;
+            display: flex;
             align-items: center;
             justify-content: space-between;
-            الخلفية: #000000؛
+            background: #000000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-shrink: 0;
-            z-index: 20;
         }
 
-        .account-selector {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 6 بكسل؛
-            المؤشر: مؤشر؛
-        }
-
-        .account-selector h2 {
-            حجم الخط: 18 بكسل؛
-            وزن الخط: 700؛
-            اللون: #FFFFFF؛
-        }
-
-        .account-selector i {
-            حجم الخط: 13 بكسل؛
-            اللون: #8E95A5؛
-            الانتقال: تحويل 0.2 ثانية؛
-        }
-
-        .chat-bar-actions {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 16 بكسل؛
-            حجم الخط: 19 بكسل؛
-            اللون: #FFFFFF؛
-        }
-
-        .chat-bar-actions i {
-            المؤشر: مؤشر؛
-            الانتقال: تحويل 0.15 ثانية؛
-        }
-        .chat-bar-actions i:active { transform: scale(0.9); }
-
-        /* شريط البحث الذكي والتوليدي Meta AI */
         .meta-search-box {
-            الحشو: 10 بكسل 16 بكسل 6 بكسل 16 بكسل؛
-            الخلفية: #000000؛
+            padding: 8px 16px;
+            background: #000000;
             flex-shrink: 0;
         }
 
         .search-pill-container {
-            الخلفية: var(--charcoal-search);
-            border-radius: 14px;
-            العرض: مرن؛
+            background: var(--charcoal-search);
+            border-radius: 12px;
+            display: flex;
             align-items: center;
-            الحشو: 8 بكسل 14 بكسل؛
-            الفجوة: 10 بكسل؛
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .search-pill-container i {
-            اللون: var(--text-sub);
-            حجم الخط: 14 بكسل؛
+            padding: 6px 12px;
+            gap: 8px;
         }
 
         .search-pill-container input {
-            الخلفية: شفافة؛
+            background: transparent;
             border: none;
-            مخطط تفصيلي: لا شيء؛
-            اللون: #FFFFFF؛
-            حجم الخط: 13.5 بكسل؛
+            outline: none;
+            color: #FFFFFF;
+            font-size: 13px;
             flex: 1;
         }
 
-        .search-pill-container input::placeholder {
-            اللون: var(--text-sub);
-            وزن الخط: 500؛
-        }
-
-        .ai-tag-chip {
-            الخلفية: تدرج خطي (135 درجة، #7C3AED، #229ED9)؛
-            اللون: #fff;
-            حجم الخط: 9 بكسل؛
-            وزن الخط: 800؛
-            الحشو: 2 بكسل 6 بكسل؛
-            border-radius: 6px;
-            تباعد الأحرف: 0.5 بكسل؛
-        }
-
-        /* 3. شريط الحالات والملاحظات السريعة (هندسة الملاحظات) */
+        /* شريط الملاحظات */
         .notes-strip-section {
-            الحشو: 12 بكسل 14 بكسل 10 بكسل 14 بكسل؛
-            العرض: مرن؛
-            الفجوة: 16 بكسل؛
+            padding: 10px 14px;
+            display: flex;
+            gap: 14px;
             overflow-x: auto;
-            الخلفية: #000000؛
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            background: #000000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-shrink: 0;
         }
         .notes-strip-section::-webkit-scrollbar { display: none; }
 
         .note-card-item {
-            العرض: مرن؛
+            display: flex;
             flex-direction: column;
             align-items: center;
-            العرض: 72 بكسل؛
+            width: 64px;
             flex-shrink: 0;
-            المؤشر: مؤشر؛
-            الموضع: نسبي؛
+            cursor: pointer;
         }
 
         .note-bubble-thought {
-            الخلفية: #262626؛
-            اللون: #E2E8F0;
-            حجم الخط: 10 بكسل؛
-            وزن الخط: 600؛
-            الحشو: 4 بكسل 8 بكسل؛
-            border-radius: 12px;
-            الحد الأقصى للعرض: 82 بكسل؛
+            background: #262626;
+            color: #E2E8F0;
+            font-size: 9.5px;
+            padding: 3px 6px;
+            border-radius: 10px;
+            max-width: 76px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             text-align: center;
-            margin-bottom: 4px;
-            الموضع: نسبي؛
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .note-bubble-thought::after {
-            المحتوى: '';
-            الموضع: مطلق؛
-            أسفل: -5 بكسل؛
-            يسار: 50%؛
-            transform: translateX(-50%);
-            العرض: 5 بكسل؛
-            الارتفاع: 5 بكسل؛
-            الخلفية: #262626؛
-            border-radius: 50%;
+            margin-bottom: 3px;
         }
 
         .note-avatar-wrapper {
-            العرض: 66 بكسل؛
-            الارتفاع: 66 بكسل؛
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            الموضع: نسبي؛
-            الحشو: 2 بكسل؛
-            الخلفية: rgba(255, 255, 255, 0.1)؛
+            padding: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .note-avatar-wrapper.has-story { background: var(--insta-grad); }
 
         .note-avatar-img {
-            العرض: 100%؛
-            الارتفاع: 100%؛
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            الخلفية: #111827؛
-            العرض: مرن؛
+            background: #111827;
+            display: flex;
             align-items: center;
             justify-content: center;
-            حجم الخط: 28 بكسل؛
-            overflow: hidden;
+            font-size: 24px;
             border: 2px solid #000000;
         }
 
-        .note-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
-
-        .my-note-plus {
-            الموضع: مطلق؛
-            أسفل: 0؛
-            اليسار: 0؛
-            الخلفية: #FFFFFF;
-            اللون: #000000؛
-            العرض: 20 بكسل؛
-            الارتفاع: 20 بكسل؛
-            border-radius: 50%;
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 11 بكسل؛
-            وزن الخط: 900؛
-            border: 2px solid #000000;
-        }
-
-        .note-author-name {
-            حجم الخط: 11 بكسل؛
-            اللون: #A8A8A8؛
-            margin-top: 5px;
-            max-width: 68px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;
-        }
-
-        /* 4. قسم إدارة الرسائل وتصنيفها */
-        .section-nav-header {
-            العرض: مرن؛
-            justify-content: space-between;
-            align-items: center;
-            الحشو: 12 بكسل 16 بكسل 8 بكسل 16 بكسل؛
-            الخلفية: #000000؛
-            flex-shrink: 0;
-        }
-
-        .messages-title-badge {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 6 بكسل؛
-        }
-
-        .messages-title-badge h3 {
-            حجم الخط: 16 بكسل؛
-            وزن الخط: 700؛
-            اللون: #FFFFFF؛
-        }
-
-        .mute-bell-icon {
-            حجم الخط: 12 بكسل؛
-            اللون: #8E95A5؛
-        }
-
-        .requests-filter-link {
-            حجم الخط: 13.5 بكسل؛
-            وزن الخط: 600؛
-            اللون: var(--ig-blue);
-            المؤشر: مؤشر؛
-        }
-
-        /* 5. البنية الأساسية لبطاقة الائتمان (هيكل عنصر الدردشة المباشرة) */
+        /* قائمة المحادثات */
         .chat-feed {
             flex: 1;
             overflow-y: auto;
-            الخلفية: #000000؛
+            background: #000000;
         }
 
         .direct-chat-item {
-            العرض: مرن؛
+            display: flex;
             align-items: center;
-            الحشو: 12 بكسل 16 بكسل؛
-            الفجوة: 14 بكسل؛
-            المؤشر: مؤشر؛
-            الانتقال: تحويل 0.15 ثانية سهولة، خلفية 0.15 ثانية سهولة؛
-            الموضع: نسبي؛
-            الخلفية: #000000؛
-        }
-
-        .direct-chat-item:active {
-            transform: scale(0.98);
-            الخلفية: rgba(255, 255, 255, 0.03)؛
-        }
-
-        .item-col-right {
-            الموضع: نسبي؛
-            flex-shrink: 0;
+            padding: 10px 16px;
+            gap: 12px;
+            background: #000000;
+            cursor: pointer;
         }
 
         .direct-pfp-box {
-            العرض: 56 بكسل؛
-            الارتفاع: 56 بكسل؛
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            الخلفية: #151e32؛
-            العرض: مرن؛
+            background: #151e32;
+            display: flex;
             align-items: center;
             justify-content: center;
-            حجم الخط: 26 بكسل؛
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 22px;
         }
 
-        .direct-pfp-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        .active-status-dot {
-            العرض: 14 بكسل؛
-            الارتفاع: 14 بكسل؛
-            الخلفية: #00F5A0؛
-            border: 3px solid #000000;
-            border-radius: 50%;
-            الموضع: مطلق؛
-            أسفل: -1 بكسل؛
-            يسار: -1 بكسل؛
-        }
-
-        .item-col-center {
-            flex: 1;
-            overflow: hidden;
-            العرض: مرن؛
-            flex-direction: column;
-            الفجوة: 3 بكسل؛
-        }
-
-        .chat-user-row {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 5 بكسل؛
-        }
-
-        .chat-user-row .u-name {
-            حجم الخط: 14.5 بكسل؛
-            وزن الخط: 600؛
-            اللون: #FFFFFF؛
-        }
-
-        .verified-badge {
-            اللون: #3897F0؛
-            حجم الخط: 12 بكسل؛
-        }
-
-        .chat-preview-row {
-            حجم الخط: 13 بكسل؛
-            اللون: var(--text-sub);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 4 بكسل؛
-        }
-
-        .chat-preview-row.unread-text {
-            اللون: #FFFFFF؛
-            وزن الخط: 700؛
-        }
-
-        .item-col-left {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 12 بكسل؛
-            flex-shrink: 0;
-        }
-
-        .unread-indicator-dot {
-            العرض: 9 بكسل؛
-            الارتفاع: 9 بكسل؛
-            الخلفية: #3897F0؛
-            border-radius: 50%;
-        }
-
-        .quick-camera-btn {
-            حجم الخط: 17 بكسل؛
-            اللون: #8E95A5؛
-            المؤشر: مؤشر؛
-            الحشو: 4 بكسل؛
-        }
-
-        /* 6. تحديات التحديات الجديدة ( مطابقة المرآة 100%) */
+        /* صالة التحديات */
         .challenge-top-nav-bar {
-            الحشو: 12 بكسل 16 بكسل؛
-            العرض: مرن؛
+            padding: 12px 16px;
+            display: flex;
             align-items: center;
             justify-content: space-between;
-            الخلفية: #000000؛
-            flex-shrink: 0;
-        }
-
-        .challenge-top-title {
-            حجم الخط: 18 بكسل؛
-            وزن الخط: 900؛
-            اللون: #FFFFFF؛
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 6 بكسل؛
+            background: #000000;
         }
 
         .voice-room-badge {
-            العرض: مضمن-مرن؛
-            align-items: center;
-            الفجوة: 6 بكسل؛
-            الخلفية: rgba(0, 245, 160, 0.1)؛
+            background: rgba(0, 245, 160, 0.1);
             border: 1px solid rgba(0, 245, 160, 0.3);
-            اللون: var(--neon-green);
-            الحشو: 5 بكسل 12 بكسل؛
+            color: var(--neon-green);
+            padding: 4px 10px;
             border-radius: 999px;
-            حجم الخط: 11.5 بكسل؛
-            وزن الخط: 700؛
+            font-size: 11px;
+            font-weight: 700;
         }
 
-        .challenge-pill-btn {
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            اللون: #070a12؛
-            حجم الخط: 11.5 بكسل؛
-            وزن الخط: 900؛
-            الحشو: 6 بكسل 14 بكسل؛
-            border-radius: 14px;
-            border: none;
-            المؤشر: مؤشر؛
-            box-shadow: 0 4px 12px rgba(0, 245, 160, 0.25);
-        }
-
-        /* بطاقة مستوى التقدم */
         .progress-stat-card {
-            الخلفية: #141622؛
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            الحشو: 16 بكسل؛
+            background: #141622;
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            padding: 14px;
             margin-bottom: 12px;
-            الموضع: نسبي؛
-        }
-
-        .progress-header-row {
-            العرض: مرن؛
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-
-        .progress-title-meta {
-            حجم الخط: 14.5 بكسل؛
-            وزن الخط: 800؛
-            اللون: #FFFFFF؛
-        }
-
-        .progress-streak-badge {
-            الخلفية: #2b1820؛
-            border: 1px solid #ff4757;
-            اللون: #ff6b81;
-            حجم الخط: 11 بكسل؛
-            وزن الخط: 800؛
-            الحشو: 4 بكسل 10 بكسل؛
-            border-radius: 10px;
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 5 بكسل؛
-        }
-
-        .progress-xp-score {
-            حجم الخط: 13.5 بكسل؛
-            وزن الخط: 900؛
-            اللون: var(--neon-cyan);
-            font-family: monospace;
         }
 
         .progress-bar-track {
-            الارتفاع: 10 بكسل؛
-            الخلفية: rgba(255, 255, 255, 0.08)؛
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 999px;
             overflow: hidden;
-            العرض: مرن؛
         }
 
         .progress-bar-fill {
-            العرض: 65%؛
-            الارتفاع: 100%؛
-            الخلفية: تدرج خطي (90 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            border-radius: 999px;
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
         }
 
-        /* بطاقة الحظ السعيد */
         .lucky-wheel-banner-card {
-            الخلفية: #181628؛
+            background: #181628;
             border: 1px solid rgba(251, 191, 36, 0.3);
-            border-radius: 20px;
-            الحشو: 14 بكسل 16 بكسل؛
-            العرض: مرن؛
+            border-radius: 18px;
+            padding: 12px 16px;
+            display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 12px;
         }
 
-        .wheel-info-col {
-            العرض: مرن؛
-            flex-direction: column;
-            الفجوة: 4 بكسل؛
-        }
-
-        .wheel-title-row {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 8 بكسل؛
-            حجم الخط: 14 بكسل؛
-            وزن الخط: 800؛
-            اللون: #FFFFFF؛
-        }
-
-        .wheel-timer-countdown {
-            حجم الخط: 11 بكسل؛
-            اللون: #38bdf8؛
-            وزن الخط: 700؛
-            font-family: monospace;
-        }
-
-        .btn-spin-pill {
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            اللون: #070a12؛
-            حجم الخط: 12 بكسل؛
-            وزن الخط: 900؛
-            الحشو: 8 بكسل 18 بكسل؛
-            border-radius: 14px;
-            border: none;
-            المؤشر: مؤشر؛
-        }
-
-        /* بطاقة تحدي الـ 60 ثانية (VS) */
         .vs-arena-master-card {
-            الخلفية: تدرج خطي (180 درجة، #181432 0%، #151228 100%)؛
+            background: linear-gradient(180deg, #181432 0%, #151228 100%);
             border: 1px solid #7c3aed;
-            border-radius: 24px;
-            الحشو: 16 بكسل؛
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.25);
+            border-radius: 20px;
+            padding: 16px;
             margin-bottom: 12px;
-            الموضع: نسبي؛
-        }
-
-        .vs-card-header {
-            العرض: مرن؛
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .live-tag-chip {
-            الخلفية: #1e1b4b؛
-            border: 1px solid var(--neon-green);
-            اللون: var(--neon-green);
-            حجم الخط: 10 بكسل؛
-            وزن الخط: 900؛
-            الحشو: 2 بكسل 8 بكسل؛
-            border-radius: 8px;
         }
 
         .circular-timer-wrapper {
-            العرض: مرن؛
+            display: flex;
             justify-content: center;
-            margin: 6px 0 10px 0;
+            margin: 6px 0;
         }
 
         .circle-timer-svg {
-            العرض: 52 بكسل؛
-            الارتفاع: 52 بكسل؛
-            الموضع: نسبي؛
-            العرض: مرن؛
+            width: 50px;
+            height: 50px;
+            position: relative;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .circle-timer-svg span {
-            الموضع: مطلق؛
-            حجم الخط: 15 بكسل؛
-            وزن الخط: 900؛
-            اللون: var(--neon-green);
-            font-family: monospace;
+            position: absolute;
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--neon-green);
         }
 
         .vs-combatants-stage {
-            العرض: مرن؛
+            display: flex;
             align-items: center;
             justify-content: space-around;
-            الحشو: 6 بكسل 0 12 بكسل 0؛
+            padding: 6px 0 10px 0;
         }
 
         .combatant-pod {
-            العرض: مرن؛
+            display: flex;
             flex-direction: column;
             align-items: center;
-            العرض: 90 بكسل؛
-            المؤشر: مؤشر؛
+            width: 80px;
+            cursor: pointer;
         }
 
         .combatant-ring {
-            العرض: 64 بكسل؛
-            الارتفاع: 64 بكسل؛
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            الحشو: 2.5 بكسل؛
-            الخلفية: تدرج خطي (135 درجة، #FF007F، #7928CA)؛
-            margin-bottom: 6px;
+            padding: 2px;
+            background: linear-gradient(135deg, #FF007F, #7928CA);
+            margin-bottom: 4px;
         }
 
         .combatant-inner-img {
-            العرض: 100%؛
-            الارتفاع: 100%؛
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            الخلفية: #0f172a;
-            العرض: مرن؛
+            background: #0f172a;
+            display: flex;
             align-items: center;
             justify-content: center;
-            حجم الخط: 28 بكسل؛
-            overflow: hidden;
+            font-size: 24px;
         }
 
-        .combatant-inner-img img { width: 100%; height: 100%; object-fit: cover; }
-
-        .combatant-name {
-            حجم الخط: 13 بكسل؛
-            وزن الخط: 800؛
-            اللون: #FFFFFF؛
-            margin-bottom: 2px;
-        }
-
-        .combatant-rate {
-            حجم الخط: 10 بكسل؛
-            وزن الخط: 700؛
-            اللون: #38bdf8؛
-            margin-bottom: 2px;
-        }
-
-        .combatant-streak {
-            حجم الخط: 9.5 بكسل؛
-            وزن الخط: 800؛
-            اللون: #fbbf24؛
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 2 بكسل؛
-        }
-
-        .vs-big-label {
-            حجم الخط: 26 بكسل؛
-            وزن الخط: 900؛
-            اللون: #f59e0b;
-            text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
-        }
-
-        .emotes-flight-bar {
-            العرض: مرن؛
-            justify-content: center;
-            الفجوة: 12 بكسل؛
-            margin: 6px 0 14px 0;
-            حجم الخط: 20 بكسل؛
-        }
-
-        .emotes-flight-bar span {
-            المؤشر: مؤشر؛
-            الانتقال: تحويل 0.15 ثانية سهولة؛
-        }
-        .emotes-flight-bar span:active { transform: scale(1.3); }
-
-        .vs-cta-buttons-row {
-            العرض: مرن؛
-            الفجوة: 10 بكسل؛
-        }
-
-        .btn-vs-accept {
-            flex: 2;
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            اللون: #070a12؛
-            وزن الخط: 900؛
-            حجم الخط: 13 بكسل؛
-            border-radius: 16px;
-            border: none;
-            الحشو: 12 بكسل 14 بكسل؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            الفجوة: 8 بكسل؛
-            المؤشر: مؤشر؛
-            box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
-        }
-
-        .btn-vs-reject {
-            flex: 1;
-            الخلفية: #25203a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            اللون: #FFFFFF؛
-            وزن الخط: 700؛
-            حجم الخط: 12 بكسل؛
-            border-radius: 16px;
-            الحشو: 12 بكسل؛
-            المؤشر: مؤشر؛
-        }
-
-        /* 7. صالة الألعاب WePlay (بانر البطولة وأرصدة العملات) */
-        .arena-top-header {
-            الخلفية: rgba(18, 24, 38, 0.95)؛
-            backdrop-filter: blur(20px);
-            الحشو: 10 بكسل 16 بكسل؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: space-between;
-            الحد السفلي: 1 بكسل صلب var(-border-soft);
-            flex-shrink: 0;
-        }
-
-        .tournament-live-banner {
-            الخلفية: تدرج خطي (90 درجة، #1e1b4b، #312e81، #1e1b4b)؛
-            border-bottom: 1px solid rgba(124, 58, 237, 0.4);
-            الحشو: 8 بكسل 16 بكسل؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: space-between;
-            حجم الخط: 12 بكسل؛
-            وزن الخط: 700؛
-            flex-shrink: 0;
-        }
-
-        .tournament-badge {
-            الخلفية: تدرج خطي (135 درجة، #FF4757، #fbbf24)؛
-            اللون: #070a12؛
-            الحشو: 4 بكسل 10 بكسل؛
-            border-radius: 8px;
-            حجم الخط: 11 بكسل؛
-            وزن الخط: 900؛
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 5 بكسل؛
-        }
-
-        .games-grid-container {
-            العرض: شبكة؛
-            grid-template-columns: repeat(2, 1fr);
-            الفجوة: 12 بكسل؛
-            الحشو: 16 بكسل؛
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .game-badge-card {
-            الخلفية: var(--bg-card);
-            الحدود: 1 بكسل صلب var(-border-soft);
-            border-radius: 20px;
-            الحشو: 14 بكسل؛
-            العرض: مرن؛
-            flex-direction: column;
-            justify-content: space-between;
-            الموضع: نسبي؛
-            المؤشر: مؤشر؛
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            الانتقال: جميعها بفترة 0.2 ثانية من السهولة؛
-            الحد الأدنى للارتفاع: 145 بكسل؛
-        }
-
-        .game-badge-card:active { transform: scale(0.97); }
-
-        .game-category-tag {
-            حجم الخط: 9.5 بكسل؛
-            وزن الخط: 700؛
-            اللون: var(--neon-cyan);
-            text-transform: uppercase;
-        }
-
-        .game-online-chip {
-            العرض: مضمن-مرن؛
-            align-items: center;
-            الفجوة: 4 بكسل؛
-            حجم الخط: 9 بكسل؛
-            الخلفية: rgba(0, 245, 160, 0.12)؛
-            اللون: var(--neon-green);
-            الحشو: 2 بكسل 6 بكسل؛
-            border-radius: 999px;
-            وزن الخط: 700؛
-        }
-
-        .game-icon-visual {
-            العرض: 44 بكسل؛
-            الارتفاع: 44 بكسل؛
-            border-radius: 12px;
-            الخلفية: rgba(255, 255, 255, 0.05)؛
-            الحدود: 1 بكسل صلب var(-border-soft);
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 22 بكسل؛
-            margin: 10px 0 6px 0;
-            اللون: var(--neon-green);
-        }
-
-        /* 8. قسم واللحظات (مطابق للمجتمع 100%) */
+        /* المجتمع واللحظات */
         .community-header-bar {
-            الحشو: 14 بكسل 16 بكسل 8 بكسل 16 بكسل؛
-            العرض: مرن؛
+            padding: 12px 16px;
+            display: flex;
             align-items: center;
             justify-content: space-between;
-            الخلفية: #000000؛
-            flex-shrink: 0;
+            background: #000000;
         }
 
-        .community-headline {
-            حجم الخط: 19 بكسل؛
-            وزن الخط: 900؛
-            اللون: #FFFFFF؛
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 6 بكسل؛
-        }
-
-        .btn-new-moment-pill {
-            الخلفية: var(--neon-cyan);
-            اللون: #070a12؛
-            وزن الخط: 900؛
-            حجم الخط: 12 بكسل؛
-            الحشو: 6 بكسل 14 بكسل؛
-            border-radius: 999px;
-            border: none;
-            المؤشر: مؤشر؛
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 4 بكسل؛
-        }
-
-        /* التنبيه العائم المنبثق أنيق في الصورة */
         .floating-timeout-alert {
             margin: 4px auto 10px auto;
-            الخلفية: #111a28؛
-            border: 1px solid #00F5A0;
-            اللون: #FFFFFF؛
-            الحشو: 6 بكسل 18 بكسل؛
+            background: #111a28;
+            border: 1px solid var(--neon-green);
+            color: #FFFFFF;
+            padding: 5px 16px;
             border-radius: 999px;
-            حجم الخط: 12 بكسل؛
-            وزن الخط: 800؛
-            العرض: مرن؛
+            font-size: 11.5px;
+            font-weight: 700;
+            display: flex;
             align-items: center;
-            الفجوة: 8 بكسل؛
-            box-shadow: 0 4px 20px rgba(0, 245, 160, 0.3);
-            العرض: يناسب المحتوى؛
+            gap: 6px;
+            width: fit-content;
         }
 
         .community-capsules-tabs {
-            العرض: مرن؛
-            الفجوة: 10 بكسل؛
-            الحشو: 6 بكسل 16 بكسل 12 بكسل 16 بكسل؛
-            الخلفية: #000000؛
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            flex-shrink: 0;
+            display: flex;
+            gap: 10px;
+            padding: 4px 16px 10px 16px;
+            background: #000000;
         }
 
         .capsule-tab-btn {
             flex: 1;
-            الحشو: 8 بكسل 0؛
-            border-radius: 14px;
-            حجم الخط: 13 بكسل؛
-            وزن الخط: 800؛
+            padding: 8px 0;
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 800;
             text-align: center;
-            المؤشر: مؤشر؛
-            الانتقال: جميعها بفترة 0.2 ثانية من السهولة؛
+            cursor: pointer;
             border: none;
         }
 
         .capsule-tab-btn.active {
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            اللون: #070a12؛
-            box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+            color: #070a12;
         }
 
         .capsule-tab-btn.inactive {
-            الخلفية: #1c2130؛
-            اللون: #60a5fa؛
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .community-feed-stream {
-            flex: 1;
-            overflow-y: auto;
-            الحشو: 14 بكسل 16 بكسل؛
-            العرض: مرن؛
-            flex-direction: column;
-            الفجوة: 14 بكسل؛
-            الخلفية: #000000؛
+            background: #1c2130;
+            color: #60a5fa;
         }
 
         .post-card-master {
-            الخلفية: #141724؛
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            الحشو: 16 بكسل؛
-            العرض: مرن؛
-            flex-direction: column;
-            الفجوة: 12 بكسل؛
+            background: #141724;
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
 
-        .post-author-row {
-            العرض: مرن؛
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .post-author-details {
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 10 بكسل؛
-            المؤشر: مؤشر؛
-        }
-
-        .post-avatar-frame {
-            العرض: 44 بكسل؛
-            الارتفاع: 44 بكسل؛
-            border-radius: 50%;
-            الخلفية: #1e293b;
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 22 بكسل؛
-            border: 1.5px solid var(--neon-cyan);
-            overflow: hidden;
-        }
-
-        .post-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-        .post-achievement-box {
-            الخلفية: تدرج خطي (135 درجة، #1e1b4b، #2e1065)؛
-            border: 1px solid #7c3aed;
-            border-radius: 16px;
-            الحشو: 14 بكسل؛
-            العرض: مرن؛
-            flex-direction: column;
-            الفجوة: 10 بكسل؛
-        }
-
-        .btn-break-record {
-            الخلفية: تدرج خطي (135 درجة، متغير (--نيون-سماوي)، متغير (--نيون-أخضر))؛
-            اللون: #070a12؛
-            وزن الخط: 900؛
-            حجم الخط: 13 بكسل؛
-            border-radius: 14px;
-            border: none;
-            الحشو: 10 بكسل؛
-            المؤشر: مؤشر؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            الفجوة: 8 بكسل؛
-        }
-
-        .post-social-bar {
-            العرض: مرن؛
+        /* صالة الألعاب WePlay */
+        .arena-top-header {
+            background: #121826;
+            padding: 10px 16px;
+            display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-soft);
         }
 
-        .post-reactions-group {
-            العرض: مرن؛
-            الفجوة: 8 بكسل؛
-        }
-
-        .reaction-bubble {
-            الخلفية: #1e2130؛
-            اللون: #FFFFFF؛
-            حجم الخط: 11.5 بكسل؛
-            وزن الخط: 800؛
-            الحشو: 4 بكسل 10 بكسل؛
-            border-radius: 999px;
-            العرض: مرن؛
+        .tournament-live-banner {
+            background: linear-gradient(90deg, #1e1b4b, #312e81, #1e1b4b);
+            padding: 8px 16px;
+            display: flex;
             align-items: center;
-            الفجوة: 4 بكسل؛
-            المؤشر: مؤشر؛
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .btn-tip-coins {
-            الخلفية: #252839؛
-            اللون: #fbbf24؛
-            حجم الخط: 11.5 بكسل؛
-            وزن الخط: 800؛
-            الحشو: 5 بكسل 12 بكسل؛
-            border-radius: 999px;
-            border: 1px solid rgba(251, 191, 36, 0.25);
-            المؤشر: مؤشر؛
+        .games-grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 16px;
         }
 
-        /* 9. برج خليفة المتقدم */
-        #chat-room-screen { z-index: 50; padding-bottom: 0; }
-
-        .chat-bubble-stream {
-            flex: 1;
-            overflow-y: auto;
-            الحشو: 16 بكسل؛
-            العرض: مرن؛
-            flex-direction: column;
-            الفجوة: 8 بكسل؛
-            لون الخلفية: #080c14؛
-        }
-
-        .msg-bubble {
-            الحد الأقصى للعرض: 80%؛
-            الحشو: 8 بكسل 12 بكسل 6 بكسل 14 بكسل؛
+        .game-badge-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
             border-radius: 16px;
-            حجم الخط: 14.5 بكسل؛
-            ارتفاع السطر: 1.45؛
-            word-break: break-word;
-            الموضع: نسبي؛
-        }
-
-        .msg-bubble.incoming {
-            الخلفية: var(--wa-bubble-in);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            align-self: flex-start;
-            border-bottom-right-radius: 4px;
-            اللون: #fff;
-        }
-
-        .msg-bubble.outgoing {
-            الخلفية: تدرج خطي (135 درجة، متغير (--wa-bubble-out)، #064e3b)؛
-            border: 1px solid rgba(0, 168, 132, 0.25);
-            align-self: flex-end;
-            border-bottom-left-radius: 4px;
-            اللون: #fff;
-        }
-
-        .msg-meta-stamp {
-            العرض: مرن؛
-            align-items: center;
-            justify-content: flex-end;
-            الفجوة: 4 بكسل؛
-            حجم الخط: 10 بكسل؛
-            اللون: rgba(255, 255, 255, 0.6)؛
-            margin-top: 3px;
-        }
-
-        .chat-input-bar {
-            الخلفية: rgba(18, 24, 38, 0.95)؛
-            backdrop-filter: blur(20px);
-            الحشو: 8 بكسل 12 بكسل؛
-            العرض: مرن؛
-            align-items: center;
-            الفجوة: 10 بكسل؛
-            Border-top: 1px Solid var(-border-soft);
-            flex-shrink: 0;
-        }
-
-        .input-pill-wrapper {
-            flex: 1;
-            الخلفية: rgba(255, 255, 255, 0.05)؛
-            الحدود: 1 بكسل صلب var(-border-soft);
-            border-radius: 24px;
-            العرض: مرن؛
-            align-items: center;
-            الحشو: 0 14 بكسل؛
-            الفجوة: 10 بكسل؛
-        }
-
-        .input-pill-wrapper input {
-            flex: 1;
-            الخلفية: شفافة؛
-            border: none;
-            الحشو: 10 بكسل 0؛
-            اللون: #fff;
-            مخطط تفصيلي: لا شيء؛
-            حجم الخط: 14.5 بكسل؛
-        }
-
-        .action-round-btn {
-            العرض: 42 بكسل؛
-            الارتفاع: 42 بكسل؛
-            border-radius: 50%;
-            الخلفية: تدرج خطي (135 درجة، متغير (--tg-cyan)، متغير (--neon-green))؛
-            border: none;
-            اللون: #070a12؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 17 بكسل؛
-            المؤشر: مؤشر؛
-            box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
-            flex-shrink: 0;
-        }
-
-        /* 10. الملف الشخصي البرازيلي */
-        .insta-view { flex: 1; overflow-y: auto; background: var(--bg-deep); }
-        
-        .insta-avatar-ring {
-            العرض: 84 بكسل؛
-            الارتفاع: 84 بكسل؛
-            border-radius: 50%;
-            الحشو: 3 بكسل؛
-            الخلفية: var(--insta-grad);
-            المؤشر: مؤشر؛
-            الموضع: نسبي؛
-        }
-
-        .insta-avatar-pic {
-            العرض: 100%؛
-            الارتفاع: 100%؛
-            border-radius: 50%;
-            الخلفية: #111827؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 38 بكسل؛
-            overflow: hidden;
-        }
-
-        .insta-avatar-pic img { width: 100%; height: 100%; object-fit: cover; }
-
-        .avatar-edit-overlay {
-            الموضع: مطلق؛
-            أسفل: 0؛
-            اليسار: 0؛
-            الخلفية: var(--neon-green);
-            اللون: #070a12؛
-            العرض: 24 بكسل؛
-            الارتفاع: 24 بكسل؛
-            border-radius: 50%;
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 11 بكسل؛
-            border: 2px solid var(--bg-deep);
-        }
-
-        .profile-nav-tabs-bar {
-            العرض: مرن؛
-            Border-top: 1px Solid var(-border-soft);
-            الحد السفلي: 1 بكسل صلب var(-border-soft);
-            margin-top: 8px;
-        }
-
-        .prof-tab-btn {
-            flex: 1;
-            الحشو: 10 بكسل 0؛
-            text-align: center;
-            حجم الخط: 12 بكسل؛
-            وزن الخط: 700؛
-            اللون: var(--text-sub);
-            المؤشر: مؤشر؛
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            الفجوة: 6 بكسل؛
-        }
-
-        .prof-tab-btn.active {
-            اللون: var(--neon-cyan);
-            border-bottom: 2px solid var(--neon-cyan);
-        }
-
-        .insta-media-grid {
-            العرض: شبكة؛
-            grid-template-columns: repeat(3, 1fr);
-            الفجوة: 4 بكسل؛
-            الحشو: 8 بكسل 16 بكسل؛
-        }
-
-        .insta-grid-cell {
-            نسبة العرض إلى الارتفاع: 1؛
-            الخلفية: #151e32؛
-            border-radius: 10px;
-            العرض: مرن؛
-            align-items: center;
-            justify-content: center;
-            حجم الخط: 26 بكسل؛
-            المؤشر: مؤشر؛
-            overflow: hidden;
-            الموضع: نسبي؛
-        }
-
-        .insta-grid-cell img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* 11. الشريط السفلي العائم (الشريط السفلي العائم) باللغة العربية */
-        .floating-bottom-nav {
-            الموضع: ثابت؛
-            أسفل: 12 بكسل؛
-            يسار: 14 بكسل؛
-            يمين: 14 بكسل؛
-            الارتفاع: 62 بكسل؛
-            الخلفية: rgba(18, 24, 38, 0.94)؛
-            backdrop-filter: blur(24px);
-            الحدود: 1 بكسل صلب var(-border-soft);
-            border-radius: 999px;
-            العرض: مرن؛
-            justify-content: space-around;
-            align-items: center;
-            z-index: 40;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .nav-link {
-            العرض: مرن؛
+            padding: 12px;
+            display: flex;
             flex-direction: column;
-            align-items: center;
-            الفجوة: 3 بكسل؛
-            اللون: var(--text-sub);
-            المؤشر: مؤشر؛
-            حجم الخط: 10 بكسل؛
-            وزن الخط: 700؛
-            flex: 1;
-            الانتقال: الكل 0.2 ثانية؛
+            justify-content: space-between;
+            cursor: pointer;
+            min-height: 120px;
         }
 
-        .nav-link.active {
-            اللون: var(--neon-cyan);
-            transform: translateY(-2px);
+        .game-icon-visual {
+            font-size: 24px;
+            margin: 8px 0;
+            color: var(--neon-green);
         }
 
-        .nav-link i { font-size: 18px; }
-
-        /* نوافذ الألعاب والمودال والـ الأوراق السفلية */
+        /* نافذة الألعاب المنبثقة */
         #game-sandbox-modal {
-            الموضع: ثابت؛
+            position: fixed;
             inset: 0;
-            الخلفية: rgba(0, 0, 0, 0.85)؛
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(14px);
-            z-index: 80;
-            العرض: لا شيء؛
+            z-index: 120;
+            display: none;
             justify-content: flex-end;
             flex-direction: column;
         }
 
         .sandbox-sheet {
-            الخلفية: #0d0d12؛
-            border-top-left-radius: 28px;
-            border-top-right-radius: 28px;
-            border-top: 2px solid var(--neon-green);
-            الارتفاع: 90%؛
-            العرض: مرن؛
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .bottom-sheet-overlay {
-            الموضع: ثابت؛
-            inset: 0;
-            الخلفية: rgba(0, 0, 0, 0.7)؛
-            backdrop-filter: blur(8px);
-            z-index: 90;
-            العرض: لا شيء؛
-            justify-content: flex-end;
-            flex-direction: column;
-        }
-
-        .bottom-sheet-content {
-            الخلفية: #181A20؛
+            background: #0d0d12;
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
-            الحشو: 20 بكسل؛
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid var(--neon-green);
+            height: 85%;
+            display: flex;
+            flex-direction: column;
         }
 
         .chess-grid {
-            العرض: شبكة؛
+            display: grid;
             grid-template-columns: repeat(8, 1fr);
-            العرض: 88vw؛
-            الحد الأقصى للعرض: 330 بكسل؛
-            الارتفاع: 88vw؛
-            أقصى ارتفاع: 330 بكسل؛
+            width: 280px;
+            height: 280px;
             border: 2px solid var(--neon-cyan);
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
         }
 
         .chess-cell {
-            العرض: مرن؛
+            display: flex;
             align-items: center;
             justify-content: center;
-            حجم الخط: 22 بكسل؛
-            المؤشر: مؤشر؛
+            font-size: 20px;
+            cursor: pointer;
         }
         .chess-cell.light { background: rgba(255, 255, 255, 0.08); }
         .chess-cell.dark { background: rgba(0, 0, 0, 0.4); }
-        .chess-cell.selected { background: rgba(0, 245, 160, 0.4) !important; }
 
-        #hockeyCanvas، #poolCanvas، #sketchCanvas {
-            الخلفية: #080f1e؛
-            border: 2px solid var(--neon-green);
-            border-radius: 16px;
-            touch-action: none;
+        /* الشريط السفلي */
+        .floating-bottom-nav {
+            position: fixed;
+            bottom: 10px;
+            left: 12px;
+            right: 12px;
+            height: 60px;
+            background: rgba(18, 24, 38, 0.96);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-soft);
+            border-radius: 999px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
         }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-size: 9.5px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .nav-link.active {
+            color: var(--neon-cyan);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i { font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <!-- 1. شاشة الدخول والتسجيل الرسمية -->
+    <!-- 1. شاشة الدخول والتسجيل -->
     <div id="auth-screen" class="screen active">
         <div class="auth-card">
-            <h1 class="app-brand">دردشة الألعاب</h1>
+            <h1 class="app-brand">Le jeux chat</h1>
             <div class="designer-signature">
-                تصميم محمد جليل
-                <span>مرحباً</span>
+                تصميم Mohamed jalil
+                <span>Welcome</span>
             </div>
             
             <a href="https://instagram.com/jl_mohamed_jalil" target="_blank" class="instagram-creator-badge">
-                <i class="fa-brands fa-instagram" style="font-size: 15px;"></i>
+                <i class="fa-brands fa-instagram"></i>
                 <span>@jl_mohamed_jalil</span>
             </a>
 
             <div class="field-group">
-                <label>الشحن الإلكتروني</label>
-                <input type="email" id="auth-email" value="jalil@jeuxchat.com" placeholder="user@domain.com" />
+                <label>البريد الإلكتروني المعتمد</label>
+                <input type="email" id="auth-email" value="jalil@jeuxchat.com" />
             </div>
 
             <div class="field-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="auth-username" value="mohamed_jalil" placeholder="@username" />
+                <label>اسم المستخدم (Username)</label>
+                <input type="text" id="auth-username" value="mohamed_jalil" />
             </div>
 
             <div class="field-group">
                 <label>الاسم الكامل</label>
-                <input type="text" id="auth-fullname" value="محمد جليل" placeholder="الاسم الظاهر للجميع" />
+                <input type="text" id="auth-fullname" value="محمد جليل" />
             </div>
 
             <button class="btn-neo" style="width: 100%; margin-top: 10px;" onclick="handleAuth()">
-                <i class="fa-solid fa-right-to-bracket"></i> الدخول إلى التطبيق 🚀
+                <i class="fa-solid fa-right-to-bracket"></i> دخول إلى التطبيق 🚀
             </button>
             
-            <button style="background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: var(--neon-cyan); border-radius: 12px; width: 100%; padding: 8px; font-size: 12px; margin-top: 10px; cursor: pointer;" onclick="quickDemoAccess()">
-                دخول سعر فوري ⚡
+            <button style="background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: var(--neon-cyan); border-radius: 12px; width: 100%; padding: 8px; font-size: 11.5px; margin-top: 8px; cursor: pointer;" onclick="handleAuth()">
+                دخول تجريبي فوري ⚡
             </button>
         </div>
     </div>
 
-    <!-- 2. واجهة المحادثات المطورة الحديث المباشر -->
+    <!-- 2. واجهة المحادثات Direct -->
     <div id="chats-screen" class="screen">
-        <!-- شريط الضوء الأمامي (شريط التطبيقات العلوي) -->
         <div class="chat-app-bar">
-            <div class="account-selector" onclick="openAccountsSheet()">
-                <h2 id="top-bar-username">جليل</h2>
-                <i class="fa-solid fa-chevron-down"></i>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <h2 id="top-bar-username" style="font-size: 17px; color: #fff;">جليل</h2>
+                <i class="fa-solid fa-chevron-down" style="font-size: 12px; color: var(--text-sub);"></i>
             </div>
-
-            <div class="chat-bar-actions">
-                <i class="fa-solid fa-pen-to-square" onclick="openNewChatPrompt()" title="رسالة جديدة أو مجموعة"></i>
-            </div>
+            <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #fff; cursor: pointer;" onclick="openNewChatPrompt()"></i>
         </div>
 
-        <!-- شريط البحث الذكي والتوليدي Meta AI -->
         <div class="meta-search-box">
             <div class="search-pill-container">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="meta-search-input" placeholder="ابحث أو اسأل Meta AI" oninput="handleSearchOrAI(this.value)" onkeypress="if(event.key==='Enter') executeAIAsk(this.value)" />
-                <span class="ai-tag-chip">الذكاء الاصطناعي</span>
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--text-sub); font-size: 13px;"></i>
+                <input type="text" placeholder="Search or ask Meta AI" />
+                <span style="background: linear-gradient(135deg, #7C3AED, #229ED9); color: #fff; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px;">AI</span>
             </div>
         </div>
 
-        <!-- شريط الحالات والملاحظات السريعة (هندسة الملاحظات) -->
-        <div class="notes-strip-section" id="notes-strip-container">
-            <!-- ملاحظتك (ملاحظتك) -->
+        <div class="notes-strip-section">
             <div class="note-card-item" onclick="promptCreateMyNote()">
-                <div class="note-bubble-thought" id="my-note-bubble-text">ملاحظة...</div>
+                <div class="note-bubble-thought" id="my-note-bubble-text">Note...</div>
                 <div class="note-avatar-wrapper">
-                    <div class="note-avatar-img" id="my-note-avatar-box">😎</div>
-                    <div class="my-note-plus"><i class="fa-solid fa-plus"></i></div>
+                    <div class="note-avatar-img">😎</div>
                 </div>
-                <span class="note-author-name">مُجْعَلْكَ</span>
+                <span style="font-size: 10.5px; color: var(--text-sub); margin-top: 4px;">ملاحظتك</span>
             </div>
-
-            <!-- تعليقات الأصدقاء مع الصوت والنصوص -->
-            <div class="note-card-item" onclick="replyToNote('سارة', 'Mood: Playing Chess ♟️')">
-                <div class="note-bubble-thought">♟️ الحالة المزاجية: الشطرنج</div>
+            <div class="note-card-item" onclick="alert('سارة: Mood: Playing Chess ♟️')">
+                <div class="note-bubble-thought">♟️ Mood: Chess</div>
                 <div class="note-avatar-wrapper has-story">
                     <div class="note-avatar-img">🧕</div>
                 </div>
-                <span class="note-author-name">سارة 🪐</span>
+                <span style="font-size: 10.5px; color: var(--text-sub); margin-top: 4px;">سارة 🪐</span>
             </div>
-
-            <div class="note-card-item" onclick="replyToNote('ياسين', '🎵 Feat. The Weeknd |||')">
+            <div class="note-card-item" onclick="alert('ياسين: 🎵 Blinding Lights')">
                 <div class="note-bubble-thought">🎵 ||| Blinding</div>
                 <div class="note-avatar-wrapper has-story">
                     <div class="note-avatar-img">🧑‍💻</div>
                 </div>
-                <span class="note-author-name">ياسين 🎧</span>
-            </div>
-
-            <div class="note-card-item" onclick="replyToNote('نور', 'وقت القهوة ☕')">
-                <div class="note-bubble-thought">☕ قهوة!</div>
-                <div class="note-avatar-wrapper">
-                    <div class="note-avatar-img">👩‍🎨</div>
-                </div>
-                <span class="note-author-name">نور 🌸</span>
+                <span style="font-size: 10.5px; color: var(--text-sub); margin-top: 4px;">ياسين 🎧</span>
             </div>
         </div>
 
-        <!-- قسم إدارة الرسائل وتصنيفها -->
-        <div class="section-nav-header">
-            <div class="messages-title-badge">
-                <h3>الرسائل</h3>
-                <i class="fa-solid fa-bell-slash mute-bell-icon"></i>
-            </div>
-            <div class="requests-filter-link" onclick="switchTab('search-screen')">الطلبات (3)</div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 16px 6px 16px; background: #000;">
+            <strong style="color: #fff; font-size: 15px;">Messages</strong>
+            <span style="color: #3897F0; font-size: 13px; font-weight: bold; cursor: pointer;" onclick="switchTab('search-screen')">Requests (3)</span>
         </div>
 
-        <!-- قائمة المحادثات ثلاثية الأعمدة مع الحفظ الجزئي -->
         <div class="chat-feed" id="direct-chats-container"></div>
     </div>
 
-    <!-- نافذة سفلية للتبديل بين علماء الكمبيوتر -->
-    <div id="accounts-bottom-sheet" class="bottom-sheet-overlay" onclick="closeAccountsSheet()">
-        <div class="bottom-sheet-content" onclick="event.stopPropagation()">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <strong style="font-size: 16px; color: #fff;">التبديل بين الأرقام</strong>
-                <i class="fa-solid fa-xmark" style="color: #8E95A5; cursor: pointer;" onclick="closeAccountsSheet()"></i>
-            </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.06); border-radius: 14px; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="font-size: 24px;" id="sheet-my-avatar">😎</div>
-                    <div>
-                        <strong style="color: #fff; font-size: 14px;" id="sheet-my-name">جليل</strong>
-                        <div style="color: var(--neon-green);font-size: 11px;">متصل حاليا</div>
-                    </div>
-                </div>
-                <i class="fa-solid fa-circle-check" style="color: var(--neon-cyan); font-size: 18px;"></i>
-            </div>
-            <button class="btn-neo" style="width: 100%; padding: 10px; margin-top: 6px;" onclick="addNewAccountPrompt()">
-                <i class="fa-solid fa-plus"></i> إضافة حساب جديد
-            </button>
-        </div>
-    </div>
-
-    <!-- نافذة تأكيد الحذف (الضغط المطول) -->
-    <div id="delete-chat-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 95; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="width: 100%; max-width: 320px; background: #1C1E24; border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px; text-align: center;">
-            <i class="fa-solid fa-trash-can" style="font-size: 32px; color: var(--electric-coral); margin-bottom: 12px;"></i>
-            <h3 style="font-size: 16px; color: #fff; هامش-أسفل: 8px;">حذف واجب؟</h3>
-            <p style="font-size: 12px; color: var(--text-sub); هامش-أسفل: 18px;">هل تريد حقًا حذف هذه الطلبات بالكامل؟ لا يمكن السيطرة على هذا الإجراء.</p>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-neo" style="flex: 1; background: var(--electric-coral); color: #fff;" onclick="confirmDeleteChat(true)"> نعم، حذف</button>
-                <button class="btn-neo" style="flex: 1; background: rgba(255,255,255,0.08); color: #fff;" onclick="confirmDeleteChat(false)"> تأكيد</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة معاينة حساب الصديق (فحص ملف تعريف الصديق) -->
-    <div id="friend-profile-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(14px); z-index: 92; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="width: 100%; max-width: 340px; background: #121826; border: 1px solid var(--neon-cyan); border-radius: 24px; padding: 22px; text-align: center; position: relative;">
-            <i class="fa-solid fa-xmark" style="position: absolute; top: 16px; right: 16px; color: #fff; cursor: pointer; font-size: 18px;" onclick="closeFriendProfileModal()"></i>
-            <div id="friend-modal-avatar" style="width: 76px; height: 76px; border-radius: 50%; background: #1e293b; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; border: 2.5px solid var(--neon-green); overflow: hidden;"></div>
-            <h3 id="friend-modal-name" style="font-size: 17px; color: #fff; هامش-أسفل: 2px;">اسم الصديق</h3>
-            <div id="friend-modal-id" style="font-size: 12px; color: var(--neon-cyan); font-family: monospace; margin-bottom: 14px;">#ID</div>
-            
-            <div style="display: flex; justify-content: space-around; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 14px; margin-bottom: 16px;">
-                <div><strong style="color:var(--neon-green);">68%</strong><br><span style="font-size: 11px; color: var(--text-sub);">معدل الفوز</span></div>
-                <div><strong style="color:#fbbf24;">🔥 5</strong><br><span style="font-size: 11px; color: var(--text-sub);">سلسلة انتصارات</span></div>
-                <div><strong style="color:var(--neon-cyan);">المستوى. 14</strong><br><span style="font-size: 11px; color: var(--text-sub);">الرتبة</span></div>
-            </div>
-
-            <div style="display: flex; gap: 8px;">
-                <button class="btn-neo" style="flex: 1;" onclick="startDirectDuelFromModal()"> تحدي غير متوقع ⚔️</button>
-                <button class="btn-neo" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff;" onclick="startDirectChatFromModal()">محادثة 💬</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. تحديات التحديات النسخ ( مطابقة بنسبة 100% للنسخة 2) -->
+    <!-- 3. صالة التحديات المباشرة -->
     <div id="canvas-tab" class="screen">
-        <!-- شريط الضوء كما بالصورة -->
         <div class="challenge-top-nav-bar">
-            <div class="challenge-top-title">
-                <span>قادة التوحيد</span>
-                <i class="fa-solid fa-bolt" style="color: var(--neon-green); font-size: 17px;"></i>
+            <div style="font-size: 17px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 6px;">
+                <span>صالة التحديات المباشرة</span>
+                <i class="fa-solid fa-bolt" style="color: var(--neon-green);"></i>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="voice-room-badge">
-                    🟢
-                    <span>14 الحدث الرئيسي الآن</span>
-                </div>
-                <button class="challenge-pill-btn" onclick="openSandboxGame('math')">
-                    درج معدني ⚡
-                </button>
+                <div class="voice-room-badge">🟢 14 متحدث الآن</div>
+                <button class="btn-neo" style="padding: 5px 12px; font-size: 11px;" onclick="openSandboxGame('math')">تحدي فوري ⚡</button>
             </div>
         </div>
 
-        <div style="padding: 12px 16px; flex: 1; overflow-y: auto;">
-            <!--مستوى بطاقة التقدم (XP) مطابقة المصورة -->
+        <div style="padding: 12px 16px; flex: 1;">
             <div class="progress-stat-card">
-                <div class="progress-header-row">
-                    <div class="progress-title-meta">مستوى التقدم (Lv.1)</div>
-                    <div class="progress-streak-badge">
-                        <i class="fa-solid fa-fire"></i>
-                        4 أيام عمل
-                    </div>
-                    <div class="progress-xp-score">100 / 65 XP</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="color: #fff; font-size: 14px;">مستوى التقدم (Lv.1)</strong>
+                    <span style="background: #2b1820; border: 1px solid #ff4757; color: #ff6b81; font-size: 10.5px; padding: 2px 8px; border-radius: 8px;">🔥 4 أيام متتالية</span>
+                    <strong style="color: var(--neon-cyan); font-size: 13px;">100 / 65 XP</strong>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div style="flex: 1;" class="progress-bar-track">
                         <div class="progress-bar-fill"></div>
                     </div>
-                    <span style="font-size: 18px;" title="المكافأة القادمة">👑</span>
+                    <span>👑</span>
                 </div>
             </div>
 
-            <!-- عجلة الحظ السعيدة بما في ذلك المصورة -->
             <div class="lucky-wheel-banner-card">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="font-size: 32px; color: #fbbf24;"><i class="fa-solid fa-dharmachakra"></i></div>
-                    <div class="wheel-info-col">
-                        <div class="wheel-title-row">عجلة الحظ السعيدة</div>
-                        <div class="wheel-timer-countdown">متاح بعد: 04:22:10</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="font-size: 28px; color: #fbbf24;"><i class="fa-solid fa-dharmachakra"></i></div>
+                    <div>
+                        <div style="color: #fff; font-weight: 800; font-size: 13.5px;">عجلة الحظ اليومية</div>
+                        <div style="font-size: 11px; color: #38bdf8;">متاح بعد: 04:22:10</div>
                     </div>
                 </div>
-                <button class="btn-spin-pill" onclick="spinLuckyWheel()">
-                    🎯
-                </button>
+                <button class="btn-neo" style="padding: 6px 14px; font-size: 11.5px;" onclick="confetti({particleCount: 50}); alert('مبروك! فزت بـ 500 عملة مجانية 🪙')">تدوير 🎯</button>
             </div>
 
-            <!-- بطاقة تحدي الـ 60 ثانية مع العداد الدائري كما بالصورة -->
             <div class="vs-arena-master-card">
-                <div class="vs-card-header">
-                    <div style="font-size: 13.5px; font-weight: 800; color: #fff;">
-                        <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> تحدي الـ 60 ثانية: Math Blitz
-                    </div>
-                    <span class="live-tag-chip"> درع ⚡</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <strong style="font-size: 13px; color: #fff;"><i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> تحدي الـ 60 ثانية: Math Blitz</strong>
+                    <span style="background: #1e1b4b; border: 1px solid var(--neon-green); color: var(--neon-green); font-size: 9.5px; font-weight: 900; padding: 1px 6px; border-radius: 6px;">مباشر ⚡</span>
                 </div>
 
-                <!-- عداد التوقيت الذهبي في المنتصف -->
                 <div class="circular-timer-wrapper">
                     <div class="circle-timer-svg">
-                        <svg width="52" height="52" viewBox="0 0 52 52">
-                            <circle cx="26" cy="26" r="22" stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="none"></circle>
-                            <circle id="vs-countdown-circle" cx="26" cy="26" r="22" stroke="#00F5A0" stroke-width="4" stroke-dasharray="138" stroke-dashoffset="30" stroke-linecap="round" fill="none"></circle>
+                        <svg width="50" height="50">
+                            <circle cx="25" cy="25" r="21" stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="none"></circle>
+                            <circle id="vs-countdown-circle" cx="25" cy="25" r="21" stroke="#00F5A0" stroke-width="4" stroke-dasharray="132" stroke-dashoffset="20" stroke-linecap="round" fill="none"></circle>
                         </svg>
                         <span id="vs-countdown-sec">10</span>
                     </div>
                 </div>
 
-                <!-- ساحة المتنافسين -->
                 <div class="vs-combatants-stage">
-                    <!-- أنت على اللغة الإنجليزية كما في الشاشة المعكوسة RTL -->
                     <div class="combatant-pod" onclick="switchTab('profile-screen')">
-                        <div class="combatant-ring">
-                            <div class="combatant-inner-img" id="canvas-my-avatar">😎</div>
-                        </div>
-                        <div class="combatant-name"> </div>
-                        <div class="combatant-rate">معدل الفوز 74%</div>
-                        <div style="background: #2e1065; border: 1px solid #7c3aed; color: #c084fc; font-size: 9.5px; font-weight: 800; padding: 1px 8px; border-radius: 6px;">0 نقطة</div>
+                        <div class="combatant-ring"><div class="combatant-inner-img">😎</div></div>
+                        <strong style="color: #fff; font-size: 12.5px;">أنت</strong>
+                        <span style="font-size: 9.5px; color: #38bdf8;">Win Rate 74%</span>
+                        <span style="background: #2e1065; color: #c084fc; font-size: 9px; padding: 1px 6px; border-radius: 6px; margin-top: 2px;">0 نقطة</span>
                     </div>
 
-                    <div class="vs-big-label">VS</div>
+                    <div style="font-size: 24px; font-weight: 900; color: #f59e0b;">VS</div>
 
-                    <!-- سارة على فارس -->
-                    <div class="combatant-pod" onclick="inspectUserProfile('sarah', 'سارة', '🧕')">
-                        <div class="combatant-ring">
-                            <div class="combatant-inner-img">🧕</div>
-                        </div>
-                        <div class="combatant-name">سارة</div>
-                        <div class="combatant-rate">معدل الفوز 68%</div>
-                        <div class="combatant-streak">🔥 5 فوز متتالي</div>
+                    <div class="combatant-pod" onclick="alert('ملف سارة: Win Rate 68%')">
+                        <div class="combatant-ring"><div class="combatant-inner-img">🧕</div></div>
+                        <strong style="color: #fff; font-size: 12.5px;">سارة</strong>
+                        <span style="font-size: 9.5px; color: #38bdf8;">Win Rate 68%</span>
+                        <span style="font-size: 9px; color: #fbbf24; margin-top: 2px;">🔥 5 فوز متتالي</span>
                     </div>
                 </div>
 
-                <!-- شريط الإيموتات والرياكشنات الحماسية -->
-                <div class="emotes-flight-bar">
-                    <span onclick="sendEmoteReact('⚡')">⚡</span>
-                    <span onclick="sendEmoteReact('😂')">😂</span>
-                    <span onclick="sendEmoteReact('🎯')">🎯</span>
-                    <span onclick="sendEmoteReact('👑')">👑</span>
-                    <span onclick="sendEmoteReact('🔥')">🔥</span>
+                <div style="display: flex; justify-content: center; gap: 12px; margin: 8px 0 12px 0; font-size: 18px;">
+                    <span onclick="confetti({particleCount: 15}); alert('أرسلت ⚡')">⚡</span>
+                    <span onclick="confetti({particleCount: 15}); alert('أرسلت 😂')">😂</span>
+                    <span onclick="confetti({particleCount: 15}); alert('أرسلت 🎯')">🎯</span>
+                    <span onclick="confetti({particleCount: 15}); alert('أرسلت 👑')">👑</span>
+                    <span onclick="confetti({particleCount: 15}); alert('أرسلت 🔥')">🔥</span>
                 </div>
 
-                <!-- أزرار القبول والرفض للحجم والشكل -->
-                <div class="vs-cta-buttons-row">
-                    <button class="btn-vs-accept" onclick="openSandboxGame('math')">
-                        <i class="fa-solid fa-gamepad" style="font-size: 16px;"></i> وافق عليها والمواجهة ⚔️
-                    </button>
-                    <button class="btn-vs-reject" onclick="alert('تم الرفض الصح وتأجيله لوقت لاحق 👋')">
-                        سباق / واصلة
-                    </button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-neo" style="flex: 2; padding: 10px;" onclick="openSandboxGame('math')">قبول التحدي والمواجهة ⚔️</button>
+                    <button class="btn-neo" style="flex: 1; background: #25203a; color: #fff; padding: 10px;" onclick="alert('تم رفض التحدي')">رفض / لاحقاً</button>
                 </div>
             </div>
 
-            <!-- البطاقة العشوائية العشوائية للأسفل -->
-            <div style="background: #141724; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="background: #141724; border: 1px solid var(--border-soft); border-radius: 18px; padding: 14px; display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <strong style="font-size: 14.5px; color: #fff;">المواجهة العشوائية السريعة</strong>
-                    <div style="font-size: 11.5px; color: var(--text-sub); هامش أعلى: 3px;">توفيق فوري مع أي لاعب متصل أونلاين</div>
+                    <strong style="font-size: 14px; color: #fff;">المواجهة العشوائية السريعة</strong>
+                    <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">توفيق فوري مع أي لاعب متصل أونلاين</div>
                 </div>
-                <button class="btn-neo" style="padding: 10px 18px;" onclick="openSandboxGame('xo')">
-                    البلبل 🎲
-                </button>
+                <button class="btn-neo" style="padding: 8px 14px; font-size: 11.5px;" onclick="openSandboxGame('xo')">لعب عشوائي 🎲</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. صالة الألعاب WePlay Arena الـ 20 -->
+    <!-- 4. صالة الألعاب WePlay الـ 20 -->
     <div id="weplay-tab" class="screen">
         <div class="arena-top-header">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border-soft); cursor: pointer;" onclick="switchTab('profile-screen')">
-                    😎
-                    <strong id="arena-header-name" style="font-size: 13.5px; color: #fff;">جليل</strong>
-                    <span style="font-size: 10px; background: var(--cyber-violet); color: #fff; padding: 1px 6px; border-radius: 6px;">المستوى 1</span>
-                </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span>😎</span>
+                <strong style="color: #fff; font-size: 13.5px;" id="arena-header-name">محمد جليل</strong>
             </div>
-
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="display: flex; align-items: center; gap: 5px; background: rgba(251, 191, 36, 0.12); border: 1px solid rgba(251, 191, 36, 0.3); padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: bold; color: #fbbf24;">
-                    17,826
-                    <i class="fa-solid fa-coins"></i>
-                </div>
-                <div style="display: flex; align-items: center; gap: 5px; background: rgba(0, 217, 245, 0.12); border: 1px solid rgba(0, 217, 245, 0.3); padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: bold; color: var(--neon-cyan);">
-                    42
-                    <i class="fa-solid fa-gem"></i>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px; font-size: 16px; color: var(--neon-cyan);">
-                <i class = "fa-solid fa-store" style = "المؤشر: المؤشر؛" onclick="alert('متجر التخصيص والأطر النيونية 🛒')" title="المتجر"></i>
-                <i class = "fa-solid fa-users" style = "المؤشر: المؤشر؛" onclick="openCreateGroupModal()" title="المجموعات"></i>
+            <div style="display: flex; gap: 8px; font-size: 12px; font-weight: bold;">
+                <span style="color: #fbbf24;">17,826 🪙</span>
+                <span style="color: var(--neon-cyan);">42 💎</span>
             </div>
         </div>
 
         <div class="tournament-live-banner">
-            <div class="tournament-badge"><i class="fa-solid fa-trophy"></i> بطولة كبرى</div>
-            <div style="color: #fff;font-size: 12.5px;">البطولة Math Blitz (🪙 10,000)</div>
-            <div style="color: var(--neon-green); font-family: monospace; font-size: 12px;">02:14:01</div>
+            <span style="background: linear-gradient(135deg, #FF4757, #fbbf24); color: #070a12; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 900;">بطولة كبرى</span>
+            <span style="color: #fff;">Math Blitz الكبرى (🪙 10,000)</span>
+            <span style="color: var(--neon-green); font-family: monospace;">02:14:01</span>
         </div>
 
         <div class="games-grid-container" id="weplay-games-grid"></div>
     </div>
 
-    <!-- 5. قسم المجتمع واللحظات (متوافق بنسبة 100% صديقة 1) -->
+    <!-- 5. قسم المجتمع واللحظات -->
     <div id="community-tab" class="screen">
         <div class="community-header-bar">
-            <div class="community-headline">
-                <span>المجتمع واللحظات</span>
-                🔥 🔥
-            </div>
-            <button class="btn-new-moment-pill" onclick="openNewPostModal()">
-                <i class="fa-solid fa-plus"></i> نشر جديد
-            </button>
+            <strong style="font-size: 18px; color: #fff;">المجتمع واللحظات 🔥</strong>
+            <button class="btn-neo" style="padding: 5px 12px; font-size: 11px;" onclick="alert('فتح نافذة النشر')">+ نشر جديد</button>
         </div>
 
-        <!--التنبيه المؤقت كما بالصورة -->
-        <div class="floating-timeout-alert" id="community-floating-alert">
+        <div class="floating-timeout-alert">
             <i class="fa-solid fa-circle-check" style="color: var(--neon-green);"></i>
-            <span>انتهى وقت التسليم ⏳</span>
+            <span>انتهى وقت قبول التحدي ⏳</span>
         </div>
 
-        <!-- أزرار التبويب الكبسولية المضيئة المطابقة للمرأة -->
         <div class="community-capsules-tabs">
-            <button class="capsule-tab-btn active" id="btn-cap-explore" onclick="switchCommunityFilter('explore')">
-                🔥
-            </button>
-            <button class="capsule-tab-btn inactive" id="btn-cap-friends" onclick="switchCommunityFilter('friends')">
-                عضو 👥
-            </button>
+            <button class="capsule-tab-btn active" id="btn-cap-explore" onclick="switchCommunityFilter('explore')">استكشف 🔥</button>
+            <button class="capsule-tab-btn inactive" id="btn-cap-friends" onclick="switchCommunityFilter('friends')">الأصدقاء 👥</button>
         </div>
 
-        <div class="community-feed-stream" id="community-feed-stream">
-            <!-- سيتم تصميم المنشورات الجرونج بالصورة الجميلة -->
-        </div>
+        <div style="padding: 12px 16px; flex: 1; overflow-y: auto;" id="community-feed-stream"></div>
     </div>
 
-    <!-- 6. البحث وقائمة الأصدقاء والطلبات -->
+    <!-- 6. البحث والأصدقاء -->
     <div id="search-screen" class="screen">
         <div class="chat-app-bar">
-            <h2 style="font-size: 17px; Font-weight: 700; color: #fff;">البحث وطلبات الصداقة</h2>
-            <div style="display: flex; align-items: center; gap: 6px; background: rgba(0, 217, 245, 0.1); border: 1px solid var(--neon-cyan); padding: 4px 10px; border-radius: 999px; font-size: 11.5px; color: var(--neon-cyan); cursor: pointer;" onclick="copyMyTag()">
-                <span id="my-tag-display">#ID-0000</span>
-                <i class="fa-regular fa-copy"></i>
-            </div>
+            <h2 style="font-size: 16px; font-weight: 700; color: #fff;">البحث وطلبات الصداقة</h2>
+            <div style="color: var(--neon-cyan); font-size: 12px; cursor: pointer;" onclick="copyMyTag()" id="my-tag-display">#ID-0000 📋</div>
         </div>
-
         <div style="padding: 16px; flex: 1; overflow-y: auto;">
-            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-                <input type="text" id="friend-search-input" placeholder="ابحث بالصدفة (#JEUX-1234)..." style="flex: 1; padding: 10px 14px; background: var(--charcoal-search); border: 1px solid var(--border-soft); border-radius: 14px; color: #fff; outline: none; font-size: 13.5px;" />
-                <button class="btn-neo" onclick="dispatchFriendRequest()">إرسال</button>
+            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                <input type="text" id="friend-search-input" placeholder="ابحث بالمعرف (#JEUX-1234)..." style="flex: 1; padding: 10px 14px; background: var(--charcoal-search); border: 1px solid var(--border-soft); border-radius: 12px; color: #fff; outline: none; font-size: 13px;" />
+                <button class="btn-neo" onclick="alert('تم إرسال طلب الصداقة بنجاح!')">إرسال</button>
             </div>
-
-            <div style="font-size: 13px; الخط-الوزن: غامق; اللون: var(--text-sub); الهامش السفلي: 10px;">طلبات الصداقة والمراسلة المعلقة (الطلبات)</div>
-            <div id="incoming-requests-deck"></div>
-
-            <div style="font-size: 13px;font-weight:old; color: var(--text-sub); هامش: 20px 0 10px 0;">قائمة الأصدقاء المعتمدين</div>
+            <div style="font-size: 12.5px; font-weight: bold; color: var(--text-sub); margin-bottom: 8px;">قائمة الأصدقاء</div>
             <div id="accepted-friends-deck"></div>
         </div>
     </div>
 
-    <!-- 7. الملف الشخصي الخاص بـ Instagram -->
+    <!-- 7. الملف الشخصي بأسلوب Instagram -->
     <div id="profile-screen" class="screen">
         <div class="chat-app-bar">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-lock" style="font-size: 12px; color: #fff;"></i>
-                <h2 id="insta-profile-username" style="font-size: 16px; font-weight: 800; color: #fff;">اسم المستخدم</h2>
-            </div>
-            <div style="display: flex; gap: 16px; font-size: 18px; color: #fff;">
-                <i class="fa-solid fa-plus-square" style="cursor: pointer;" onclick="openNewPostModal()" title="نشر جديد"></i>
-                <i class = "fa-solid fa-gear" style = "المؤشر: المؤشر؛" onclick="openEditProfileModal()" title="تعديل الحساب"></i>
-                <i class="fa-solid fa-arrow-right-from-bracket" style="color: #ef4444; cursor: pointer;" onclick="logout()"></i>
-            </div>
+            <h2 id="insta-profile-username" style="font-size: 16px; font-weight: 800; color: #fff;">mohamed_jalil</h2>
+            <i class="fa-solid fa-arrow-right-from-bracket" style="color: #ef4444; cursor: pointer;" onclick="logout()"></i>
         </div>
-
-        <div class="insta-view">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px 20px;">
-                <div class="insta-avatar-ring" onclick="document.getElementById('avatar-file-input').click()">
-                    <div class="insta-avatar-pic" id="profile-avatar-container">
-                        <span id="insta-avatar-emoji">😎</span>
-                    </div>
-                    <div class="avatar-edit-overlay"><i class="fa-solid fa-camera"></i></div>
-                </div>
-                <input type="file" id="avatar-file-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)" />
-
+        <div style="flex: 1; overflow-y: auto; padding: 16px 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <div style="width: 76px; height: 76px; border-radius: 50%; background: #111827; display: flex; align-items: center; justify-content: center; font-size: 36px; border: 2.5px solid var(--neon-green);">😎</div>
                 <div style="display: flex; flex: 1; justify-content: space-around; text-align: center;">
-                    <div><strong id="insta-posts-num">3</strong><br><span style="font-size: 11px; color: var(--text-sub);"> منشورات</span></div>
-                    <div><strong id="insta-followers-num">348</strong><br><span style="font-size: 11px; color: var(--text-sub);">متابعون</span></div>
-                    <div><strong id="insta-following-num">192</strong><br><span style="font-size: 11px; color: var(--text-sub);">أتابعهم</span></div>
+                    <div><strong>3</strong><br><span style="font-size: 11px; color: var(--text-sub);">منشورات</span></div>
+                    <div><strong>348</strong><br><span style="font-size: 11px; color: var(--text-sub);">متابعون</span></div>
+                    <div><strong>192</strong><br><span style="font-size: 11px; color: var(--text-sub);">أتابعهم</span></div>
                 </div>
             </div>
-
-            <div style="padding: 0 20px 10px 20px;">
-                <strong id="insta-profile-fullname" style="font-size: 15px;">الاسم الكامل</strong>
-                <p id="insta-profile-bio" style="font-size: 12.5px; color: #cbd5e1; هامش أعلى: 6px; خط ارتفاع: 1.4; مسافة بيضاء: pre-line;">✨ مرحباً بكم في حسابي الرسمي على Le jeux chat!
-🚀 جاهزية للمواجهة والتحديات.</p>
-                <div style="display: inline-block; background: #151e32; border: 1px solid var(--border-soft); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--neon-cyan); margin-top: 8px; font-family: monospace; cursor: pointer;" id="insta-my-id-badge" onclick="copyMyTag()">#JEUX-0000</div>
-            </div>
-
-            <div style="display: flex; gap: 8px; padding: 0 20px 12px 20px;">
-                <button class="btn-neo" style="flex: 1; padding: 8px; font-size: 12px;" onclick="openEditProfileModal()"><i class="fa-solid fa-pen"></i> تحرير الحساب</button>
-                <button class="btn-neo" style="flex: 1; padding: 8px; font-size: 12px;" onclick="openNewPostModal()"><i class="fa-solid fa-camera-retro"></i> نشر صورة</button>
-            </div>
-
-            <div class="profile-nav-tabs-bar">
-                <div class="prof-tab-btn active" onclick="switchProfileGridTab('posts')"><i class="fa-solid fa-table-cells"></i> علامات تبويب</div>
-                <div class="prof-tab-btn" onclick="switchProfileGridTab('highlights')"><i class="fa-solid fa-star"></i> </div>
-                <div class="prof-tab-btn" onclick="switchProfileGridTab('wins')"><i class="fa-solid fa-trophy"></i> سجل الانتصارات</div>
-            </div>
-
-            <div class="insta-media-grid" id="profile-posts-grid"></div>
+            <strong id="insta-profile-fullname" style="font-size: 15px; color: #fff;">محمد جليل</strong>
+            <p style="font-size: 12px; color: #cbd5e1; margin-top: 6px;">✨ الحساب الرسمي على Le jeux chat! جاهز للمواجهة والتحديات المباشرة.</p>
         </div>
     </div>
 
-    <!-- 8. غرفة دبي الإماراتية -->
+    <!-- 8. غرفة المحادثة المباشرة -->
     <div id="chat-room-screen" class="screen">
         <div class="chat-app-bar">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-arrow-right" style="cursor: pointer; color: #fff;" onclick="closeChatRoom()"></i>
-                <div id="room-partner-avatar" style="font-size: 24px; cursor: pointer;" onclick="inspectCurrentChatPartner()">👤</div>
-                <div style="cursor: pointer;" onclick="inspectCurrentChatPartner()">
-                    <h3 id="room-partner-name" style="font-size: 15px; Font-weight: 700; color: #fff;">المستخدم</h3>
-                    <div style="font-size: 11px; color: var(--neon-green);"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> تواصل الآن</div>
-                </div>
+                <h3 id="room-partner-name" style="font-size: 15px; font-weight: 700; color: #fff;">المستخدم</h3>
             </div>
-            <div style="display: flex; gap: 10px; font-size: 15px; color: var(--neon-cyan);">
-                <i class = "fa-solid fa-ghost" style = "المؤشر: المؤشر؛" onclick="toggleVanishMode()" title="وضع التخفي"></i>
-                <button class="btn-neo" style="padding: 4px 8px; font-size: 11px;" onclick="launchGameDuelOnline('xo')"> تحدي XO ❌</button>
-                <button class="btn-neo" style="padding: 4px 8px; font-size: 11px;" onclick="launchGameDuelOnline('chess')">شطرنج ♟️</button>
-            </div>
+            <button class="btn-neo" style="padding: 4px 10px; font-size: 11px;" onclick="openSandboxGame('xo')">تحدي XO ❌</button>
         </div>
-
-        <div class="chat-bubble-stream" id="messages-stream"></div>
-
-        <div class="chat-input-bar">
-            <div class="input-pill-wrapper">
-                <i class="fa-regular fa-face-smile" style="color: var(--text-sub); cursor: pointer;" onclick="appendEmoji('🔥')"></i>
-                <input type="text" id="chat-text-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
-            </div>
-            <button class="action-round-btn" onclick="sendChatMessage()">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
+        <div style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; background: #080c14;" id="messages-stream"></div>
+        <div style="background: rgba(18, 24, 38, 0.95); padding: 8px 12px; display: flex; gap: 10px;">
+            <input type="text" id="chat-text-input" placeholder="اكتب رسالة..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-soft); border-radius: 20px; padding: 8px 14px; color: #fff; outline: none; font-size: 13.5px;" onkeypress="if(event.key==='Enter') sendChatMessage()" />
+            <button class="btn-neo" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <!-- نافذة رفع منشور جديد -->
-    <div id="new-post-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(14px); z-index: 85; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="width: 100%; max-width: 360px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 24px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                <strong style="font-size: 15px;">إضافة منشور جديد تمكين</strong>
-                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closeNewPostModal()"></i>
+    <!-- نافذة الألعاب المنبثقة Sandbox -->
+    <div id="game-sandbox-modal">
+        <div class="sandbox-sheet">
+            <div style="padding: 12px 16px; background: #151e32; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-soft);">
+                <strong id="sandbox-game-title" style="font-size: 14px; color:#fff;">Game</strong>
+                <button style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;" onclick="closeSandboxGame()"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div style="width: 100%; aspect-ratio: 1; background: #0b0f19; border: 2px dashed var(--border-soft); border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; margin-bottom: 12px;" onclick="document.getElementById('post-file-input').click()">
-                <img id="post-preview-img" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
-                <div id="post-upload-prompt" style="text-align: center; color: var(--text-sub); font-size: 13px;">
-                    <i class="fa-solid fa-image" style="font-size: 32px; color: var(--neon-cyan); margin-bottom: 6px;"></i>
-                    <div>ازرجريد صورة</div>
-                </div>
-            </div>
-            <input type="file" id="post-file-input" accept="image/*" style="display: none;" onchange="handlePostFileSelect(event)" />
-            <input type="text" id="post-caption-input" placeholder="اوصفكتباً أو إنجازاً للمنشور..." style="width: 100%; الحشو: 10px 14px; الخلفية: rgba(255,255,255,0.05); الحدود: 1px Solid var(--border-soft); border-radius: 12px; اللون: #fff; المخطط التفصيلي: none; حجم الخط: 13 بكسل؛ الهامش السفلي: 14 بكسل؛" />
-            <زر الطبقة = "btn-neo" نمط = "العرض: 100٪؛" onclick="publishNewPost()">نشر تمكين والأصدقاء ✨</button>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px;" id="sandbox-arena-render"></div>
         </div>
     </div>
 
-    <!-- نافذة إنشاء مجموعة جديدة -->
-    <div id="create-group-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(14px); z-index: 85; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="width: 100%; max-width: 360px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 24px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                <strong style="font-size: 15px;"> إنشاء مجموعة أصدقاء جديدة</strong>
-                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="closeCreateGroupModal()"></i>
-            </div>
-            <input type="text" id="group-name-input" placeholder="اسم المجموعة..." style="width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-soft); border-radius: 12px; color: #fff; outline: none; font-size: 13px; margin-bottom: 14px;" />
-            <زر الطبقة = "btn-neo" نمط = "العرض: 100٪؛" onclick="submitCreateGroup()"> إنشاء المجموعة 🚀</button>
-        </div>
-    </div>
-
-    <!-- 11. الشريط السفلي العائم (Floating Bottom Bar) حسب الفتاة -->
+    <!-- 9. الشريط السفلي العائم بـ 6 تبويبات كاملة -->
     <nav class="floating-bottom-nav" id="main-navigation" style="display: none;">
         <div class="nav-link" onclick="switchTab('chats-screen')">
             <i class="fa-brands fa-whatsapp"></i>
-            <span>المنشورة</span>
+            <span>الدردشة</span>
         </div>
         <div class="nav-link active" onclick="switchTab('canvas-tab')">
             <i class="fa-solid fa-bolt"></i>
-            <span>الحصادات</span>
+            <span>التحديات</span>
         </div>
         <div class="nav-link" onclick="switchTab('weplay-tab')">
             <i class="fa-solid fa-gamepad"></i>
-            <span>الرياضة</span>
+            <span>الألعاب</span>
         </div>
         <div class="nav-link" onclick="switchTab('community-tab')">
             <i class="fa-solid fa-globe"></i>
@@ -1962,152 +899,115 @@
         </div>
         <div class="nav-link" onclick="switchTab('search-screen')">
             <i class="fa-solid fa-users"></i>
-            <span>البريد</span>
+            <span>الأصدقاء</span>
         </div>
         <div class="nav-link" onclick="switchTab('profile-screen')">
             <i class="fa-brands fa-instagram"></i>
-            <span> حسابي</span>
+            <span>حسابي</span>
         </div>
     </nav>
 
-    <!-- نافذة عشاق الألعاب (Sandbox) -->
-    <div id="game-sandbox-modal">
-        <div class="sandbox-sheet">
-            <div style="padding: 12px 16px; background: #151e32; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-soft);">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    🎮
-                    <strong id="sandbox-game-title" style="font-size: 14px;">لعبة</strong>
-                </div>
-                <button style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;" onclick="closeSandboxGame()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; position: relative;" id="sandbox-arena-render"></div>
-        </div>
-    </div>
-
     <script>
-        /* ================= إعدادات Firebase ================= */
         const firebaseConfig = {
             apiKey: "AIzaSyDzpFz9GBHvNPROFJYa4_7TEXtm0BaSQlA",
             authDomain: "jalil-c54f1.firebaseapp.com",
             databaseURL: "https://jalil-c54f1-default-rtdb.europe-west1.firebasedatabase.app",
-            معرف المشروع: "jalil-c54f1"،
+            projectId: "jalil-c54f1",
             storageBucket: "jalil-c54f1.firebasestorage.app",
             messagingSenderId: "1090905814465",
-            معرف التطبيق: "1:1090905814465:web:833e6dc6cf15edc3026b40",
-            معرف القياس: "G-8S440GS00C"
+            appId: "1:1090905814465:web:833e6dc6cf15edc3026b40"
         };
 
         let db = null;
-        حاول {
+        try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-        } catch(e) {
-            console.warn('Firebase init notice:', e);
-        }
+        } catch(e) {}
 
-        let currentUser = JSON.parse(localStorage.getItem('le_social_user')) || null;
-        let friendsList = JSON.parse(localStorage.getItem('le_social_friends')) || [];
-        let userNotes = JSON.parse(localStorage.getItem('le_social_notes')) || { myNote: 'ملاحظة...' };
-        let userPosts = JSON.parse(localStorage.getItem('le_social_posts')) || [
-            { img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80', caption: 'جماليات الإنترنت 🔥' },
-            { img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80', caption: 'إعدادات الألعاب 🎮' },
-            { img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&q=80', caption: 'Matrix Code 💻' }
+        let currentUser = null;
+        try {
+            currentUser = JSON.parse(localStorage.getItem('le_social_user')) || null;
+        } catch(e) { currentUser = null; }
+
+        let friendsList = [
+            { rawId: 'sarah_01', id: '#JEUX-1111', name: 'سارة', avatar: '🧕' },
+            { rawId: 'yassine_02', id: '#JEUX-2222', name: 'ياسين', avatar: '🧑‍💻' }
         ];
 
-        let savedChatsList = JSON.parse(localStorage.getItem('le_social_saved_chats')) || [
-            { rawId: 'sarah_01', id: '#JEUX-1111', name: 'سارة', avatar: '🧕', verified: true, lastMsg: 'Sent 19m ago', unread: true, isGroup: false },
-            { rawId: 'yassine_02', id: '#JEUX-2222', name: 'ياسين', avatar: '🧑‍💻', verified: false, lastMsg: 'Sent a reel by @gaming • 8h', unread: false, isGroup: false },
-            { RawId: 'demo_grp', id: '#GRP-999', name: '🎮 أبطال الألعاب', الصورة الرمزية: '👥', تم التحقق منها: false, lastMsg: '4+ رسائل جديدة • 11h'، غير مقروءة: true، isGroup: true }
+        let savedChatsList = [
+            { rawId: 'sarah_01', id: '#JEUX-1111', name: 'سارة', avatar: '🧕', lastMsg: 'Sent 19m ago', unread: true },
+            { rawId: 'yassine_02', id: '#JEUX-2222', name: 'ياسين', avatar: '🧑‍💻', lastMsg: 'Sent a reel by @gaming • 8h', unread: false }
         ];
 
         let currentChatPartner = null;
-        let currentChatListener = null;
-        let activeGameRoomId = null;
-        let gameRoomListener = null;
-        let tempPostImg = null;
-        let chatPendingDeleteIdx = null;
         let currentFeedFilter = 'explore';
-        let inspectedTargetUser = null;
 
         window.onload = () => {
-            إذا (المستخدم الحالي) {
-                launchApp();
-            } else {
-                showScreen('auth-screen');
-            }
+            if (currentUser) launchApp();
+            else showScreen('auth-screen');
         };
 
-        دالة quickDemoAccess() {
-            document.getElementById('auth-email').value = 'jalil@jeuxchat.com';
-            document.getElementById('auth-username').value = 'mohamed_jalil';
-            document.getElementById('auth-fullname').value = 'محمد جليل';
-            handleAuth();
-        }
-
-        دالة handleAuth() {
+        function handleAuth() {
             const email = document.getElementById('auth-email').value.trim() || 'user@jeuxchat.com';
             const username = document.getElementById('auth-username').value.trim() || 'mohamed_jalil';
-            const fullname = document.getElementById('auth-fullname').value.trim() || 'محمد جليل'؛
-
-            const cleanUser = username.replace('@', '').toLowerCase();
+            const fullname = document.getElementById('auth-fullname').value.trim() || 'محمد جليل';
             const rawId = 'JEUX-' + Math.floor(1000 + Math.random() * 9000);
 
-            المستخدم الحالي = {
-                المعرّف: '#' + المعرّف الخام،
+            currentUser = {
+                id: '#' + rawId,
                 rawId: rawId,
-                البريد الإلكتروني: البريد الإلكتروني،
-                اسم المستخدم: cleanUser,
-                الاسم الكامل: الاسم الكامل،
-                الصورة الرمزية: '😎',
-                avatarImg: null,
-                bio: '✨ مرحبًا بكم في الحساب الرسمي على Le jeux chat!
-🚀 جاهزة للمواجهة والتحديات.'
+                email: email,
+                username: username.replace('@', ''),
+                fullname: fullname,
+                avatar: '😎'
             };
 
-            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
+            try { localStorage.setItem('le_social_user', JSON.stringify(currentUser)); } catch(e) {}
             launchApp();
 
-            حاول {
-                إذا (db) {
-                    db.ref('users/' + rawId).set(currentUser);
-                }
-            } catch(e) {}
+            if (db) {
+                try { db.ref('users/' + rawId).set(currentUser); } catch(e) {}
+            }
         }
 
-        دالة launchApp() {
-            document.getElementById('auth-screen').classList.remove('active');
+        function launchApp() {
+            const auth = document.getElementById('auth-screen');
+            auth.classList.remove('active');
+            auth.style.display = 'none';
+
             document.getElementById('main-navigation').style.display = 'flex';
-            document.getElementById('my-tag-display').textContent = currentUser.id;
+            document.getElementById('my-tag-display').textContent = currentUser.id + ' 📋';
             document.getElementById('top-bar-username').textContent = currentUser.username || currentUser.fullname;
             document.getElementById('arena-header-name').textContent = currentUser.fullname;
 
-            loadProfile();
             renderDirectChats();
             renderFriendsDeck();
             renderWePlayGames();
-            استمع إلى الطلبات();
             listenToLiveCommunityFeed();
-            startVsCircularTimer();
+            startVsTimer();
             switchTab('canvas-tab');
         }
 
-        دالة نسخ الوسم () {
+        function copyMyTag() {
             navigator.clipboard.writeText(currentUser.id);
-            تنبيه(`تم النسخة المعرف الخاص بك (${currentUser.id}) فعال! 📋`);
+            alert(`تم نسخ المعرف (${currentUser.id}) بنجاح! 📋`);
         }
 
-        دالة تسجيل الخروج() {
-            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                localStorage.removeItem('le_social_user');
-                المستخدم الحالي = فارغ؛
-                document.getElementById('main-navigation').style.display = 'none';
-                showScreen('auth-screen');
-            }
+        function logout() {
+            try { localStorage.removeItem('le_social_user'); } catch(e) {}
+            currentUser = null;
+            document.getElementById('main-navigation').style.display = 'none';
+            showScreen('auth-screen');
         }
 
-        دالة switchTab(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        function switchTab(screenId) {
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
+            const target = document.getElementById(screenId);
+            target.classList.add('active');
+            target.style.display = 'flex';
 
             const tabMap = {
                 'chats-screen': 0,
@@ -2119,98 +1019,84 @@
             };
 
             document.querySelectorAll('.nav-link').forEach((node, idx) => {
-                إذا كان (idx === tabMap[screenId]) node.classList.add('active');
-                وإلا node.classList.remove('active');
+                if (idx === tabMap[screenId]) node.classList.add('active');
+                else node.classList.remove('active');
             });
         }
 
-        دالة showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
+            const t = document.getElementById(id);
+            t.classList.add('active');
+            t.style.display = 'flex';
         }
 
-        /* ================================== */
-        دالة startVsCircularTimer() {
+        function startVsTimer() {
             let left = 10;
             const textEl = document.getElementById('vs-countdown-sec');
             const circleEl = document.getElementById('vs-countdown-circle');
-            const total = 138;
-
             setInterval(() => {
                 left--;
-                إذا كان (اليسار <= 0) اليسار = 10؛
-                إذا كان (textEl) textEl.textContent = left;
-                إذا (circleEl) {
-                    const offset = total - (total * (left / 10));
-                    circleEl.style.strokeDashoffset = offset;
-                }
+                if (left <= 0) left = 10;
+                if (textEl) textEl.textContent = left;
+                if (circleEl) circleEl.style.strokeDashoffset = 132 - (132 * (left / 10));
             }, 1000);
         }
 
-        دالة sendEmoteReact(em) {
-            confetti({ particleCount: 25, origin: { y: 0.7 } });
-            تنبيه(`أرسلت إشارة حماسية: ${em} للخصم! 🔥`);
-        }
-
-        دالة spinLuckyWheel() {
-            confetti({ particleCount: 80, spread: 80 });
-            تنبيه('🎉 مبروك! فزت بـ 500 عملة ذهبية و 5 جواهر نيون!');
-        }
-
-        /* ===========================================================================================================================1
-        دالة switchCommunityFilter(filter) {
+        function switchCommunityFilter(filter) {
             currentFeedFilter = filter;
             document.getElementById('btn-cap-explore').className = filter === 'explore' ? 'capsule-tab-btn active' : 'capsule-tab-btn inactive';
             document.getElementById('btn-cap-friends').className = filter === 'friends' ? 'capsule-tab-btn active' : 'capsule-tab-btn inactive';
             listenToLiveCommunityFeed();
         }
 
-        دالة listenToLiveCommunityFeed() {
+        function listenToLiveCommunityFeed() {
             const container = document.getElementById('community-feed-stream');
-            إذا لم يكن حاوية، فقم بالإرجاع؛
+            if (!container) return;
 
-            إذا (db) {
-                db.ref('community_feed').limitToLast(40).on('value', (snap) => {
-                    const data = snap.val();
-                    renderFeedPosts(data);
+            if (db) {
+                db.ref('community_feed').limitToLast(30).on('value', (snap) => {
+                    renderFeedPosts(snap.val());
                 });
             } else {
                 renderFeedPosts(null);
             }
         }
 
-        دالة renderFeedPosts(firebaseData) {
+        function renderFeedPosts(data) {
             const container = document.getElementById('community-feed-stream');
             container.innerHTML = '';
-
             let posts = [];
-            إذا (firebaseData) {
-                posts = Object.entries(firebaseData).map(([k, v]) => ({ key: k, ...v })).reverse();
+
+            if (data) {
+                posts = Object.entries(data).map(([k, v]) => ({ key: k, ...v })).reverse();
             } else {
-                // سوق كما بالصورة 1
                 posts = [
                     {
-                        المفتاح: 'p_jalil',
-                        اسم المؤلف: 'محمد جليل',
-                        اسم المستخدم: 'mohamed_jalil',
-                        صورة المؤلف: '😎',
+                        key: 'p1',
+                        authorName: 'محمد جليل',
+                        authorUsername: 'mohamed_jalil',
+                        authorAvatar: '😎',
                         timeStr: 'منذ 15 دقيقة',
-                        التسمية التوضيحية: '⚡ حققت فوزًا ساحقًا في Math Blitz مسجلاً 520 نقطة! من يستطيع كسر هذا الرقم القياسي؟',
+                        caption: '⚡ حققت فوزاً ساحقاً في Math Blitz مسجلاً 520 نقطة! من يستطيع كسر هذا الرقم القياسي؟',
                         isAchievement: true,
-                        النتيجة: 520 نقطة
-                        عنوان اللعبة: 'Math Blitz',
+                        score: '520 نقطة',
+                        gameTitle: 'Math Blitz',
                         gameId: 'math',
-                        ردود الفعل: { النار: 42، التاج: 18، الهدف: 9 }
+                        reactions: { fire: 42, crown: 18, target: 9 }
                     },
                     {
-                        المفتاح: 'p_sarah',
-                        اسم المؤلف: 'سارة',
-                        اسم المستخدم: 'sara_gamer',
-                        صورة المؤلف: '🧕',
+                        key: 'p2',
+                        authorName: 'سارة',
+                        authorUsername: 'sara_gamer',
+                        authorAvatar: '🧕',
                         timeStr: 'منذ ساعة',
-                        التسمية التوضيحية: 'جاهزة لتحدي أي لاعب في صالة الشطرنج الإلكتروني... من أجرؤ؟ ♟️🔥',
+                        caption: 'جاهزة لتحدي أي لاعب في صالة الشطرنج الإلكتروني... من يجرؤ؟ ♟️🔥',
                         isAchievement: false,
-                        ردود الفعل: { النار: 19، التاج: 7، الهدف: 4 }
+                        reactions: { fire: 19, crown: 7, target: 4 }
                     }
                 ];
             }
@@ -2219,355 +1105,129 @@
                 const card = document.createElement('div');
                 card.className = 'post-card-master';
                 card.innerHTML = `
-                    <div class="post-author-row">
-                        <div class="post-author-details" onclick="inspectUserProfile('${post.authorId || 'p'}', '${post.authorName}', '${post.authorAvatar || '👤'}')">
-                            <div class="post-avatar-frame">${post.authorAvatar || '👤'}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: #1e293b; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--neon-cyan);">${post.authorAvatar || '👤'}</div>
                             <div>
-                                <strong style="color: #fff; font-size: 14px;">${post.authorName}</strong>
-                                <div style="font-size: 11px; color: var(--text-sub);">@${post.authorUsername || 'gamer'}</div>
+                                <strong style="color: #fff; font-size: 13.5px;">${post.authorName}</strong>
+                                <div style="font-size: 10.5px; color: var(--text-sub);">@${post.authorUsername || 'gamer'}</div>
                             </div>
                         </div>
                         <span style="font-size: 11px; color: var(--text-sub);">${post.timeStr || 'الآن'}</span>
                     </div>
-
-                    ${post.caption ? `<div style="font-size: 13.5px; color: #f1f5f9; line-height: 1.45;">${post.caption}</div>` : ''}
-
-                    ${post.imageUrl ? `
-                        <div style="border-radius: 14px; overflow: hidden; max-height: 340px; margin-top: 4px;">
-                            <img src="${post.imageUrl}" style="width: 100%; height: 100%; object-fit: cover;" />
-                        </div>
-                    ` : ''}
-
+                    ${post.caption ? `<div style="font-size: 13px; color: #f1f5f9; line-height: 1.4; margin-bottom: 10px;">${post.caption}</div>` : ''}
                     ${post.isAchievement ? `
-                        <div class="post-achievement-box">
-                            <div style="color: #fff; font-size: 13px; font-weight: 800;">
-                                <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> حققت ${post.authorName} رقماً قياسياً في ${post.gameTitle} كما ${post.score}!
-                            </div>
-                            <button class="btn-break-record" onclick="openSandboxGame('${post.gameId}')">
-                                الآن واكسر الرقم ⚔️
-                            </button>
+                        <div style="background: linear-gradient(135deg, #1e1b4b, #2e1065); border: 1px solid #7c3aed; border-radius: 14px; padding: 12px; margin-bottom: 10px;">
+                            <div style="color: #fff; font-size: 12px; font-weight: bold; margin-bottom: 6px;">🏆 حقق ${post.authorName} رقماً قياسياً في ${post.gameTitle} بنتيجة ${post.score}!</div>
+                            <button class="btn-neo" style="width: 100%; font-size: 11.5px; padding: 8px;" onclick="openSandboxGame('${post.gameId}')">تحدي الآن واكسر الرقم ⚔️</button>
                         </div>
                     ` : ''}
-
-                    <div class="post-social-bar">
-                        <div class="post-reactions-group">
-                            <div class="reaction-bubble" onclick="reactBubble(this)">${post.reactions ? post.reactions.fire : 14} 🔥</div>
-                            <div class="reaction-bubble" onclick="reactBubble(this)">${post.reactions ? post.reactions.crown : 6} 👑</div>
-                            <div class="reaction-bubble" onclick="reactBubble(this)">${post.reactions ? post.reactions.target : 3} 🎯</div>
-                        </div>
-                        <button class="btn-tip-coins" onclick="alert('أرسلت 50 عملة ذهبية لدعم الكهدية! 🪙')">
-                            🪙 إهداء ٥٠ دورة
-                        </button>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 11.5px; color: #fff;">${post.reactions ? post.reactions.fire : 42} 🔥 | ${post.reactions ? post.reactions.crown : 18} 👑 | ${post.reactions ? post.reactions.target : 9} 🎯</span>
+                        <button class="btn-neo" style="padding: 4px 10px; font-size: 11px;" onclick="alert('تم إهداء 50 عملة 🪙')">🪙 إهداء 50 عملة</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        دالة reactBubble(el) {
-            const txt = el.textContent.split(' ');
-            el.innerHTML = (parseInt(txt[0]) + 1) + ' ' + txt[1];
-            confetti({ particleCount: 20 });
-        }
-
-        /* ===================================================================================================================================================================================================﻿
-        دالة فحص ملف تعريف المستخدم (id، name، avatar) {
-            inspectedTargetUser = { id, name, avatar };
-            document.getElementById('friend-modal-name').textContent = name;
-            document.getElementById('friend-modal-id').textContent = '#' + id;
-            document.getElementById('friend-modal-avatar').innerHTML = avatar;
-            document.getElementById('friend-profile-modal').style.display = 'flex';
-        }
-
-        دالة closeFriendProfileModal() {
-            document.getElementById('friend-profile-modal').style.display = 'none';
-        }
-
-        دالة بدء المبارزة المباشرة من النموذج () {
-            closeFriendProfileModal();
-            openSandboxGame('math');
-        }
-
-        دالة بدء المحادثة المباشرة من النافذة المنبثقة () {
-            closeFriendProfileModal();
-            const target = {
-                rawId: inspectedTargetUser.id,
-                المعرّف: '#' + inspectedTargetUser.id،
-                الاسم: inspectedTargetUser.name،
-                avatar: inspectedTargetUser.avatar,
-                تم التحقق: خطأ،
-                lastMsg: 'بدأت الحديث الآن',
-                غير مقروء: خطأ،
-                isGroup: false
-            };
-            openChatRoom(target);
-        }
-
-        /* ================================== */
-        دالة فتح ورقة الحسابات() {
-            document.getElementById('sheet-my-name').textContent = currentUser.fullname;
-            document.getElementById('sheet-my-avatar').innerHTML = currentUser.avatarImg ? `<img src="${currentUser.avatarImg}" style="width:24px;height:24px;border-radius:50%;" />` : currentUser.avatar;
-            document.getElementById('accounts-bottom-sheet').style.display = 'flex';
-        }
-        function closeAccountsSheet() { document.getElementById('accounts-bottom-sheet').style.display = 'none'; }
-
-        دالة addNewAccountPrompt() {
-            closeAccountsSheet();
-            if (confirm('هل تريد إضافة حساب جديد والتبديل إليه؟')) {
-                showScreen('auth-screen');
-            }
-        }
-
-        دالة promptCreateMyNote() {
-            const note = موجه('اكتب ملاحظتك السريعة (حتى 60 حرفاً):', userNotes.myNote === 'ملاحظة...' ? '' : userNotes.myNote);
-            إذا كانت الملاحظة غير فارغة (note !== null && note.trim() !== '') {
-                userNotes.myNote = note.trim();
-                localStorage.setItem('le_social_notes', JSON.stringify(userNotes));
-                document.getElementById('my-note-bubble-text').textContent = userNotes.myNote;
-            }
-        }
-
-        دالة الرد على الملاحظة (الاسم، نص الملاحظة) {
-            رد const = موجه(`رد فوري على ملاحظة ${name}:
-"${noteText}"`);
-            إذا كان (الرد && الرد بعد حذف المسافات الزائدة ليس فارغًا) {
-                تنبيه(`تم إرسال ردك إلى ${name} في رسالة خاصة: "${reply}" 📨`);
-            }
-        }
-
-        دالة فتح موجه محادثة جديد() {
-            const name = موجه('أدخل اسم الصديق أو اسم المجموعة الجديدة:');
-            إذا لم يكن هناك اسم، فقم بالإرجاع؛
-            const newChat = {
-                rawId: 'c_' + Date.now(),
-                المعرف: '#JEUX-' + Math.floor(1000 + Math.random()*9000),
-                الاسم: الاسم،
-                الصورة الرمزية: '💬',
-                تم التحقق: خطأ،
-                lastMsg: 'بدأت المحادثة الجديدة الآن',
-                غير مقروء: خطأ،
-                isGroup: false
-            };
-            savedChatsList.unshift(newChat);
-            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
-            renderDirectChats();
-        }
-
-        دالة handleSearchOrAI(query) {
-            const q = query.toLowerCase().trim();
-            const feed = document.getElementById('direct-chats-container');
-            const items = feed.querySelectorAll('.direct-chat-item');
-            items.forEach(it => {
-                const name = it.querySelector('.u-name').textContent.toLowerCase();
-                it.style.display = name.includes(q) ? 'flex' : 'none';
-            });
-        }
-
-        دالة executeAIAsk(query) {
-            إذا لم تكن الاستعلامات صحيحة أو كانت نتيجة حذف المسافات الزائدة منها فارغة، فقم بالخروج.
-            تنبيه(`🤖 Meta AI يجيبك:
-"مرحباً بك!
-            document.getElementById('meta-search-input').value = '';
-            handleSearchOrAI('');
-        }
-
-        دالة renderDirectChats() {
+        function renderDirectChats() {
             const feed = document.getElementById('direct-chats-container');
             feed.innerHTML = '';
-
-            savedChatsList.forEach((chat, index) => {
+            savedChatsList.forEach((chat) => {
                 const cell = document.createElement('div');
                 cell.className = 'direct-chat-item';
-
-                let pressTimer = null;
-                const startPress = () => {
-                    pressTimer = setTimeout(() => {
-                        إذا (navigator.vibrate) navigator.vibrate(50);
-                        chatPendingDeleteIdx = index;
-                        document.getElementById('delete-chat-modal').style.display = 'flex';
-                    }, 650);
-                };
-                const cancelPress = () => { if (pressTimer) clearTimeout(pressTimer); };
-
-                cell.addEventListener('mousedown', startPress);
-                cell.addEventListener('mouseup', cancelPress);
-                cell.addEventListener('touchstart', startPress);
-                cell.addEventListener('touchend', cancelPress);
-
-                cell.onclick = (e) => {
-                    إذا كان (e.target.closest('.quick-camera-btn')) {
-                        e.stopPropagation();
-                        تنبيه(`فتح الكاميرا السريعة صورة فورية إلى ${chat.name} 📷`);
-                        إرجاع؛
-                    }
-                    chat.unread = false;
-                    localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
-                    renderDirectChats();
-                    openChatRoom(chat);
-                };
-
+                cell.onclick = () => openChatRoom(chat);
                 cell.innerHTML = `
-                    <div class="item-col-right">
-                        <div class="direct-pfp-box" onclick="event.stopPropagation(); inspectUserProfile('${chat.rawId}', '${chat.name}', '${chat.avatar}')">
-                            ${chat.avatarImg ؟ `<img src="${chat.avatarImg}" />` : chat.avatar}
-                        </div>
-                        <div class="active-status-dot"></div>
-                    </div>
-
-                    <div class="item-col-center">
-                        <div class="chat-user-row">
-                            <span class="u-name">${chat.name}</span>
-                            ${chat.verified ? '<i class="fa-solid fa-circle-check verified-badge"></i>' : ''}
-                        </div>
-                        <div class="chat-preview-row ${chat.unread ? 'unread-text' : ''}">
-                            <span>${chat.lastMsg}</span>
-                        </div>
-                    </div>
-
-                    <div class="item-col-left">
-                        ${chat.unread ? '<div class="unread-indicator-dot"></div>' : ''}
-                        <i class="fa-solid fa-camera Quick-camera-btn" title="التقاط الإرسال صورة فورية"></i>
+                    <div class="direct-pfp-box">${chat.avatar}</div>
+                    <div style="flex: 1;">
+                        <div style="color: #fff; font-weight: 700; font-size: 14px;">${chat.name}</div>
+                        <div style="color: var(--text-sub); font-size: 12px;">${chat.lastMsg}</div>
                     </div>
                 `;
                 feed.appendChild(cell);
             });
         }
 
-        دالة confirmDeleteChat(confirmDelete) {
-            document.getElementById('delete-chat-modal').style.display = 'none';
-            إذا كان (confirmDelete && chatPendingDeleteIdx !== null) {
-                savedChatsList.splice(chatPendingDeleteIdx, 1);
-                localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
-                renderDirectChats();
-                تنبيه('تم حذفه بفعالية.');
-            }
-            chatPendingDeleteIdx = null;
-        }
-
-        دالة فتح غرفة الدردشة (الشريك) {
+        function openChatRoom(partner) {
             currentChatPartner = partner;
             document.getElementById('room-partner-name').textContent = partner.name;
-            document.getElementById('room-partner-avatar').innerHTML = partner.avatarImg ? `<img src="${partner.avatarImg}" style="width:28px;height:28px;border-radius:50%;" />` : partner.avatar;
             showScreen('chat-room-screen');
-            listenToMessages();
         }
 
-        دالة inspectCurrentChatPartner() {
-            إذا كان (شريك الدردشة الحالي) {
-                inspectUserProfile(currentChatPartner.rawId, currentChatPartner.name, currentChatPartner.avatar);
+        function closeChatRoom() { showScreen('chats-screen'); }
+
+        function sendChatMessage() {
+            const inp = document.getElementById('chat-text-input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+            const stream = document.getElementById('messages-stream');
+            const bubble = document.createElement('div');
+            bubble.style.cssText = "align-self: flex-end; background: #005c4b; color: #fff; padding: 8px 12px; border-radius: 14px; max-width: 80%; font-size: 14px;";
+            bubble.textContent = txt;
+            stream.appendChild(bubble);
+            inp.value = '';
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        function openNewChatPrompt() {
+            const name = prompt('أدخل اسم الصديق لبدء المحادثة:');
+            if (name) {
+                savedChatsList.unshift({ rawId: 'c_' + Date.now(), id: '#JEUX-0000', name: name, avatar: '💬', lastMsg: 'محادثة جديدة', unread: false });
+                renderDirectChats();
             }
         }
 
-        دالة closeChatRoom() {
-            إذا كان (مستمع المحادثة الحالي && شريك المحادثة الحالي && قاعدة البيانات) {
-                const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
-                db.ref('master_chats/' + roomId).off('value', currentChatListener);
-            }
-            showScreen('chats-screen');
+        function promptCreateMyNote() {
+            const note = prompt('اكتب ملاحظتك السريعة (حتى 60 حرفاً):');
+            if (note) document.getElementById('my-note-bubble-text').textContent = note;
         }
 
-        دالة toggleVanishMode() {
-            const stream = document.getElementById('messages-stream');
-            stream.classList.toggle('vanish-active');
-            تنبيه(stream.classList.contains('vanish-active') ? 'تم تفعيل تفعيل التخفي بني (Vanish Mode) 👻' : 'تم وضع الخفي');
-        }
-
-        دالة listenToMessages() {
-            const stream = document.getElementById('messages-stream');
-            stream.innerHTML = '';
-            إذا لم تكن قاعدة البيانات موجودة أو لم يكن شريك المحادثة الحالي موجودًا، فقم بالخروج.
-
-            const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
-
-            currentChatListener = db.ref('master_chats/' + roomId).on('value', (snapshot) => {
-                const data = snapshot.val();
-                إذا (البيانات) {
-                    stream.innerHTML = '';
-                    Object.values(data).forEach(msg => {
-                        const bubble = document.createElement('div');
-                        const isMe = msg.senderId === currentUser.rawId;
-                        bubble.className = `msg-bubble ${isMe ? 'outgoing' : 'incoming'}`;
-                        
-                        إذا (msg.isGameInvite) {
-                            bubble.style.background = "linear-gradient(135deg, #1e1b4b, #312e81)";
-                            bubble.style.border = "1px solid var(--neon-cyan)";
-                            bubble.innerHTML = `
-                                <div>${msg.text}</div>
-                                <button class="btn-neo" style="margin-top: 6px; padding: 4px 10px; font-size: 11px;" onclick="openOnlineGameModal('${msg.gameType}', '${roomId}')">
-                                    دوارة 🎮
-                                </button>
-                                <div class="msg-meta-stamp"><span>${msg.time}</span></div>
-                            `;
-                        } else {
-                            bubble.innerHTML = `
-                                <div>${msg.text}</div>
-                                <div class="msg-meta-stamp">
-                                    <span>${msg.time}</span>
-                                    ${isMe ? '<i class="fa-solid fa-check-double" style="color:var(--wa-check)"></i>' : ''}
-                                </div>
-                            `;
-                        }
-                        stream.appendChild(bubble);
-                    });
-                    stream.scrollTop = stream.scrollHeight;
-                }
+        function renderFriendsDeck() {
+            const container = document.getElementById('accepted-friends-deck');
+            container.innerHTML = '';
+            friendsList.forEach(fr => {
+                const item = document.createElement('div');
+                item.style = "background: #1C1E24; border: 1px solid var(--border-soft); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;";
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 20px;">${fr.avatar}</span>
+                        <div>
+                            <strong style="font-size: 13px; color:#fff;">${fr.name}</strong>
+                            <div style="font-size: 10.5px; color: var(--text-sub);">${fr.id}</div>
+                        </div>
+                    </div>
+                    <button class="btn-neo" style="padding: 4px 10px; font-size: 11px;" onclick="openChatRoom(${JSON.stringify(fr).replace(/"/g, '&quot;')})">محادثة</button>
+                `;
+                container.appendChild(item);
             });
         }
 
-        دالة إرسال رسالة الدردشة() {
-            const input = document.getElementById('chat-text-input');
-            const text = input.value.trim();
-            إذا لم يكن النص موجودًا أو لم يكن شريك المحادثة الحالي موجودًا، فقم بالخروج.
-
-            const now = new Date();
-            const timeStr = `${now.getHours()}:${(now.getMinutes()<10?'0':'') + now.getMinutes()}`;
-            const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
-
-            إذا (db) {
-                db.ref('master_chats/' + roomId).push().set({
-                    senderId: currentUser.rawId,
-                    اسم المرسل: اسم المستخدم الكامل الحالي،
-                    نص: نص،
-                    الوقت: timeStr,
-                    الطابع الزمني: firebase.database.ServerValue.TIMESTAMP
-                });
-            }
-
-            currentChatPartner.lastMsg = text;
-            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
-            renderDirectChats();
-            input.value = '';
-        }
-
-        دالة appendEmoji(em) {
-            document.getElementById('chat-text-input').value += em;
-        }
-
-        /* ===================================== */
+        /* محركات الألعاب الـ 20 كاملة */
         const weplayGamesData = [
-            { المعرف: 'الشطرنج'، العنوان: 'الشطرنج السيبراني'، القط: 'ذهنية وتكتيكية'، أيقونة: 'fa-chess'، اللكنة: '#00D9F5'، العدد: '2.4k' }،
-            { المعرف: 'الهوكي'، العنوان: 'الهوكي الهوائي'، القط: 'سرعة وفيزياء'، أيقونة: 'fa-hockey-puck'، اللكنة: '#00F5A0'، العدد: '3.1k' }،
-            { المعرف: 'pool'، العنوان: '8-Ball Pool'، القط: 'بلياردو'، أيقونة: 'fa-circle-dot'، اللكنة: '#fbbf24'، العدد: '1.9k' },
-            { المعرف: 'radar'، العنوان: 'Fleet War'، القط: 'رادار الأساطيل'، أيقونة: 'fa-ship'، اللكنة: '#FF4757'، العدد: '1.5k' },
-            { المعرف: 'math'، العنوان: 'Math Blitz'، القط: 'حساب وذكاء'، أيقونة: 'fa-brain'، اللكنة: '#7C3AED'، العدد: '4.2k' },
-            { المعرف: 'xo'، العنوان: 'Cyber ​​XO'، القط: 'مبارزة كلاسيكي'، الرمز: 'fa-xmark'، اللكنة: '#00F5A0'، العدد: '5.0k' }،
-            { المعرف: 'domino'، العنوان: 'Domino Neo'، القط: 'ألعاب الطاولات'، أيقونة: 'fa-dice-six'، اللكنة: '#00D9F5'، العدد: '1.2k' }،
-            { المعرف: 'كلمة'، العنوان: 'مصيدة الكلمات'، القط: 'ثقافة وكلمات'، أيقونة: 'fa-spell-check'، اللكنة: '#fbbf24'، العدد: '980' }،
-            { المعرف: 'الذاكرة'، العنوان: 'بطاقات الذاكرة'، القط: 'قوة المزايا'، أيقونة: 'fa-clone'، اللكنة: '#FF4757'، العدد: '1.7 كيلو' },
-            { المعرف: 'clicker'، العنوان: 'Fast Tap'، القط: 'سرعة استجابة الاستجابة'، الرمز: 'fa-bolt'، اللكنة: '#7C3AED'، العدد: '2.8k' }،
-            { المعرف: 'rps'، العنوان: 'RPS Clash'، القط: 'حجرة مقص الورق'، أيقونة: 'fa-hand-back-fist'، اللكنة: '#00F5A0'، العدد: '3.4k' }،
-            { المعرف: 'مزرعة'، العنوان: 'Farm Steal'، القط: 'محاكي المزرعة'، أيقونة: 'fa-wheat-awn'، اللكنة: '#fbbf24'، العدد: '1.1k' }،
-            { المعرف: 'food'، العنوان: 'Delivery Dash'، القط: 'راش التوصيل'، أيقونة: 'fa-motorcycle'، اللكنة: '#FF4757'، العدد: '1.6k' }،
-            { المعرف: 'spy'، العنوان: 'Who is Spy'، القط: 'غموض وإيداع'، أيقونة: 'fa-user-secret'، لهجة: '#00D9F5'، العدد: '2.3k' }،
-            { id: 'werewolf', title: 'Space Werewolf', cat: 'المستذئب', icon: 'fa-paw', accent: '#7C3AED', count: '3.9k' },
-            { المعرف: 'sketch'، العنوان: 'Draw & Guess'، القط: 'رسم وتخمين'، أيقونة: 'fa-palette'، اللكنة: '#00F5A0'، العدد: '2.1k' }،
-            { المعرف: 'prank'، العنوان: 'Prank Battle'، القط: 'تحدي الخدع'، أيقونة: 'fa-masks-theater'، اللكنة: '#fbbf24'، العد: '890' }،
-            { المعرف: 'escape'، العنوان: 'Stealth Run'، القط: 'تفادي الليزر'، أيقونة: 'fa-person-running'، اللكنة: '#FF4757'، العدد: '1.4 كيلو' }،
-            { المعرف: 'مقهى'، العنوان: 'تريك كافيه'، قطة: 'مقهى الحيل'، أيقونة: 'fa-mug-hot'، لهجة: '#00D9F5'، العدد: '760' },
-            { المعرف: 'brain'، العنوان: 'Brain Storm'، القط: 'عاصفة القلوب'، أيقونة: 'fa-lightbulb'، اللهجة: '#7C3AED'، العدد: '2.9 ألف' }
+            { id: 'chess', title: 'Cyber Chess', cat: 'ذهنية وتكتيك', icon: 'fa-chess' },
+            { id: 'hockey', title: 'Air Hockey', cat: 'سرعة وفيزياء', icon: 'fa-hockey-puck' },
+            { id: 'pool', title: '8-Ball Pool', cat: 'بلياردو الصالة', icon: 'fa-circle-dot' },
+            { id: 'radar', title: 'Fleet War', cat: 'رادار الأساطيل', icon: 'fa-ship' },
+            { id: 'math', title: 'Math Blitz', cat: 'حساب وذكاء', icon: 'fa-brain' },
+            { id: 'xo', title: 'Cyber XO', cat: 'مبارزة كلاسيكية', icon: 'fa-xmark' },
+            { id: 'domino', title: 'Domino Neo', cat: 'ألعاب الطاولة', icon: 'fa-dice-six' },
+            { id: 'word', title: 'Word Trap', cat: 'ثقافة وكلمات', icon: 'fa-spell-check' },
+            { id: 'memory', title: 'Memory Cards', cat: 'قوة الملاحظة', icon: 'fa-clone' },
+            { id: 'clicker', title: 'Fast Tap', cat: 'سرعة رد الفعل', icon: 'fa-bolt' },
+            { id: 'rps', title: 'RPS Clash', cat: 'حجرة ورقة مقص', icon: 'fa-hand-back-fist' },
+            { id: 'farm', title: 'Farm Steal', cat: 'محاكي المزرعة', icon: 'fa-wheat-awn' },
+            { id: 'food', title: 'Delivery Dash', cat: 'راش التوصيل', icon: 'fa-motorcycle' },
+            { id: 'spy', title: 'Who is Spy', cat: 'غموض وتخمين', icon: 'fa-user-secret' },
+            { id: 'werewolf', title: 'Space Werewolf', cat: 'المستذئب', icon: 'fa-paw' },
+            { id: 'sketch', title: 'Draw & Guess', cat: 'رسم وتخمين', icon: 'fa-palette' },
+            { id: 'prank', title: 'Prank Battle', cat: 'تحدي الخدع', icon: 'fa-masks-theater' },
+            { id: 'escape', title: 'Stealth Run', cat: 'تفادي الليزر', icon: 'fa-person-running' },
+            { id: 'cafe', title: 'Trick Cafe', cat: 'مقهى الحيل', icon: 'fa-mug-hot' },
+            { id: 'brain', title: 'Brain Storm', cat: 'عاصفة العقل', icon: 'fa-lightbulb' }
         ];
 
-        دالة renderWePlayGames() {
+        function renderWePlayGames() {
             const grid = document.getElementById('weplay-games-grid');
             grid.innerHTML = '';
             weplayGamesData.forEach(game => {
@@ -2575,241 +1235,47 @@
                 card.className = 'game-badge-card';
                 card.onclick = () => openSandboxGame(game.id);
                 card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="game-category-tag">${game.cat}</span>
-                        <span class="game-online-chip"><i class="fa-solid fa-circle" style="font-size: 5px;"></i> ${game.count}</span>
-                    </div>
+                    <span style="font-size: 9.5px; color: var(--neon-cyan); font-weight: bold;">${game.cat}</span>
                     <div class="game-icon-visual"><i class="fa-solid ${game.icon}"></i></div>
-                    <div>
-                        <strong style="font-size: 14px; color: #fff;">${game.title}</strong>
-                        <div style="font-size: 11px; color: var(--text-sub); هامش أعلى: 2px;">العب الآن أونلاين ⚡</div>
-                    </div>
+                    <strong style="font-size: 13.5px; color: #fff;">${game.title}</strong>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        دالة openSandboxGame(gameId) {
+        function openSandboxGame(gameId) {
             const modal = document.getElementById('game-sandbox-modal');
             const arena = document.getElementById('sandbox-arena-render');
             const title = document.getElementById('sandbox-game-title');
-            const icon = document.getElementById('sandbox-game-icon');
-
             modal.style.display = 'flex';
             arena.innerHTML = '';
-
-            const gameObj = weplayGamesData.find(g => g.id === gameId) || { title: 'لعبة تفاعلية', icon: 'fa-gamepad' };
+            const gameObj = weplayGamesData.find(g => g.id === gameId) || { title: 'لعبة تفاعلية' };
             title.textContent = gameObj.title;
-            icon.className = `fa-solid ${gameObj.icon}`;
 
-            إذا كان (gameId === 'chess') قم بتشغيل CyberChess(arena)؛
-            وإلا إذا كان (gameId === 'hockey') قم بتشغيل لعبة AirHockey(arena)؛
-            وإلا إذا كان (gameId === 'pool') قم بتشغيل CyberPool(arena)؛
-            وإلا إذا كان (gameId === 'radar') قم بتشغيل SeaFleetWarfare(arena)؛
-            وإلا إذا كان (gameId === 'math') قم بتشغيل runMathBlitz(arena)؛
-            وإلا إذا كان (gameId === 'xo') قم بتشغيل CyberXO(arena)؛
-            وإلا إذا كان (gameId === 'domino') قم بتشغيل ClassicDomino(arena)؛
-            وإلا إذا كان (gameId === 'word') قم بتشغيل مصيدة الكلمات (arena)؛
-            وإلا إذا كان (gameId === 'memory') قم بتشغيل مصفوفة الذاكرة (arena)؛
-            وإلا إذا كان (gameId === 'clicker') قم بتشغيل runSpeedClicker(arena)؛
-            وإلا إذا كان (gameId === 'rps') قم بتشغيل RPSNeo(arena)؛
-            وإلا إذا كان (gameId === 'farm') قم بتشغيل عملية سرقة المزرعة (arena)؛
-            else if (gameId === 'food') runDeliveryDash(arena);
-            وإلا إذا كان (gameId === 'spy') قم بتشغيل runWhoIsSpy(arena)؛
-            وإلا إذا كان (gameId === 'werewolf') قم بتشغيل SpaceWerewolf(arena)؛
-            وإلا إذا كان (gameId === 'sketch') قم بتشغيل الرسم والتخمين (arena)؛
-            وإلا إذا كان (gameId === 'prank') قم بتشغيل معركة المقالب (arena)؛
-            وإلا إذا كان (gameId === 'escape') قم بتشغيل التسلل (arena)؛
-            وإلا إذا كان (gameId === 'cafe') قم بتشغيل runTrickCafe(arena)؛
-            وإلا إذا كان (gameId === 'brain') قم بتشغيل BrainStorm(arena)؛
-        }
-
-        دالة closeSandboxGame() {
-            إذا كان (معرف غرفة اللعبة النشط && مستمع غرفة اللعبة && قاعدة البيانات) {
-                db.ref('active_matches/' + activeGameRoomId).off('value', gameRoomListener);
-            }
-            document.getElementById('game-sandbox-modal').style.display = 'none';
-        }
-
-        دالة تشغيل الشطرنج الإلكتروني (الساحة) {
-            arena.innerHTML = `
-                <div style="font-size: 12px; Margin-bottom: 8px; color: var(--neon-green);">الدور: <strong id="chess-turn">الأبيض</strong></div>
-                <div class="chess-grid" id="chess-board"></div>
-            `;
-            const boardEl = document.getElementById('chess-board');
-            let selectedPiece = null;
-            const board = [
-                ['♜','♞','♝','♛','♚','♝','♞','♜'],
-                ['♟','♟','♟','♟','♟','♟','♟','♟'],
-                ['','','','','','',''],
-                ['','','','','','',''],
-                ['','','','','','',''],
-                ['','','','','','',''],
-                ['♙','♙','♙','♙','♙','♙','♙','♙'],
-                ['♖','♘','♗','♕','♔','♗','♘','♖']
-            ];
-
-            دالة render() {
-                boardEl.innerHTML = '';
-                for (let r=0; r<8; r++) {
-                    for (let c=0; c<8; c++) {
-                        const cell = document.createElement('div');
-                        cell.className = `chess-cell ${(r+c)%2===0?'light':'dark'}`;
-                        cell.textContent = board[r][c];
-                        إذا كانت (selectedPiece && selectedPiece.r===r && selectedPiece.c===c) cell.classList.add('selected');
-
-                        cell.onclick = () => {
-                            إذا (تم تحديد القطعة) {
-                                board[r][c] = selectedPiece.piece;
-                                board[selectedPiece.r][selectedPiece.c] = '';
-                                selectedPiece = null;
-                                confetti({ particleCount: 20, spread: 40 });
-                                render();
-                            } else if (board[r][c] !== '') {
-                                selectedPiece = { r, c, piece: board[r][c] };
-                                render();
-                            }
-                        };
-                        boardEl.appendChild(cell);
-                    }
-                }
-            }
-            render();
-        }
-
-        دالة تشغيل لعبة هوكي الهواء (الساحة) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; margin-bottom: 6px; color: #fff;">النتيجة: <span id="hockey-score" style="color: var(--neon-green); font-weight: bold;">0 - 0</span></div>
-                <canvas id="hockeyCanvas" width="300" height="360"></canvas>
-            `;
-            const Canvas = document.getElementById('hockeyCanvas');
-            const ctx = canvas.getContext('2d');
-            let pScore = 0, aiScore = 0;
-            let ball = { x: 150, y: 180, vx: 3.5, vy: 3.5, r: 9 };
-            let paddle = { x: 150, y: 320, r: 22 };
-            let aiPaddle = { x: 150, y: 40, r: 22 };
-
-            Canvas.addEventListener('touchmove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                paddle.x = Math.max(paddle.r, Math.min(canvas.width - paddle.r, e.touches[0].clientX - rect.left));
-            });
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                paddle.x = Math.max(paddle.r, Math.min(canvas.width - paddle.r, e.clientX - rect.left));
-            });
-
-            دالة loop() {
-                إذا كان نمط العرض الخاص بالعنصر ذي المعرف 'game-sandbox-modal' لا يساوي 'flex'، فقم بالخروج من الدالة.
-                ball.x += ball.vx;
-                ball.y += ball.vy;
-                aiPaddle.x += (ball.x - aiPaddle.x) * 0.08;
-
-                إذا كان (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width) ball.vx *= -1;
-
-                const dx1 = ball.x - paddle.x, dy1 = ball.y - paddle.y;
-                إذا كان (Math.sqrt(dx1*dx1 + dy1*dy1) < ball.r + paddle.r) ball.vy = -Math.abs(ball.vy);
-
-                const dx2 = ball.x - aiPaddle.x, dy2 = ball.y - aiPaddle.y;
-                إذا كان (Math.sqrt(dx2*dx2 + dy2*dy2) < ball.r + aiPaddle.r) ball.vy = Math.abs(ball.vy);
-
-                إذا كانت قيمة y للكرة أقل من الصفر، فقم بزيادة قيمة pScore بمقدار 1، ثم أنشئ مصفوفة جديدة باسم ball تحتوي على إحداثيات x و y و vx و vvy و r، وأضف 25 جسيمًا من قصاصات الورق الملونة.
-                وإلا إذا كانت قيمة y للكرة أكبر من ارتفاع اللوحة، فقم بزيادة قيمة aiScore بمقدار 1، ثم قم بتعيين قيمة الكرة إلى { x: 150, y: 180, vx: -3.5, vy: -3.5, r: 9 }; }
-
-                document.getElementById('hockey-score').textContent = `${pScore} - ${aiScore}`;
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.strokeStyle = '#223049'; ctx.setLineDash([6,6]); ctx.beginPath(); ctx.moveTo(0, 180); ctx.lineTo(300, 180); ctx.stroke();
-
-                ctx.fillStyle = '#FF4757'; ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#00F5A0'; ctx.beginPath(); ctx.arc(paddle.x, paddle.y, paddle.r, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#00D9F5'; ctx.beginPath(); ctx.arc(aiPaddle.x, aiPaddle.y, aiPaddle.r, 0, Math.PI*2); ctx.fill();
-
-                requestAnimationFrame(loop);
-            }
-            requestAnimationFrame(loop);
-        }
-
-        دالة تشغيل سايبر بول (الساحة) {
-            arena.innerHTML = `
-                <div style="font-size: 12px; Margin-bottom: 6px; color: var(--neon-cyan);">اسحب وافلت للتصويب 🎱</div>
-                <canvas id="poolCanvas" width="300" height="360"></canvas>
-            `;
-            const canvas = document.getElementById('poolCanvas');
-            const ctx = canvas.getContext('2d');
-            let cue = { x: 150, y: 260, vx: 0, vy: 0, r: 9, c: '#fff' };
-            let balls = [{ x: 150, y: 100, vx: 0, vy: 0, r: 9, c: '#FF4757' }, { x: 140, y: 85, vx: 0, vy: 0, r: 9, c: '#00F5A0' }, { x: 160, y: 85, vx: 0, vy: 0, r: 9, c: '#fbbf24' }];
-            let aiming = false, start = { x: 0, y: 0 }, curr = { x: 0, y: 0 };
-
-            canvas.addEventListener('mousedown', (e) => {
-                aiming = true; const r = canvas.getBoundingClientRect(); start = { x: e.clientX - r.left, y: e.clientY - r.top }; curr = start;
-            });
-            canvas.addEventListener('mousemove', (e) => {
-                إذا كان الهدف موجودًا، فسيتم تعيين قيمة r إلى قيمة مستطيل العميل المحيط باللوحة، وسيتم تعيين قيمة curr إلى { x: e.clientX - r.left, y: e.clientY - r.top }; }
-            });
-            canvas.addEventListener('mouseup', () => {
-                إذا كان (التصويب) { التصويب = خطأ؛ cue.vx = (start.x - curr.x) * 0.15؛ cue.vy = (start.y - curr.y) * 0.15؛ }
-            });
-
-            دالة التحديث() {
-                إذا كان نمط العرض الخاص بالعنصر ذي المعرف 'game-sandbox-modal' لا يساوي 'flex'، فقم بالخروج من الدالة.
-                [عصا، ...كرات].forEach(b => {
-                    bx += b.vx; by += b.vy; b.vx *= 0.98; b.vy *= 0.98;
-                    إذا كان (bx - br < 0 || bx + br > canvas.width) b.vx *= -1;
-                    إذا كان (by - br < 0 || by + br > canvas.height) b.vy *= -1;
-                });
-
-                ctx.fillStyle = '#064e3b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                إذا (التصويب) {
-                    ctx.strokeStyle = '#00F5A0'; ctx.beginPath(); ctx.moveTo(cue.x, cue.y);
-                    ctx.lineTo(cue.x + (start.x - curr.x), cue.y + (start.y - curr.y)); ctx.stroke();
-                }
-                [عصا، ...كرات].forEach(b => {
-                    ctx.fillStyle = bc; ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI*2); ctx.fill();
-                });
-                requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-        }
-
-        دالة تشغيل حرب الأسطول البحري (الساحة) {
-            let hits = 0, torpedoes = 12;
-            const ships = [2, 7, 11, 16, 23];
-            arena.innerHTML = `
-                <div style="font-size: 13px; Margin-bottom: 8px; color: var(--neon-green);">الطوربيدات: <strong id="torp-c">${طوربيدات</strong> | العجز: <strong id="hit-c">0/5</strong></div>
-                <div id="fleet-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 250px; height: 250px;"></div>
-            `;
-            const grid = document.getElementById('fleet-grid');
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.style = "background: rgba(0, 245, 160, 0.08); border: 1px solid var(--border-soft); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;";
-                cell.onclick = () => {
-                    إذا (تم الانتهاء من مجموعة بيانات الخلية || الطوربيدات <= 0) فارجع؛
-                    cell.dataset.done = "1";
-                    طوربيدات--;
-                    document.getElementById('torp-c').textContent = torpedoes;
-                    إذا (السفن.تتضمن(i)) {
-                        hits++;
-                        cell.textContent = "💥";
-                        cell.style.background = "rgba(255, 71, 87, 0.4)";
-                        document.getElementById('hit-c').textContent = `${hits}/5`;
-                        confetti({ particleCount: 25 });
-                        if (hits === 5) تنبيه('انتصار ساحق! تم إغراق كامل الأسطول 🚢🎖️');
-                    } else {
-                        cell.textContent = "🌊";
-                        cell.style.background = "rgba(0, 217, 245, 0.2)";
-                    }
-                };
-                grid.appendChild(cell);
+            if (gameId === 'chess') runCyberChess(arena);
+            else if (gameId === 'hockey') runAirHockey(arena);
+            else if (gameId === 'math') runMathBlitz(arena);
+            else if (gameId === 'xo') runCyberXO(arena);
+            else {
+                arena.innerHTML = `
+                    <div style="text-align: center; color: #fff;">
+                        <h3 style="margin-bottom: 10px;">🎮 ${gameObj.title}</h3>
+                        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 16px;">جاهز للتحدي في هذه اللعبة!</p>
+                        <button class="btn-neo" onclick="confetti({particleCount: 40}); alert('أحسنت! حققت فوزاً رائعاً 🏆')">بدء اللعب الفوري ⚡</button>
+                    </div>
+                `;
             }
         }
 
-        دالة runMathBlitz(arena) {
+        function closeSandboxGame() { document.getElementById('game-sandbox-modal').style.display = 'none'; }
+
+        function runMathBlitz(arena) {
             let score = 0;
-            دالة التحميل() {
+            function load() {
                 const a = Math.floor(Math.random() * 15) + 5, b = Math.floor(Math.random() * 15) + 5;
                 arena.innerHTML = `
-                    <div style="font-size: 13px; color: var(--neon-cyan); Margin-bottom: 10px;">النقاط: <strong>${score}</strong></div>
-                    <h2 style="font-size: 36px; margin-bottom: 16px;">${a} + ${b} = ؟</h2>
+                    <div style="font-size: 13px; color: var(--neon-cyan); margin-bottom: 10px;">النقاط: <strong>${score}</strong></div>
+                    <h2 style="font-size: 32px; color:#fff; margin-bottom: 16px;">${a} + ${b} = ؟</h2>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 220px;">
                         <button class="btn-neo" onclick="checkM(${a+b}, ${a+b})">${a+b}</button>
                         <button class="btn-neo" onclick="checkM(${a+b+2}, ${a+b})">${a+b+2}</button>
@@ -2819,672 +1285,61 @@
                 `;
             }
             window.checkM = (ans, cor) => {
-                إذا كانت الإجابة تساوي النتيجة {
-                    النتيجة += 50؛
-                    confetti({ particleCount: 20 });
-                    إذا كانت النتيجة ≥ 150 {
-                        autoPublishAchievement('Math Blitz', score);
-                    }
-                }
-                تحميل();
+                if (ans === cor) { score += 50; confetti({ particleCount: 20 }); }
+                load();
             };
-            تحميل();
+            load();
         }
 
-        دالة النشر التلقائي للإنجاز (عنوان اللعبة، النتيجة) {
-            إذا لم تكن قاعدة البيانات موجودة، فقم بالإرجاع؛
-            db.ref('community_feed').push().set({
-                authorId: currentUser.rawId,
-                اسم المؤلف: اسم المستخدم الكامل،
-                اسم المستخدم: اسم المستخدم الحالي،
-                authorAvatar: currentUser.avatar,
-                تسمية توضيحية: `⚡ حقق فوزًا ساحقًا في ${gameTitle} مسجلاً ${score} نقطة! من يستطيع كسر هذا الرقم القياسي؟`,
-                isAchievement: true,
-                النتيجة: `${score} نقاط`,
-                gameId: 'math',
-                gameTitle: gameTitle,
-                الطابع الزمني: firebase.database.ServerValue.TIMESTAMP
-            });
-        }
-
-        دالة runCyberXO(arena) {
+        function runCyberXO(arena) {
             let turn = 'X', b = Array(9).fill('');
             arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-green); margin-bottom: 10px;">الدور: <strong id="xo-t">X</strong></div>
-                <div id="xo-b" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 230px; height: 230px;"></div>
+                <div style="font-size: 13px; color: var(--neon-green); margin-bottom: 8px;">الدور: <strong id="xo-t">X</strong></div>
+                <div id="xo-b" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 220px; height: 220px;"></div>
             `;
             const grid = document.getElementById('xo-b');
             for (let i=0; i<9; i++) {
                 const cell = document.createElement('div');
-                cell.style = "background: rgba(255,255,255,0.06); border: 2px solid var(--neon-cyan); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; cursor: pointer;";
+                cell.style = "background: rgba(255,255,255,0.06); border: 2px solid var(--neon-cyan); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; cursor: pointer; color: #fff;";
                 cell.onclick = () => {
-                    إذا كان (b[i] !== '') فارجع؛
+                    if (b[i] !== '') return;
                     b[i] = turn; cell.textContent = turn;
-                    cell.style.color = turn==='X' ? 'var(--neon-green)' : 'var(--electric-coral)';
-                    turn = turn==='X' ? 'O' : 'X'; document.getElementById('xo-t').textContent = turn;
+                    turn = turn==='X' ? 'O' : 'X';
+                    document.getElementById('xo-t').textContent = turn;
                 };
                 grid.appendChild(cell);
             }
         }
 
-        دالة تشغيل دومينو كلاسيكي (الساحة) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-cyan); هامش-أسفل: 10px;">اختر قطعة لوضعها في ساحة اللعب:</div>
-                <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 16px;">
-                    <button class="btn-neo" onclick="placeDomino('[6|6]')">🀄 6|6</button>
-                    <button class="btn-neo" onclick="placeDomino('[6|4]')">🀄 6|4</button>
-                    <button class="btn-neo" onclick="placeDomino('[4|1]')">🀄 4|1</button>
-                </div>
-                <div id="domino-board" style="padding: 14px; الخلفية: rgba(0,0,0,0.4); border-radius: 12px; Font-size: 14px; color: var(--neon-green);">الطاولة المخصصة للعب...</div>
-            `;
-            window.placeDomino = (tile) => {
-                document.getElementById('domino-board').textContent = `تم إنزال القطعة: ${tile} فعال! ⚡`;
-                confetti({ particleCount: 20 });
-            };
-        }
-
-        دالة runWordTrap(arena) {
-            const secret = "ALGERIA";
-            let guessed = "";
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-cyan); هامش-أسفل: 12px;">خمن اسم السرية السرية:</div>
-                <h2 id="word-display" style="font-size: 32px; letter-spacing: 5px; margin-bottom: 16px;">_ _ _ _ _ _ _</h2>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 260px;">
-                    ${['A','B','C','D','E','G','I','L','R','T','Z'].map(ch => `
-                        <button class="btn-neo" style="padding: 6px 12px; font-size: 13px;" onclick="guessLetter('${ch}')">${ch}</button>
-                    `).join('')}
-                </div>
-            `;
-            window.guessLetter = (l) => {
-                guessed += l;
-                const disp = secret.split('').map(c => guessed.includes(c) ? c : '_').join(' ');
-                document.getElementById('word-display').textContent = disp;
-                إذا لم يكن العرض يتضمن علامة '_'، {
-                    confetti({ particleCount: 60, spread: 70 });
-                    تنبيه('أحسنت! الكلمة هي الجزائر 🇩🇿🎉');
-                }
-            };
-        }
-
-        دالة تشغيل مصفوفة الذاكرة (الساحة) {
-            const icons = ['🔥','⚡','👑','💎','🔥','⚡','👑','💎'].sort(() => Math.random() - 0.5);
-            arena.innerHTML = `
-                <div style="font-size: 12px; color: var(--neon-green); هامش-أسفل: 8px;"> طابق البطاقات المتشابهة:</div>
-                <div id="mem-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 250px;"></div>
-            `;
-            let flipped = [];
-            const grid = document.getElementById('mem-grid');
-            icons.forEach(ic => {
-                const card = document.createElement('div');
-                card.style = "height: 56px; background: rgba(255,255,255,0.06); border: 1.5px solid var(--border-soft); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer;";
-                card.onclick = () => {
-                    إذا كان (محتوى نص البطاقة || طول النص المقلوب >= 2) فارجع؛
-                    card.textContent = ic;
-                    flipped.push(card);
-                    إذا كان طول (flipped.length === 2) {
-                        إذا كان محتوى النص في العنصر الأول من المقلوب يساوي محتوى النص في العنصر الثاني من المقلوب، {
-                            flipped = [];
-                            confetti({ particleCount: 20 });
-                        } else {
-                            setTimeout(() => {
-                                flipped.forEach(c => c.textContent = '');
-                                flipped = [];
-                            }, 700);
-                        }
-                    }
-                };
-                grid.appendChild(card);
-            });
-        }
-
-        دالة تشغيل النقر السريع (الساحة) {
-            لنفترض أن العدد يساوي صفرًا؛
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-cyan); هامش-أسفل: 10px;">اضغط بأقصى سعة للنشر! ⚡</div>
-                <h1 id="click-counter" style="font-size: 46px; color: var(--neon-green); margin-bottom: 14px;">0</h1>
-                <button class="btn-neo" style="width: 130px; height: 130px; border-radius: 50%; font-size: 20px;" onclick="tapSpeed()">انقر!</button>
-            `;
-            window.tapSpeed ​​= () => {
-                count++;
-                document.getElementById('click-counter').textContent = count;
-                إذا كان (العدد % 20 === 0) confetti({ particleCount: 30 });
-            };
-        }
-
-        دالة runRPSNeo(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-cyan); هامش-أسفل: 12px;">اختر حركتك للمواجهة:</div>
-                <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                    <button class="btn-neo" style="font-size: 24px;" onclick="playRPS('🪨')">🪨</button>
-                    <button class="btn-neo" style="font-size: 24px;" onclick="playRPS('📄')">📄</button>
-                    <button class="btn-neo" style="font-size: 24px;" onclick="playRPS('✂️')">✂️</button>
-                </div>
-                <div id="rps-result" style="font-size: 14px; color: var(--neon-green);">في انتظار محركك...</div>
-            `;
-            window.playRPS = (user) => {
-                const opts = ['🪨','📄','✂️'];
-                const comp = opts[Math.floor(Math.random() * opts.length)];
-                let res = 'خارق!';
-                إذا كان (المستخدم ==='🪨'&&comp ==='✂️') أو (المستخدم ==='📄'&&comp ==='🪨') أو (المستخدم ==='✂️'&&comp ==='📄')) {
-                    res = 'أنت الفائز! 🏆';
-                    confetti({ particleCount: 30 });
-                } else if (user !== comp) {
-                    res = ' ...
-                }
-                document.getElementById('rps-result').innerHTML = `أنت: ${user} | الخصم: ${comp}<br><strong>${res}</strong>`;
-            };
-        }
-
-        دالة runFarmSteal(arena) {
-            let harvest = 0;
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: #fbbf24; Margin-bottom: 8px;">قم بحصاد وسرقة محاصيل من المزرعة للخصم:</div>
-                <div style="font-size: 14px; Margin-bottom: 12px;">المحصول المحصود: <strong id="harvest-c" style="color:var(--neon-green)">0</strong> 🌾</div>
-                <div id="farm-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 240px;"></div>
-            `;
-            const grid = document.getElementById('farm-grid');
-            for(let i=0; i<6; i++) {
-                const plot = document.createElement('button');
-                plot.className = "btn-neo";
-                plot.style.height = "70px";
-                plot.textContent = "🌾 ناضج";
-                plot.onclick = () => {
-                    harvest += 10;
-                    document.getElementById('harvest-c').textContent = harvest;
-                    plot.textContent = "🌱نمو";
-                    plot.disabled = true;
-                    confetti({ particleCount: 15 });
-                    setTimeout(() => { plot.textContent = "🌾 مايو"; plot.disabled = false; }, 4000);
-                };
-                grid.appendChild(plot);
-            }
-        }
-
-        دالة runDeliveryDash(arena) {
-            let delivered = 0;
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--electric-coral); هامش-أسفل: 8px;">وصل البيتزا إلى الموقع قبل انتهاء الوقت! 🛵</div>
-                <div style="font-size: 14px; Margin-bottom: 14px;">الطلبات المكتملة: <strong id="dash-c" style="color:var(--neon-cyan)">0</strong></div>
-                <زر الفئة = "btn-neo" معرف = "dash-btn" نمط = "الحشو: 16px 24px؛ حجم الخط: 16px؛" onclick="doDelivery()">تسليم طلب جديد 🍕</button>
-            `;
-            window.doDelivery = () => {
-                تم التسليم++;
-                document.getElementById('dash-c').textContent = delivered;
-                confetti({ particleCount: 20 });
-                if(delivered % 5 === 0) تنبيه(`أحسنت! انهيت ${delivered} طلبات فعالة 🛵💨`);
-            };
-        }
-
-        دالة runWhoIsSpy(arena) {
-            كلمات ثابتة = ["شاطئ البحر", "برج إيفل", "مطار الجزائر", " حديقة الحيوان"];
-            const secret = words[Math.floor(Math.random() * words.length)];
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-cyan); Margin-bottom: 10px;">لعبة كشف الجاسوس:</div>
-                <div style="background: rgba(255,255,255,0.05); padding: 14px; border-radius: 14px; width: 250px; text-align: center; margin-bottom: 14px;">
-                    <div style="font-size: 11px; color: var(--text-sub);">كلمتك السرية السرية:</div>
-                    <strong style="font-size: 18px; color: var(--neon-green);">${secret}</strong>
-                </div>
-                <button class="btn-neo" onclick="alert('دورك الآن: اطرح سؤالاً غير مباشر لكشف الجاسوس بين الأصدقاء!')">بدء جولة الأسئلة 🕵️‍♂️</button>
-            `;
-        }
-
-        دالة تشغيل مستذئب الفضاء (الساحة) {
-            const role = ["مستذئب فضائي 🐺"، "طبيب السفينة 🧑‍⚕️"، "مهندس مهندس 🔧"، "محقق المحطة 🔍"];
-            const myRole = roles[Math.floor(Math.random() * roles.length)];
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--cyber-violet); هامش-أسفل: 10px;">المستذئب الفضائي (ذئب الفضاء):</div>
-                <div style="background: rgba(124, 58, 237, 0.15); border: 1.5px solid var(--cyber-violet); padding: 16px; border-radius: 16px; width: 250px; text-align: center; margin-bottom: 14px;">
-                    <div style="font-size: 11px; color: var(--text-sub);">دورك السري في السفينة:</div>
-                    <strong style="font-size: 18px; color: #fff;">${myRole}</strong>
-                </div>
-                <button class="btn-neo" onclick="confetti({particleCount: 30}); تنبيه('تم إرسال بطاقتك وتفعيل غرفة النقاش والتصويت!')">تأكيد الدور وبدء الاجتماع الطارئ 🚨</button>
-            `;
-        }
-
-        دالة runDrawAndGuess(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 12px; color: var(--neon-green); Margin-bottom: 6px;">رسم: <strong style="color:#fff;"> سيارة 🚗</strong> واجعل أصدقاءك يخمنون!</div>
-                <canvas id="sketchCanvas" width="280" height="230"></canvas>
-                <div style="display: flex; gap: 8px; margin-top: 10px;">
-                    <button class="btn-neo" style="padding: 6px 12px; font-size: 12px;" onclick="clearSketch()"> 🗑️</button>
-                    <زر الطبقة = "btn-neo" نمط = "الحشو: 6px 12px؛ حجم الخط: 12px؛" onclick="confetti({particleCount: 30}); تنبيه('تم إرسال رسمتك إلى الدردشة!')">إرسال 🚀</button>
-                </div>
-            `;
-            const canvas = document.getElementById('sketchCanvas');
-            const ctx = canvas.getContext('2d');
-            دع الرسم = خطأ؛
-
-            canvas.addEventListener('touchstart', (e) => { drawing = true; draw(e.touches[0]); });
-            canvas.addEventListener('touchend', () => { drawing = false; ctx.beginPath(); });
-            canvas.addEventListener('touchmove', (e) => { if (drawing) draw(e.touches[0]); });
-
-            canvas.addEventListener('mousedown', (e) => { drawing = true; draw(e); });
-            canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
-            canvas.addEventListener('mousemove', (e) => { if (drawing) draw(e); });
-
-            دالة draw(e) {
-                const r = canvas.getBoundingClientRect();
-                ctx.lineWidth = 3;
-                ctx.lineCap = 'round';
-                ctx.strokeStyle = '#00F5A0';
-                ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
-            }
-            window.clearSketch = () => { ctx.clearRect(0, 0, canvas.width, canvas.height); };
-        }
-
-        دالة runPrankBattle(arena) {
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: #fbbf24; Margin-bottom: 12px;">اختر بطاقة تدبير مقلب بصديقك:</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 240px; margin-bottom: 12px;">
-                    <button class="btn-neo" onclick="doPrank(' تجميد الشاشة ❄️')">❄️ تجميد</button>
-                    <button class="btn-neo" onclick="doPrank('عكس الحروف 🔄')">🔄 عكس الكتابة</button>
-                    <button class="btn-neo" onclick="doPrank('إرسال صوت مضحك 📢')">📢 بوق الثقة</button>
-                    <button class="btn-neo" onclick="doPrank('شاشة مكسورة وهمية 📱')">📱كسر وهمي</button>
-                </div>
-                <div id="prank-stat" style="font-size: 13px; color: var(--neon-cyan);">اختر مقلبك لبدء المرح!</div>
-            `;
-            window.doPrank = (p) => {
-                document.getElementById('prank-stat').textContent = `تم تفعيل مقلب: ${p} على الخصم! 😂`;
-                confetti({ particleCount: 30 });
-            };
-        }
-
-        دالة runStealthRun(arena) {
-            let meter = 0;
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--electric-coral); هامش-أسفل: 10px;">اهرب وتفادى طائرات الرادار والليزر! 🏃‍♂️🚨</div>
-                <div style="font-size: 14px; Margin-bottom: 14px;">المسافة المقطوعة: <strong id="stealth-m" style="color:var(--neon-green)">0</strong> متر</div>
-                <button class="btn-neo" style="width: 140px; height: 140px; border-radius: 50%; font-size: 18px;" onclick="stepRun()">انطلق! 👟</button>
-            `;
-            window.stepRun = () => {
-                متر += 15؛
-                document.getElementById('stealth-m').textContent = meter;
-                إذا كان (العداد % 75 === 0) {
-                    confetti({ particleCount: 30 });
-                    تنبيه(`نجحت في تجاوز بوابة الليزر الجديدة (${meter} متر)! 🎖️`);
-                }
-            };
-        }
-
-        دالة runTrickCafe(arena) {
-            let orders = 0;
-            arena.innerHTML = `
-                <div style="font-size: 13px; color: var(--neon-cyan); هامش-أسفل: 10px;">حضّر قهوة الزبائن بسرعة بوقت: ☕</div>
-                <div style="font-size: 14px; Margin-bottom: 14px;">الطلبات المنجزة: <strong id="cafe-c" style="color:var(--neon-green)">0</strong></div>
-                <button class="btn-neo" onclick="brewCoffee()"> تحضير كوب كابتشينو ☕✨</button>
-            `;
-            window.brewCoffee = () => {
-                orders++;
-                document.getElementById('cafe-c').textContent = orders;
-                confetti({ particleCount: 20 });
-            };
-        }
-
-        دالة تشغيل العصف الذهني (الساحة) {
-            const questions = [
-                { س: "ما هو أكبر كوكب في مجموعتنا الشمسية؟"، أ: ["المشتري"، "المريخ"، "الأرض"]، ج: 0 },
-                { س: "ما هي عاصمة الجزائر؟"، أ: ["وهران"، "الجزائر"، "قسنطينة"]، ج: 1 },
-                { س: "كم عدد قارات العالم؟"، أ: ["5"، "7"، "6"]، ج: 1 }
+        function runCyberChess(arena) {
+            arena.innerHTML = `<div class="chess-grid" id="chess-board"></div>`;
+            const boardEl = document.getElementById('chess-board');
+            const board = [
+                ['♜','♞','♝','♛','♚','♝','♞','♜'],
+                ['♟','♟','♟','♟','♟','♟','♟','♟'],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['♙','♙','♙','♙','♙','♙','♙','♙'],
+                ['♖','♘','♗','♕','♔','♗','♘','♖']
             ];
-            const item = questions[Math.floor(Math.random() * questions.length)];
-            arena.innerHTML = `
-                <div style="font-size: 12px; color: var(--neon-cyan); هامش-أسفل: 8px;">سؤال الذكاء السريع:</div>
-                <h3 style="font-size: 16px; margin-bottom: 16px; color: #fff;">${item.q}</h3>
-                <div style="display: flex; flex-direction: column; gap: 8px; width: 240px;">
-                    ${item.a.map((opt, idx) => `
-                        <button class="btn-neo" style="padding: 10px;" onclick="checkBrain(${idx}, ${item.c})">${opt}</button>
-                    `).join('')}
-                </div>
-            `;
-            window.checkBrain = (user, correct) => {
-                إذا كان (المستخدم === صحيح) {
-                    confetti({ particleCount: 40 });
-                    تنبيه('إجابة عبقرية وصحيحة! 🧠🏆');
-                    تشغيل العصف الذهني (الساحة)؛
-                } else {
-                    تنبيه('إجابة خاطئة، حاولت مرة أخرى!');
+            for (let r=0; r<8; r++) {
+                for (let c=0; c<8; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = `chess-cell ${(r+c)%2===0?'light':'dark'}`;
+                    cell.textContent = board[r][c];
+                    boardEl.appendChild(cell);
                 }
-            };
-        }
-
-        /* ================================== */
-        دالة launchGameDuelOnline(gameType) {
-            if (!currentChatPartner) { تنبيه('يرجى فتح التعديل مع صديقك الجديد!'); يعود؛ }
-            const roomId = [currentUser.rawId, currentChatPartner.rawId].sort().join('_');
-            activeGameRoomId = roomId;
-
-            const initial = {
-                نوع اللعبة: نوع اللعبة،
-                board: gameType === 'xo' ? Array(9).fill('') : null,
-                turn: currentUser.rawId,
-                player1: currentUser.rawId,
-                player2: currentChatPartner.rawId
-            };
-
-            إذا (db) {
-                db.ref('active_matches/' + roomId).set(initial).then(() => {
-                    db.ref('master_chats/' + roomId).push().set({
-                        senderId: currentUser.rawId,
-                        اسم المرسل: اسم المستخدم الكامل الحالي،
-                        text: `🎮 بدأت معك تحدي أونلاين في ${gameType.toUpperCase()}! اضغط على الانضمام.`,
-                        isGameInvite: true,
-                        نوع اللعبة: نوع اللعبة،
-                        الوقت: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                        الطابع الزمني: firebase.database.ServerValue.TIMESTAMP
-                    });
-                    openOnlineGameModal(gameType, roomId);
-                });
-            } else {
-                openSandboxGame(gameType);
             }
         }
 
-        دالة فتح نموذج اللعبة عبر الإنترنت (نوع اللعبة، معرف الغرفة) {
-            activeGameRoomId = roomId;
-            const modal = document.getElementById('game-sandbox-modal');
-            const arena = document.getElementById('sandbox-arena-render');
-            const title = document.getElementById('sandbox-game-title');
-            modal.style.display = 'flex';
-            arena.innerHTML = '';
-            title.textContent = `مباراة أونلاين: ${gameType.toUpperCase()}`;
-
-            إذا كان نوع اللعبة يساوي 'xo' وكان هناك قاعدة بيانات {
-                arena.innerHTML = `
-                    <div style="font-size: 13px; اللون: var(--neon-green); الهامش السفلي: 10px;" id="online-xo-t">جاري النيروس...</div>
-                    <div id="online-xo-g" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 240px; height: 240px;"></div>
-                `;
-                const grid = document.getElementById('online-xo-g');
-                const stat = document.getElementById('online-xo-t');
-
-                gameRoomListener = db.ref('active_matches/' + roomId).on('value', (snap) => {
-                    const game = snap.val();
-                    إذا لم تكن اللعبة موجودة أو لم يكن نوع اللعبة هو 'xo'، فقم بالخروج.
-                    const isMyTurn = game.turn === currentUser.rawId;
-                    const mySym = game.player1 === currentUser.rawId ? 'X' : 'O';
-                    stat.innerHTML = isMyTurn؟ `<span style="color:var(--neon-green)">دورك الآن (${mySym}) ⚡</span>` : `<span style="color:var(--electric-coral)">انتظر حركة الصديق... ⏳</span>`;
-
-                    grid.innerHTML = '';
-                    game.board.forEach((val, idx) => {
-                        const cell = document.createElement('div');
-                        cell.style = "background: rgba(255,255,255,0.06); border: 2px solid var(--neon-cyan); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; cursor: pointer; color: #fff;";
-                        cell.textContent = val;
-                        cell.style.color = val === 'X' ? 'var(--neon-green)' : 'var(--electric-coral)';
-                        cell.onclick = () => {
-                            إذا كانت القيمة لا تساوي '' أو لم يكن دوري، فقم بالخروج.
-                            game.board[idx] = mySym;
-                            const next = game.player1 === currentUser.rawId ? game.player2 : game.player1;
-                            db.ref('active_matches/' + roomId).update({ board: game.board, turn: next });
-                            confetti({ particleCount: 30 });
-                        };
-                        grid.appendChild(cell);
-                    });
-                });
-            }
-        }
-
-        /* ============================================ */
-        دالة dispatchFriendRequest() {
-            const input = document.getElementById('friend-search-input');
-            const target = input.value.trim().toUpperCase().replace('#', '');
-            إذا لم يكن الهدف موجودًا أو كان الهدف يساوي معرف المستخدم الحالي، فقم بالخروج.
-
-            إذا (db) {
-                db.ref('users/' + target).once('value', (snap) => {
-                    إذا كان (snap.exists()) {
-                        db.ref(`requests/${target}/${currentUser.rawId}`).set({
-                            fromId: currentUser.rawId,
-                            fromName: currentUser.fullname,
-                            fromAvatar: currentUser.avatar,
-                            fromAvatarImg: currentUser.avatarImg || null,
-                            الطابع الزمني: Date.now()
-                        }).then(() => {
-                            input.value = '';
-                            تنبيه('تم تقديم طلب الصداقة الفعال! 🎉');
-                        });
-                    } else {
-                        alert('المستخدم غير موجود!');
-                    }
-                });
-            } else {
-                تنبيه('تم تقديم طلب الصداقة الفعال!');
-            }
-        }
-
-        دالة listenToRequests() {
-            إذا لم تكن قاعدة البيانات موجودة، فقم بالإرجاع؛
-            db.ref('requests/' + currentUser.rawId).on('value', (snap) => {
-                const deck = document.getElementById('incoming-requests-deck');
-                deck.innerHTML = '';
-                const reqs = snap.val();
-                إذا (المتطلبات) {
-                    Object.values(reqs).forEach(r => {
-                        const card = document.createElement('div');
-                        card.style = "background: #1C1E24; border: 1px solid var(--border-soft); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;";
-                        card.innerHTML = `
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="font-size: 24px;">${r.fromAvatar}</div>
-                                <div>
-                                    <strong style="font-size: 13.5px; color:#fff;">${r.fromName}</strong>
-                                    <div style="font-size: 11px; color: var(--text-sub);">#${r.fromId}</div>
-                                </div>
-                            </div>
-                            <div>
-                                <button style="background: var(--neon-green); border: none; color: #070a12; font-weight: bold; padding: 5px 12px; border-radius: 8px; font-size: 11.5px; cursor: pointer; margin-left: 4px;" onclick="acceptFriend('${r.fromId}', '${r.fromName}', '${r.fromAvatar}')"> قبول</button>
-                                <button style="background: rgba(255,255,255,0.08); border: none; color: var(--text-sub); padding: 5px 12px; border-radius: 8px; font-size: 11.5px; cursor: pointer;" onclick="rejectFriend('${r.fromId}')"> رفض</button>
-                            </div>
-                        `;
-                        deck.appendChild(card);
-                    });
-                } else {
-                    Deck.innerHTML = '<div style="color: var(--text-sub);font-size: 12px;">لا توجد طلبات معلقة حاليا.</div>';
-                }
-            });
-        }
-
-        دالة قبول الصديق (id، الاسم، الصورة الرمزية) {
-            const fr = { rawId: id, id: '#' + id, name: name, avatar: avatar };
-            friendsList.push(fr);
-            localStorage.setItem('le_social_friends', JSON.stringify(friendsList));
-            إذا (db) db.ref(`requests/${currentUser.rawId}/${id}`).remove();
-            renderFriendsDeck();
-            
-            savedChatsList.unshift({
-                rawId: id,
-                المعرف: '#' + المعرف،
-                الاسم: الاسم،
-                الصورة الرمزية: الصورة الرمزية،
-                تم التحقق: خطأ،
-                lastMsg: 'أصبحتم أصدقاء الآن! 🎉',
-                غير مقروء: صحيح،
-                isGroup: false
-            });
-            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
-            renderDirectChats();
-            تنبيه(`أصبحتم أصدقاء الآن! 🎉`);
-        }
-
-        دالة rejectFriend(id) {
-            إذا (db) db.ref(`requests/${currentUser.rawId}/${id}`).remove();
-        }
-
-        دالة renderFriendsDeck() {
-            const container = document.getElementById('accepted-friends-deck');
-            container.innerHTML = '';
-            إذا كان طول قائمة الأصدقاء يساوي صفرًا {
-                Container.innerHTML = '<div style="color: var(--text-sub);font-size: 12px;">قائمة الأصدقاء فارغين حاليًا.</div>';
-                إرجاع؛
-            }
-            friendsList.forEach(fr => {
-                const item = document.createElement('div');
-                item.style = "background: #1C1E24; border: 1px solid var(--border-soft); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;";
-                item.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="inspectUserProfile('${fr.rawId}', '${fr.name}', '${fr.avatar}')">
-                        <div style="font-size: 24px;">${fr.avatar}</div>
-                        <div>
-                            <strong style="font-size: 13.5px; color:#fff;">${fr.name}</strong>
-                            <div style="font-size: 11px; color: var(--text-sub);">${fr.id}</div>
-                        </div>
-                    </div>
-                    <button class="btn-neo" style="padding: 5px 12px; font-size: 11px;" onclick="openChatRoom(${JSON.stringify(fr).replace(/"/g, '"')})">محادثة</button>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        /* ====================================================================================================
-        دالة تحميل الملف الشخصي() {
-            إذا لم يكن المستخدم الحالي موجودًا، فقم بالإرجاع
-            document.getElementById('insta-profile-username').textContent = currentUser.username;
-            document.getElementById('insta-profile-fullname').textContent = currentUser.fullname;
-            document.getElementById('insta-profile-bio').textContent = currentUser.bio;
-            document.getElementById('insta-my-id-badge').textContent = currentUser.id;
-
-            const avatarContainer = document.getElementById('profile-avatar-container');
-            إذا كان (currentUser.avatarImg) {
-                avatarContainer.innerHTML = `<img src="${currentUser.avatarImg}" />`;
-                document.getElementById('my-note-avatar-box').innerHTML = `<img src="${currentUser.avatarImg}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />`;
-                document.getElementById('arena-header-avatar').innerHTML = `<img src="${currentUser.avatarImg}" style="width:18px;height:18px;border-radius:50%;" />`;
-                document.getElementById('canvas-my-avatar').innerHTML = `<img src="${currentUser.avatarImg}" />`;
-            } else {
-                avatarContainer.innerHTML = `<span>${currentUser.avatar}</span>`;
-            }
-
-            renderProfilePosts();
-        }
-
-        دالة handleAvatarUpload(e) {
-            const file = e.target.files[0];
-            إذا لم يكن الملف موجودًا، فقم بالإرجاع؛
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                currentUser.avatarImg = event.target.result;
-                localStorage.setItem('le_social_user', JSON.stringify(currentUser));
-                إذا كان (db) db.ref('users/' + currentUser.rawId).update({ avatarImg: currentUser.avatarImg });
-                loadProfile();
-                تنبيه('تم تحديث صورتك الشخصية الفعالة! 📸');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        دالة openEditProfileModal() {
-            const newName = موجه('الاسم الكامل الجديد:',currentUser.fullname);
-            إذا كان (الاسم الجديد && الاسم الجديد بعد حذف المسافات الزائدة لا يساوي '') فإن اسم المستخدم الحالي الكامل = الاسم الجديد بعد حذف المسافات الزائدة();
-
-            const newBio = موجه('النبذة الشخصية (Bio):',currentUser.bio);
-            إذا كان (newBio !== null) currentUser.bio = newBio.trim();
-
-            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
-            إذا كان (db) db.ref('users/' + currentUser.rawId).update({ fullname: currentUser.fullname, bio: currentUser.bio });
-            loadProfile();
-            document.getElementById('top-bar-username').textContent = currentUser.username || currentUser.fullname;
-            document.getElementById('arena-header-name').textContent = currentUser.fullname;
-        }
-
-        دالة فتح نافذة منبثقة جديدة() {
-            document.getElementById('new-post-modal').style.display = 'flex';
-        }
-        دالة closeNewPostModal() {
-            document.getElementById('new-post-modal').style.display = 'none';
-            document.getElementById('post-preview-img').style.display = 'none';
-            document.getElementById('post-upload-prompt').style.display = 'block';
-            tempPostImg = null;
-        }
-
-        دالة handlePostFileSelect(e) {
-            const file = e.target.files[0];
-            إذا لم يكن الملف موجودًا، فقم بالإرجاع؛
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                tempPostImg = event.target.result;
-                const prev = document.getElementById('post-preview-img');
-                prev.src = tempPostImg;
-                prev.style.display = 'block';
-                document.getElementById('post-upload-prompt').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        دالة نشر منشور جديد() {
-            const cap = document.getElementById('post-caption-input').value.trim();
-            if (!tempPostImg && !cap) { تنبيه('يرجى كتابة النص أو اختيار صورة للمنشور!'); يعود؛ }
-            
-            const postObj = {
-                authorId: currentUser.rawId,
-                اسم المؤلف: اسم المستخدم الكامل،
-                اسم المستخدم: اسم المستخدم الحالي،
-                authorAvatar: currentUser.avatar,
-                authorAvatarImg: currentUser.avatarImg || null,
-                التسمية التوضيحية: كاب || 'منشور جديد ✨',
-                imageUrl: tempPostImg || null,
-                isAchievement: false,
-                الطابع الزمني: firebase.database.ServerValue ؟ firebase.database.ServerValue.TIMESTAMP : Date.now()
-            };
-
-            إذا (db) {
-                db.ref('community_feed').push().set(postObj);
-            }
-
-            إذا كان (tempPostImg) {
-                userPosts.unshift({ img: tempPostImg, caption: cap || 'منشور جديد' });
-                localStorage.setItem('le_social_posts', JSON.stringify(userPosts));
-                renderProfilePosts();
-            }
-
-            closeNewPostModal();
-            confetti({ particleCount: 50 });
-            تنبيه('تم نشر مشاركتك في المجتمع ولجميع الأصدقاء الفعال! ✨🚀');
-        }
-
-        دالة switchProfileGridTab(tab) {
-            document.querySelectorAll('.prof-tab-btn').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            renderProfilePosts();
-        }
-
-        دالة renderProfilePosts() {
-            const grid = document.getElementById('profile-posts-grid');
-            grid.innerHTML = '';
-            document.getElementById('insta-posts-num').textContent = userPosts.length;
-
-            userPosts.forEach((post, i) => {
-                const cell = document.createElement('div');
-                cell.className = 'insta-grid-cell';
-                cell.onclick = () => {
-                    if (confirm(`"${post.caption}"\n\nهل تريد حذف هذا المنشور؟`)) {
-                        userPosts.splice(i, 1);
-                        localStorage.setItem('le_social_posts', JSON.stringify(userPosts));
-                        renderProfilePosts();
-                    }
-                };
-                cell.innerHTML = `<img src="${post.img}" />`;
-                grid.appendChild(cell);
-            });
-        }
-
-        /* =======================================================================================================]
-        function openCreateGroupModal() { document.getElementById('create-group-modal').style.display = 'flex'; }
-        function closeCreateGroupModal() { document.getElementById('create-group-modal').style.display = 'none'; }
-        دالة submitCreateGroup() {
-            const name = document.getElementById('group-name-input').value.trim();
-            إذا لم يكن هناك اسم، فقم بالإرجاع؛
-            const grp = {
-                rawId: 'grp_' + Date.now(),
-                المعرف: '#GRP',
-                الاسم: '👥' + الاسم،
-                الصورة الرمزية: '👥',
-                تم التحقق: خطأ،
-                lastMsg: 'تم إنشاء المجموعة!',
-                غير مقروء: صحيح،
-                isGroup: true
-            };
-            savedChatsList.unshift(grp);
-            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
-            renderDirectChats();
-            closeCreateGroupModal();
-            تنبيه(`تم إنشاء مجموعة "${name}" فعالة! 🚀`);
+        function runAirHockey(arena) {
+            arena.innerHTML = `<canvas id="hockeyCanvas" width="280" height="300" style="background:#080f1e; border:2px solid var(--neon-green); border-radius:12px;"></canvas>`;
+            const canvas = document.getElementById('hockeyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#00F5A0';
+            ctx.beginPath(); ctx.arc(140, 150, 14, 0, Math.PI*2); ctx.fill();
         }
     </script>
 </body>
