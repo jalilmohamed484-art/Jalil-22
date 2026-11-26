@@ -19,7 +19,7 @@
     <style>
         :root {
             --bg-deep: #070a12;
-            --bg-card: rgba(18, 24, 38, 0.94);
+            --bg-card: rgba(18, 24, 38, 0.88);
             --border-soft: rgba(255, 255, 255, 0.08);
             --border-glow: rgba(0, 245, 160, 0.25);
             
@@ -73,11 +73,11 @@
         .screen.active { display: flex; }
 
         .btn-neo {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+            background: linear-gradient(135deg, var(--tg-cyan), var(--neon-green));
             border: none;
             color: #070a12;
             font-weight: 800;
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 10px 18px;
             cursor: pointer;
             box-shadow: 0 4px 14px rgba(0, 245, 160, 0.25);
@@ -528,321 +528,7 @@
             padding: 4px;
         }
 
-        /* 6. صالة التحديات المباشرة (مطابقة للصورة 100%) */
-        .challenge-top-nav-bar {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #000000;
-            flex-shrink: 0;
-        }
-
-        .challenge-top-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .voice-room-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 245, 160, 0.1);
-            border: 1px solid rgba(0, 245, 160, 0.3);
-            color: var(--neon-green);
-            padding: 5px 12px;
-            border-radius: 999px;
-            font-size: 11.5px;
-            font-weight: 700;
-        }
-
-        .challenge-pill-btn {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-            color: #070a12;
-            font-size: 11.5px;
-            font-weight: 900;
-            padding: 6px 14px;
-            border-radius: 14px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 245, 160, 0.25);
-        }
-
-        /* بطاقة مستوى التقدم */
-        .progress-stat-card {
-            background: #141622;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .progress-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-
-        .progress-title-meta {
-            font-size: 14.5px;
-            font-weight: 800;
-            color: #FFFFFF;
-        }
-
-        .progress-streak-badge {
-            background: #2b1820;
-            border: 1px solid #ff4757;
-            color: #ff6b81;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .progress-xp-score {
-            font-size: 13.5px;
-            font-weight: 900;
-            color: var(--neon-cyan);
-            font-family: monospace;
-        }
-
-        .progress-bar-track {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .progress-bar-fill {
-            width: 65%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
-            border-radius: 999px;
-        }
-
-        /* بطاقة عجلة الحظ */
-        .lucky-wheel-banner-card {
-            background: #181628;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            border-radius: 20px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .wheel-info-col {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .wheel-title-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 800;
-            color: #FFFFFF;
-        }
-
-        .wheel-timer-countdown {
-            font-size: 11px;
-            color: #38bdf8;
-            font-weight: 700;
-            font-family: monospace;
-        }
-
-        .btn-spin-pill {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-            color: #070a12;
-            font-size: 12px;
-            font-weight: 900;
-            padding: 8px 18px;
-            border-radius: 14px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* بطاقة تحدي الـ 60 ثانية (VS) */
-        .vs-arena-master-card {
-            background: linear-gradient(180deg, #181432 0%, #151228 100%);
-            border: 1px solid #7c3aed;
-            border-radius: 24px;
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.25);
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .vs-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .live-tag-chip {
-            background: #1e1b4b;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-            font-size: 10px;
-            font-weight: 900;
-            padding: 2px 8px;
-            border-radius: 8px;
-        }
-
-        .circular-timer-wrapper {
-            display: flex;
-            justify-content: center;
-            margin: 6px 0 10px 0;
-        }
-
-        .circle-timer-svg {
-            width: 52px;
-            height: 52px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .circle-timer-svg span {
-            position: absolute;
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--neon-green);
-            font-family: monospace;
-        }
-
-        .vs-combatants-stage {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding: 6px 0 12px 0;
-        }
-
-        .combatant-pod {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 90px;
-            cursor: pointer;
-        }
-
-        .combatant-ring {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            padding: 2.5px;
-            background: linear-gradient(135deg, #FF007F, #7928CA);
-            margin-bottom: 6px;
-        }
-
-        .combatant-inner-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: #0f172a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            overflow: hidden;
-        }
-
-        .combatant-inner-img img { width: 100%; height: 100%; object-fit: cover; }
-
-        .combatant-name {
-            font-size: 13px;
-            font-weight: 800;
-            color: #FFFFFF;
-            margin-bottom: 2px;
-        }
-
-        .combatant-rate {
-            font-size: 10px;
-            font-weight: 700;
-            color: #38bdf8;
-            margin-bottom: 2px;
-        }
-
-        .combatant-streak {
-            font-size: 9.5px;
-            font-weight: 800;
-            color: #fbbf24;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .vs-big-label {
-            font-size: 26px;
-            font-weight: 900;
-            color: #f59e0b;
-            text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
-        }
-
-        .emotes-flight-bar {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 6px 0 14px 0;
-            font-size: 20px;
-        }
-
-        .emotes-flight-bar span {
-            cursor: pointer;
-            transition: transform 0.15s ease;
-        }
-        .emotes-flight-bar span:active { transform: scale(1.3); }
-
-        .vs-cta-buttons-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-vs-accept {
-            flex: 2;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-            color: #070a12;
-            font-weight: 900;
-            font-size: 13px;
-            border-radius: 16px;
-            border: none;
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
-        }
-
-        .btn-vs-reject {
-            flex: 1;
-            background: #25203a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 12px;
-            border-radius: 16px;
-            padding: 12px;
-            cursor: pointer;
-        }
-
-        /* 7. صالة الألعاب WePlay (بانر البطولة وأرصدة العملات) */
+        /* 6. صالة الألعاب والشريط العلوي مع البانر المنقول */
         .arena-top-header {
             background: rgba(18, 24, 38, 0.95);
             backdrop-filter: blur(20px);
@@ -903,13 +589,29 @@
             min-height: 145px;
         }
 
-        .game-badge-card:active { transform: scale(0.97); }
+        .game-badge-card:active {
+            transform: scale(0.97);
+            border-color: var(--card-accent, var(--neon-green));
+        }
+
+        .game-badge-card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, var(--card-accent, var(--neon-green)) 0%, transparent 70%);
+            opacity: 0.15;
+            pointer-events: none;
+        }
 
         .game-category-tag {
             font-size: 9.5px;
             font-weight: 700;
-            color: var(--neon-cyan);
+            color: var(--card-accent, var(--neon-cyan));
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .game-online-chip {
@@ -935,203 +637,75 @@
             justify-content: center;
             font-size: 22px;
             margin: 10px 0 6px 0;
-            color: var(--neon-green);
+            color: var(--card-accent, var(--neon-green));
         }
 
-        /* 8. قسم المجتمع واللحظات (مطابق للصورة 100%) */
-        .community-header-bar {
-            padding: 14px 16px 8px 16px;
+        /* 7. صالة التحدي (Interactive Canvas & VS Card) */
+        .challenge-vs-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.35), rgba(236, 72, 153, 0.25));
+            border: 1.5px solid rgba(124, 58, 237, 0.55);
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.25);
+            width: 100%;
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        .vs-avatars-row {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: #000000;
-            flex-shrink: 0;
+            justify-content: space-around;
+            padding: 10px 0 14px 0;
         }
 
-        .community-headline {
-            font-size: 19px;
-            font-weight: 900;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-new-moment-pill {
-            background: var(--neon-cyan);
-            color: #070a12;
-            font-weight: 900;
-            font-size: 12px;
-            padding: 6px 14px;
-            border-radius: 999px;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* التنبيه العائم المنبثق الأنيق في الصورة */
-        .floating-timeout-alert {
-            margin: 4px auto 10px auto;
-            background: #111a28;
-            border: 1px solid #00F5A0;
-            color: #FFFFFF;
-            padding: 6px 18px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(0, 245, 160, 0.3);
-            width: fit-content;
-        }
-
-        .community-capsules-tabs {
-            display: flex;
-            gap: 10px;
-            padding: 6px 16px 12px 16px;
-            background: #000000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            flex-shrink: 0;
-        }
-
-        .capsule-tab-btn {
-            flex: 1;
-            padding: 8px 0;
-            border-radius: 14px;
-            font-size: 13px;
-            font-weight: 800;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-        }
-
-        .capsule-tab-btn.active {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-            color: #070a12;
-            box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
-        }
-
-        .capsule-tab-btn.inactive {
-            background: #1c2130;
-            color: #60a5fa;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .community-feed-stream {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            background: #000000;
-        }
-
-        .post-card-master {
-            background: #141724;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .post-author-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .post-author-details {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .post-avatar-frame {
-            width: 44px;
-            height: 44px;
+        .vs-avatar-wrapper {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: #1e293b;
+            padding: 2.5px;
+            background: var(--insta-grad);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            border: 1.5px solid var(--neon-cyan);
+            position: relative;
+        }
+
+        .vs-avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
             overflow: hidden;
         }
 
-        .post-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .vs-avatar-inner img { width: 100%; height: 100%; object-fit: cover; }
 
-        .post-achievement-box {
-            background: linear-gradient(135deg, #1e1b4b, #2e1065);
-            border: 1px solid #7c3aed;
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .vs-text-badge {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF4757, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .btn-break-record {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-            color: #070a12;
-            font-weight: 900;
-            font-size: 13px;
-            border-radius: 14px;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
+        /* مؤقت دائري حول التحدي */
+        .vs-timer-circle-box {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-        }
-
-        .post-social-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .post-reactions-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .reaction-bubble {
-            background: #1e2130;
-            color: #FFFFFF;
-            font-size: 11.5px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-        }
-
-        .btn-tip-coins {
-            background: #252839;
+            margin-bottom: 10px;
+            font-size: 12.5px;
             color: #fbbf24;
-            font-size: 11.5px;
-            font-weight: 800;
-            padding: 5px 12px;
-            border-radius: 999px;
-            border: 1px solid rgba(251, 191, 36, 0.25);
-            cursor: pointer;
+            font-weight: bold;
         }
 
-        /* 9. غرفة المحادثة المباشرة المتقدمة */
+        /* 8. غرفة المحادثة المباشرة المتقدمة */
         #chat-room-screen { z-index: 50; padding-bottom: 0; }
 
         .chat-bubble-stream {
@@ -1142,6 +716,13 @@
             flex-direction: column;
             gap: 8px;
             background-color: #080c14;
+            background-image: radial-gradient(rgba(0, 217, 245, 0.06) 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
+        }
+
+        .chat-bubble-stream.vanish-active {
+            background: radial-gradient(circle at center, #180a22 0%, #000000 100%);
+            box-shadow: inset 0 0 50px rgba(124, 58, 237, 0.4);
         }
 
         .msg-bubble {
@@ -1152,6 +733,7 @@
             line-height: 1.45;
             word-break: break-word;
             position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .msg-bubble.incoming {
@@ -1178,6 +760,8 @@
             font-size: 10px;
             color: rgba(255, 255, 255, 0.6);
             margin-top: 3px;
+            float: left;
+            margin-right: 8px;
         }
 
         .chat-input-bar {
@@ -1226,6 +810,142 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 245, 160, 0.3);
             flex-shrink: 0;
+        }
+
+        /* 9. قسم المجتمع الحي (Live Community Feed) */
+        .community-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: #000000;
+        }
+
+        .community-feed-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 10px 16px 4px 16px;
+            background: #000000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feed-sub-tab {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-sub);
+            padding-bottom: 6px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .feed-sub-tab.active {
+            color: #FFFFFF;
+        }
+
+        .feed-sub-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--neon-green);
+            border-radius: 999px;
+        }
+
+        .community-post-card {
+            background: #121826;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .post-author-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .post-author-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .post-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            overflow: hidden;
+            border: 1.5px solid var(--neon-cyan);
+        }
+
+        .post-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .post-media-box {
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #0a0e17;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .post-media-box img {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .achievement-highlight-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(0, 245, 160, 0.15));
+            border: 1px solid rgba(0, 245, 160, 0.4);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .post-reactions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 10px;
+            font-size: 13px;
+        }
+
+        .reaction-chips-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reaction-chip-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* 10. الملف الشخصي بأسلوب Instagram */
@@ -1319,14 +1039,14 @@
 
         .insta-grid-cell img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 11. الشريط السفلي العائم (Floating Bottom Bar) باللغة العربية */
+        /* 11. الشريط السفلي العائم (Floating Bottom Bar) */
         .floating-bottom-nav {
             position: fixed;
             bottom: 12px;
             left: 14px;
             right: 14px;
-            height: 62px;
-            background: rgba(18, 24, 38, 0.94);
+            height: 60px;
+            background: rgba(18, 24, 38, 0.92);
             backdrop-filter: blur(24px);
             border: 1px solid var(--border-soft);
             border-radius: 999px;
@@ -1355,7 +1075,7 @@
             transform: translateY(-2px);
         }
 
-        .nav-link i { font-size: 18px; }
+        .nav-link i { font-size: 17px; }
 
         /* نوافذ الألعاب والمودال والـ Bottom Sheets */
         #game-sandbox-modal {
@@ -1428,6 +1148,17 @@
             border-radius: 16px;
             touch-action: none;
         }
+
+        /* توهج عجلة الحظ عند توفر المحاولة */
+        .wheel-pulsing-icon {
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 4px #fbbf24); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 14px #fbbf24); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 4px #fbbf24); }
+        }
     </style>
 </head>
 <body>
@@ -1473,7 +1204,7 @@
 
     <!-- 2. واجهة المحادثات المطورة بأسلوب Direct الحديث -->
     <div id="chats-screen" class="screen">
-        <!-- الشريط العلوي الرأسي (Top App Bar) -->
+        <!-- 1. الشريط العلوي الرأسي (Top App Bar) -->
         <div class="chat-app-bar">
             <div class="account-selector" onclick="openAccountsSheet()">
                 <h2 id="top-bar-username">جليل</h2>
@@ -1485,7 +1216,7 @@
             </div>
         </div>
 
-        <!-- شريط البحث الذكي والتوليدي Meta AI -->
+        <!-- 2. شريط البحث التوليدي والذكي (Search & Ask Meta AI) -->
         <div class="meta-search-box">
             <div class="search-pill-container">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -1494,9 +1225,9 @@
             </div>
         </div>
 
-        <!-- شريط الحالات والملاحظات السريعة (Notes Architecture) -->
+        <!-- 3. شريط الحالات والملاحظات السريعة (Notes Architecture) -->
         <div class="notes-strip-section" id="notes-strip-container">
-            <!-- ملاحظتك (Your Note) -->
+            <!-- ملاحظة المستخدم الخاص (Your Note) -->
             <div class="note-card-item" onclick="promptCreateMyNote()">
                 <div class="note-bubble-thought" id="my-note-bubble-text">Note...</div>
                 <div class="note-avatar-wrapper">
@@ -1532,20 +1263,20 @@
             </div>
         </div>
 
-        <!-- شريط إدارة الرسائل وتصنيفها -->
+        <!-- 4. شريط إدارة الرسائل وتصنيفها -->
         <div class="section-nav-header">
             <div class="messages-title-badge">
                 <h3>Messages</h3>
-                <i class="fa-solid fa-bell-slash mute-bell-icon"></i>
+                <i class="fa-solid fa-bell-slash mute-bell-icon" title="الإشعارات نشطة"></i>
             </div>
             <div class="requests-filter-link" onclick="switchTab('search-screen')">Requests (3)</div>
         </div>
 
-        <!-- قائمة المحادثات المباشرة ثلاثية الأعمدة مع الحفظ التام -->
+        <!-- 5. قائمة المحادثات المباشرة (توزيع ثلاثي الأعمدة + حفظ تام ودعم الحذف بالنقر المطول) -->
         <div class="chat-feed" id="direct-chats-container"></div>
     </div>
 
-    <!-- نافذة سفلية للتبديل بين الحسابات المتعددة -->
+    <!-- نافذة سفلية للتبديل بين الحسابات المتعددة (Account Switcher) -->
     <div id="accounts-bottom-sheet" class="bottom-sheet-overlay" onclick="closeAccountsSheet()">
         <div class="bottom-sheet-content" onclick="event.stopPropagation()">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
@@ -1602,138 +1333,9 @@
         </div>
     </div>
 
-    <!-- 3. صالة التحديات المباشرة (مطابقة بنسبة 100% للصورة 2) -->
-    <div id="canvas-tab" class="screen">
-        <!-- الشريط العلوي كما بالصورة -->
-        <div class="challenge-top-nav-bar">
-            <div class="challenge-top-title">
-                <span>صالة التحديات المباشرة</span>
-                <i class="fa-solid fa-bolt" style="color: var(--neon-green); font-size: 17px;"></i>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="voice-room-badge">
-                    <span style="font-size: 8px;">🟢</span>
-                    <span>14 متحدث الآن</span>
-                </div>
-                <button class="challenge-pill-btn" onclick="openSandboxGame('math')">
-                    تحدي فوري ⚡
-                </button>
-            </div>
-        </div>
-
-        <div style="padding: 12px 16px; flex: 1; overflow-y: auto;">
-            <!-- بطاقة مستوى التقدم (XP) مطابقة للصورة -->
-            <div class="progress-stat-card">
-                <div class="progress-header-row">
-                    <div class="progress-title-meta">مستوى التقدم (Lv.1)</div>
-                    <div class="progress-streak-badge">
-                        <i class="fa-solid fa-fire"></i>
-                        <span>4 أيام متتالية</span>
-                    </div>
-                    <div class="progress-xp-score">100 / 65 XP</div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="flex: 1;" class="progress-bar-track">
-                        <div class="progress-bar-fill"></div>
-                    </div>
-                    <span style="font-size: 18px;" title="المكافأة القادمة">👑</span>
-                </div>
-            </div>
-
-            <!-- بطاقة عجلة الحظ اليومية مطابقة للصورة -->
-            <div class="lucky-wheel-banner-card">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="font-size: 32px; color: #fbbf24;"><i class="fa-solid fa-dharmachakra"></i></div>
-                    <div class="wheel-info-col">
-                        <div class="wheel-title-row">عجلة الحظ اليومية</div>
-                        <div class="wheel-timer-countdown">متاح بعد: 04:22:10</div>
-                    </div>
-                </div>
-                <button class="btn-spin-pill" onclick="spinLuckyWheel()">
-                    تدوير 🎯
-                </button>
-            </div>
-
-            <!-- بطاقة تحدي الـ 60 ثانية مع العداد الدائري كما بالصورة -->
-            <div class="vs-arena-master-card">
-                <div class="vs-card-header">
-                    <div style="font-size: 13.5px; font-weight: 800; color: #fff;">
-                        <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> تحدي الـ 60 ثانية: Math Blitz
-                    </div>
-                    <span class="live-tag-chip">مباشر ⚡</span>
-                </div>
-
-                <!-- العداد التنازلي الدائري الأخضر في المنتصف -->
-                <div class="circular-timer-wrapper">
-                    <div class="circle-timer-svg">
-                        <svg width="52" height="52" viewBox="0 0 52 52">
-                            <circle cx="26" cy="26" r="22" stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="none"></circle>
-                            <circle id="vs-countdown-circle" cx="26" cy="26" r="22" stroke="#00F5A0" stroke-width="4" stroke-dasharray="138" stroke-dashoffset="30" stroke-linecap="round" fill="none"></circle>
-                        </svg>
-                        <span id="vs-countdown-sec">10</span>
-                    </div>
-                </div>
-
-                <!-- ساحة المتنافسين -->
-                <div class="vs-combatants-stage">
-                    <!-- أنت على اليمين كما في الشاشة المعكوسة RTL -->
-                    <div class="combatant-pod" onclick="switchTab('profile-screen')">
-                        <div class="combatant-ring">
-                            <div class="combatant-inner-img" id="canvas-my-avatar">😎</div>
-                        </div>
-                        <div class="combatant-name">أنت</div>
-                        <div class="combatant-rate">Win Rate 74%</div>
-                        <div style="background: #2e1065; border: 1px solid #7c3aed; color: #c084fc; font-size: 9.5px; font-weight: 800; padding: 1px 8px; border-radius: 6px;">0 نقطة</div>
-                    </div>
-
-                    <div class="vs-big-label">VS</div>
-
-                    <!-- سارة على اليسار -->
-                    <div class="combatant-pod" onclick="inspectUserProfile('sarah', 'سارة', '🧕')">
-                        <div class="combatant-ring">
-                            <div class="combatant-inner-img">🧕</div>
-                        </div>
-                        <div class="combatant-name">سارة</div>
-                        <div class="combatant-rate">Win Rate 68%</div>
-                        <div class="combatant-streak">🔥 5 فوز متتالي</div>
-                    </div>
-                </div>
-
-                <!-- شريط الإيموتات والرياكشنات الحماسية -->
-                <div class="emotes-flight-bar">
-                    <span onclick="sendEmoteReact('⚡')">⚡</span>
-                    <span onclick="sendEmoteReact('😂')">😂</span>
-                    <span onclick="sendEmoteReact('🎯')">🎯</span>
-                    <span onclick="sendEmoteReact('👑')">👑</span>
-                    <span onclick="sendEmoteReact('🔥')">🔥</span>
-                </div>
-
-                <!-- أزرار القبول والرفض مطابقة للحجم والشكل -->
-                <div class="vs-cta-buttons-row">
-                    <button class="btn-vs-accept" onclick="openSandboxGame('math')">
-                        <i class="fa-solid fa-gamepad" style="font-size: 16px;"></i> قبول التحدي والمواجهة ⚔️
-                    </button>
-                    <button class="btn-vs-reject" onclick="alert('تم رفض التحدي وتأجيله لوقت لاحق 👋')">
-                        رفض / لاحقاً
-                    </button>
-                </div>
-            </div>
-
-            <!-- بطاقة المواجهة العشوائية السريعة أسفل الشاشة -->
-            <div style="background: #141724; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px; display: flex; align-items: center; justify-content: space-between;">
-                <div>
-                    <strong style="font-size: 14.5px; color: #fff;">المواجهة العشوائية السريعة</strong>
-                    <div style="font-size: 11.5px; color: var(--text-sub); margin-top: 3px;">توفيق فوري مع أي لاعب متصل أونلاين</div>
-                </div>
-                <button class="btn-neo" style="padding: 10px 18px;" onclick="openSandboxGame('xo')">
-                    لعب عشوائي 🎲
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. صالة الألعاب WePlay Arena الـ 20 -->
+    <!-- 3. صالة الألعاب WePlay Arena (مع الشريط العلوي والبانر المنقولين بدقة) -->
     <div id="weplay-tab" class="screen">
+        <!-- الشريط العلوي للرتبة والعملات والجواهر المنقول لصالة الألعاب -->
         <div class="arena-top-header">
             <div style="display: flex; align-items: center; gap: 8px;">
                 <div style="display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border-soft); cursor: pointer;" onclick="switchTab('profile-screen')">
@@ -1755,11 +1357,28 @@
             </div>
 
             <div style="display: flex; gap: 10px; font-size: 16px; color: var(--neon-cyan);">
+                <i class="fa-solid fa-dharmachakra wheel-pulsing-icon" style="cursor: pointer; color: #fbbf24;" onclick="openLuckyWheelModal()" title="عجلة الحظ اليومية"></i>
                 <i class="fa-solid fa-store" style="cursor: pointer;" onclick="alert('متجر التخصيص والأطر النيونية 🛒')" title="المتجر"></i>
                 <i class="fa-solid fa-users" style="cursor: pointer;" onclick="openCreateGroupModal()" title="المجموعات"></i>
             </div>
         </div>
 
+        <!-- شريط التقدم ونظام التلعيب (Gamification XP Bar) -->
+        <div style="background: rgba(18, 24, 38, 0.9); padding: 6px 16px 8px 16px; border-bottom: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: #fbbf24; font-weight: bold;"><i class="fa-solid fa-fire"></i> 4 أيام متتالية</span>
+                <span style="color: var(--text-sub);">|</span>
+                <span style="color: var(--neon-cyan); font-weight: bold;">65 / 100 XP</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; flex: 0.6;">
+                <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden;">
+                    <div style="width: 65%; height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));"></div>
+                </div>
+                <span style="font-size: 13px;" title="المكافأة التالية: إطار أفاتار نيون أسطوري">👑</span>
+            </div>
+        </div>
+
+        <!-- بانر البطولة المنقول Math Blitz 10,000 الكبرى -->
         <div class="tournament-live-banner">
             <div class="tournament-badge"><i class="fa-solid fa-trophy"></i> بطولة كبرى</div>
             <div style="color: #fff; font-size: 12.5px;">Math Blitz الكبرى (🪙 10,000)</div>
@@ -1769,36 +1388,100 @@
         <div class="games-grid-container" id="weplay-games-grid"></div>
     </div>
 
-    <!-- 5. قسم المجتمع واللحظات (مطابق بنسبة 100% للصورة 1) -->
-    <div id="community-tab" class="screen">
-        <div class="community-header-bar">
-            <div class="community-headline">
-                <span>المجتمع واللحظات</span>
-                <span style="font-size: 18px;">🔥</span>
+    <!-- 4. صالة التحدي (Interactive Canvas & VS Lounge) -->
+    <div id="canvas-tab" class="screen">
+        <div class="arena-top-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-bolt" style="color: var(--neon-green);"></i>
+                <strong style="font-size: 15px; color: #fff;">صالة التحديات المباشرة</strong>
             </div>
-            <button class="btn-new-moment-pill" onclick="openNewPostModal()">
-                <i class="fa-solid fa-plus"></i> نشر جديد
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 11px; background: rgba(0,245,160,0.12); color: var(--neon-green); padding: 3px 8px; border-radius: 999px;">🟢 14 متحدث الآن</span>
+                <button class="btn-neo" style="padding: 5px 12px; font-size: 11px;" onclick="openShareInviteModal()">دعوة صديق 🔗</button>
+            </div>
+        </div>
+
+        <div style="padding: 16px; flex: 1; overflow-y: auto;">
+            <!-- بطاقة المواجهة المطورة (VS Card) -->
+            <div class="challenge-vs-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 12.5px; font-weight: bold; color: #fff;"><i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> تحدي الـ 60 ثانية: Math Blitz</span>
+                    <span style="font-size: 10px; background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 999px; color: var(--neon-green);">مباشر ⚡</span>
+                </div>
+
+                <!-- مؤقت العد التنازلي التفاعلي -->
+                <div class="vs-timer-circle-box">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>متبقي للقبول: <strong id="vs-countdown-sec" style="color:var(--electric-coral)">15</strong> ثانية</span>
+                </div>
+                
+                <div class="vs-avatars-row">
+                    <!-- الخصم ومعلوماته الكاملة -->
+                    <div style="text-align: center; cursor: pointer;" onclick="inspectUserProfile('sarah', 'سارة', '🧕')">
+                        <div class="vs-avatar-wrapper"><div class="vs-avatar-inner">🧕</div></div>
+                        <div style="font-size: 12px; font-weight: bold; margin-top: 4px;">سارة</div>
+                        <div style="font-size: 9.5px; color: var(--neon-green); font-weight: bold;">68% Win Rate</div>
+                        <div style="font-size: 9.5px; color: #fbbf24;">🔥 5 فوز متتالي</div>
+                    </div>
+
+                    <div class="vs-text-badge">VS</div>
+
+                    <!-- أنت ومعلوماتك -->
+                    <div style="text-align: center; cursor: pointer;" onclick="switchTab('profile-screen')">
+                        <div class="vs-avatar-wrapper"><div class="vs-avatar-inner" id="canvas-my-avatar">😎</div></div>
+                        <div style="font-size: 12px; font-weight: bold; margin-top: 4px;">أنت</div>
+                        <div style="font-size: 9.5px; color: var(--neon-cyan); font-weight: bold;">72% Win Rate</div>
+                        <div style="font-size: 9.5px; color: #fbbf24;">🔥 3 فوز متتالي</div>
+                    </div>
+                </div>
+
+                <!-- إشارات تفاعلية سريعة Emotes قبل بدء المباراة -->
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 12px;">
+                    <span style="font-size: 18px; cursor: pointer; transition: transform 0.1s;" onclick="sendEmoteReact('🔥')">🔥</span>
+                    <span style="font-size: 18px; cursor: pointer; transition: transform 0.1s;" onclick="sendEmoteReact('👑')">👑</span>
+                    <span style="font-size: 18px; cursor: pointer; transition: transform 0.1s;" onclick="sendEmoteReact('🎯')">🎯</span>
+                    <span style="font-size: 18px; cursor: pointer; transition: transform 0.1s;" onclick="sendEmoteReact('😂')">😂</span>
+                    <span style="font-size: 18px; cursor: pointer; transition: transform 0.1s;" onclick="sendEmoteReact('⚡')">⚡</span>
+                </div>
+
+                <!-- خيارات الرد السريع -->
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-neo" style="flex: 2;" onclick="openSandboxGame('math')">
+                        <i class="fa-solid fa-gamepad"></i> قبول التحدي والمواجهة ⚔️
+                    </button>
+                    <button class="btn-neo" style="flex: 1; background: rgba(255,255,255,0.08); color: #fff;" onclick="alert('تم رفض التحدي وتأجيله لوقت لاحق 👋')">
+                        رفض / لاحقاً
+                    </button>
+                </div>
+            </div>
+
+            <!-- بطاقة التحدي العشوائي والدعوة -->
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-soft); border-radius: 18px; padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <strong style="font-size: 14px; color: #fff;">المواجهة العشوائية السريعة</strong>
+                    <div style="font-size: 11.5px; color: var(--text-sub); margin-top: 2px;">توفيق فوري مع أي لاعب متصل أونلاين</div>
+                </div>
+                <button class="btn-neo" onclick="openSandboxGame('xo')">لعب عشوائي 🎲</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. قسم المجتمع واللحظات المباشر (Live Community Feed) -->
+    <div id="community-tab" class="screen">
+        <div class="chat-app-bar">
+            <h2 style="font-size: 17px; font-weight: 800; color: #fff;">خلاصة المجتمع</h2>
+            <button class="btn-neo" style="padding: 5px 12px; font-size: 11.5px;" onclick="openNewPostModal()">
+                <i class="fa-solid fa-plus"></i> نشر لحظة
             </button>
         </div>
 
-        <!-- التنبيه العائم الدائري كما بالصورة -->
-        <div class="floating-timeout-alert" id="community-floating-alert">
-            <i class="fa-solid fa-circle-check" style="color: var(--neon-green);"></i>
-            <span>انتهى وقت قبول التحدي ⏳</span>
+        <div class="community-feed-tabs">
+            <div class="feed-sub-tab active" id="tab-feed-explore" onclick="switchCommunityFilter('explore')">استكشف 🔥</div>
+            <div class="feed-sub-tab" id="tab-feed-friends" onclick="switchCommunityFilter('friends')">للأصدقاء 👥</div>
         </div>
 
-        <!-- أزرار التبويب الكبسولية المضيئة المطابقة للصورة -->
-        <div class="community-capsules-tabs">
-            <button class="capsule-tab-btn active" id="btn-cap-explore" onclick="switchCommunityFilter('explore')">
-                استكشف 🔥
-            </button>
-            <button class="capsule-tab-btn inactive" id="btn-cap-friends" onclick="switchCommunityFilter('friends')">
-                الأصدقاء 👥
-            </button>
-        </div>
-
-        <div class="community-feed-stream" id="community-feed-stream">
-            <!-- سيتم تعبئة المنشورات بأسلوب الصورة بدقة تامة -->
+        <div class="community-container" id="community-feed-stream">
+            <!-- يتم تعبئة المنشورات الحية من Firebase Realtime Database تلقائياً -->
         </div>
     </div>
 
@@ -1859,8 +1542,7 @@
 
             <div style="padding: 0 20px 10px 20px;">
                 <strong id="insta-profile-fullname" style="font-size: 15px;">الاسم الكامل</strong>
-                <p id="insta-profile-bio" style="font-size: 12.5px; color: #cbd5e1; margin-top: 6px; line-height: 1.4; white-space: pre-line;">✨ مرحباً بكم في حسابي الرسمي على Le jeux chat!
-🚀 جاهز للمواجهة والتحديات المباشرة.</p>
+                <p id="insta-profile-bio" style="font-size: 12.5px; color: #cbd5e1; margin-top: 6px; line-height: 1.4; white-space: pre-line;">✨ مرحباً بكم في حسابي الرسمي على Le jeux chat!\n🚀 جاهز للمواجهة والتحديات المباشرة.</p>
                 <div style="display: inline-block; background: #151e32; border: 1px solid var(--border-soft); padding: 4px 10px; border-radius: 8px; font-size: 11px; color: var(--neon-cyan); margin-top: 8px; font-family: monospace; cursor: pointer;" id="insta-my-id-badge" onclick="copyMyTag()">#JEUX-0000</div>
             </div>
 
@@ -1930,6 +1612,36 @@
         </div>
     </div>
 
+    <!-- نافذة عجلة الحظ والمكافأة اليومية -->
+    <div id="lucky-wheel-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(14px); z-index: 85; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div style="width: 100%; max-width: 320px; background: #121826; border: 1px solid #fbbf24; border-radius: 24px; padding: 22px; text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong style="color: #fbbf24; font-size: 16px;"><i class="fa-solid fa-dharmachakra"></i> عجلة الحظ اليومية</strong>
+                <i class="fa-solid fa-xmark" style="cursor: pointer; color: #fff;" onclick="closeLuckyWheelModal()"></i>
+            </div>
+            <div style="font-size: 48px; margin: 16px 0;" class="wheel-pulsing-icon">🎡</div>
+            <p style="font-size: 12.5px; color: #cbd5e1; margin-bottom: 14px;">أدر العجلة الآن واحصل على جوائز عملات وجواهر مجانية!</p>
+            <div style="font-size: 11px; color: var(--neon-green); margin-bottom: 16px; font-weight: bold;">متاح لفة مجانية الآن! ⚡</div>
+            <button class="btn-neo" style="width: 100%;" onclick="spinLuckyWheel()">تدوير العجلة 🚀</button>
+        </div>
+    </div>
+
+    <!-- نافذة مشاركة رابط التحدي -->
+    <div id="share-invite-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(14px); z-index: 85; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div style="width: 100%; max-width: 330px; background: #121826; border: 1px solid var(--neon-cyan); border-radius: 24px; padding: 20px; text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <strong style="color: #fff; font-size: 15px;">دعوة وتحدي الأصدقاء</strong>
+                <i class="fa-solid fa-xmark" style="cursor: pointer; color: #fff;" onclick="closeShareInviteModal()"></i>
+            </div>
+            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">شارك رابط التحدي المباشر عبر التطبيقات التالية:</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-neo" style="background: #25D366; color: #fff;" onclick="shareVia('whatsapp')"><i class="fa-brands fa-whatsapp"></i> إرسال عبر WhatsApp</button>
+                <button class="btn-neo" style="background: #229ED9; color: #fff;" onclick="shareVia('telegram')"><i class="fa-brands fa-telegram"></i> إرسال عبر Telegram</button>
+                <button class="btn-neo" style="background: rgba(255,255,255,0.08); color: #fff;" onclick="copyDirectInviteLink()"><i class="fa-solid fa-copy"></i> نسخ الرابط المباشر</button>
+            </div>
+        </div>
+    </div>
+
     <!-- نافذة إنشاء مجموعة جديدة -->
     <div id="create-group-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(14px); z-index: 85; display: none; align-items: center; justify-content: center; padding: 20px;">
         <div style="width: 100%; max-width: 360px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 24px; padding: 20px;">
@@ -1942,13 +1654,13 @@
         </div>
     </div>
 
-    <!-- 11. الشريط السفلي العائم (Floating Bottom Bar) مطابق للصورة -->
+    <!-- 11. الشريط السفلي العائم (Floating Bottom Bar) باللغة العربية -->
     <nav class="floating-bottom-nav" id="main-navigation" style="display: none;">
-        <div class="nav-link" onclick="switchTab('chats-screen')">
+        <div class="nav-link active" onclick="switchTab('chats-screen')">
             <i class="fa-brands fa-whatsapp"></i>
             <span>الدردشة</span>
         </div>
-        <div class="nav-link active" onclick="switchTab('canvas-tab')">
+        <div class="nav-link" onclick="switchTab('canvas-tab')">
             <i class="fa-solid fa-bolt"></i>
             <span>التحديات</span>
         </div>
@@ -1985,22 +1697,6 @@
     </div>
 
     <script>
-
-        // Safe Storage Helper to prevent WebView / SecurityError crashes
-        const memStore = {};
-        const safeStorage = {
-            getItem: (key) => {
-                try { return localStorage.getItem(key); } catch(e) { return memStore[key] || null; }
-            },
-            setItem: (key, val) => {
-                try { localStorage.setItem(key, val); } catch(e) { memStore[key] = String(val); }
-            },
-            removeItem: (key) => {
-                try { localStorage.removeItem(key); } catch(e) { delete memStore[key]; }
-            }
-        };
-
-
         /* ================= Firebase Config ================= */
         const firebaseConfig = {
             apiKey: "AIzaSyDzpFz9GBHvNPROFJYa4_7TEXtm0BaSQlA",
@@ -2018,19 +1714,20 @@
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
         } catch(e) {
-            console.warn('Firebase init notice:', e);
+            console.warn('Firebase init handled:', e);
         }
 
-        let currentUser = JSON.parse(safeStorage.getItem('le_social_user')) || null;
-        let friendsList = JSON.parse(safeStorage.getItem('le_social_friends')) || [];
-        let userNotes = JSON.parse(safeStorage.getItem('le_social_notes')) || { myNote: 'Note...' };
-        let userPosts = JSON.parse(safeStorage.getItem('le_social_posts')) || [
+        let currentUser = JSON.parse(localStorage.getItem('le_social_user')) || null;
+        let friendsList = JSON.parse(localStorage.getItem('le_social_friends')) || [];
+        let userNotes = JSON.parse(localStorage.getItem('le_social_notes')) || { myNote: 'Note...' };
+        let userPosts = JSON.parse(localStorage.getItem('le_social_posts')) || [
             { img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80', caption: 'Cyber Aesthetic 🔥' },
             { img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80', caption: 'Gaming Setup 🎮' },
             { img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&q=80', caption: 'Matrix Code 💻' }
         ];
 
-        let savedChatsList = JSON.parse(safeStorage.getItem('le_social_saved_chats')) || [
+        // قائمة المحادثات مع الحفاظ التام عليها وعدم حذفها أبداً إلا بتأكيد صريح
+        let savedChatsList = JSON.parse(localStorage.getItem('le_social_saved_chats')) || [
             { rawId: 'sarah_01', id: '#JEUX-1111', name: 'سارة', avatar: '🧕', verified: true, lastMsg: 'Sent 19m ago', unread: true, isGroup: false },
             { rawId: 'yassine_02', id: '#JEUX-2222', name: 'ياسين', avatar: '🧑‍💻', verified: false, lastMsg: 'Sent a reel by @gaming • 8h', unread: false, isGroup: false },
             { rawId: 'demo_grp', id: '#GRP-999', name: '🎮 أبطال الألعاب', avatar: '👥', verified: false, lastMsg: '4+ new messages • 11h', unread: true, isGroup: true }
@@ -2053,6 +1750,7 @@
             }
         };
 
+        /* الدخول السريع والفوري دون أي تعليق */
         function quickDemoAccess() {
             document.getElementById('auth-email').value = 'jalil@jeuxchat.com';
             document.getElementById('auth-username').value = 'mohamed_jalil';
@@ -2062,8 +1760,8 @@
 
         function handleAuth() {
             const email = document.getElementById('auth-email').value.trim() || 'user@jeuxchat.com';
-            const username = document.getElementById('auth-username').value.trim() || 'mohamed_jalil';
-            const fullname = document.getElementById('auth-fullname').value.trim() || 'محمد جليل';
+            const username = document.getElementById('auth-username').value.trim() || 'user_jeux';
+            const fullname = document.getElementById('auth-fullname').value.trim() || 'مستخدم جديد';
 
             const cleanUser = username.replace('@', '').toLowerCase();
             const rawId = 'JEUX-' + Math.floor(1000 + Math.random() * 9000);
@@ -2079,18 +1777,22 @@
                 bio: '✨ مرحباً بكم في حسابي الرسمي على Le jeux chat!\n🚀 جاهز للمواجهة والتحديات المباشرة.'
             };
 
-            safeStorage.setItem('le_social_user', JSON.stringify(currentUser));
+            // حفظ فوري محلي وتشغيل فوري 100%
+            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
             launchApp();
 
+            // حفظ متزامن في Firebase في الخلفية
             try {
                 if (db) {
                     db.ref('users/' + rawId).set(currentUser);
                 }
-            } catch(e) {}
+            } catch (err) {
+                console.warn('Firebase background sync notice:', err);
+            }
         }
 
         function launchApp() {
-            const authEl = document.getElementById('auth-screen'); if (authEl) { authEl.classList.remove('active'); authEl.style.display = 'none'; }
+            document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('main-navigation').style.display = 'flex';
             document.getElementById('my-tag-display').textContent = currentUser.id;
             document.getElementById('top-bar-username').textContent = currentUser.username || currentUser.fullname;
@@ -2102,8 +1804,8 @@
             renderWePlayGames();
             listenToRequests();
             listenToLiveCommunityFeed();
-            startVsCircularTimer();
-            switchTab('canvas-tab');
+            startVsCountdownTimer();
+            switchTab('chats-screen');
         }
 
         function copyMyTag() {
@@ -2113,7 +1815,7 @@
 
         function logout() {
             if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                safeStorage.removeItem('le_social_user');
+                localStorage.removeItem('le_social_user');
                 currentUser = null;
                 document.getElementById('main-navigation').style.display = 'none';
                 showScreen('auth-screen');
@@ -2121,15 +1823,8 @@
         }
 
         function switchTab(screenId) {
-            document.querySelectorAll('.screen').forEach(s => {
-                s.classList.remove('active');
-                s.style.display = 'none';
-            });
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-                targetScreen.style.display = 'flex';
-            }
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
 
             const tabMap = {
                 'chats-screen': 0,
@@ -2151,187 +1846,16 @@
             document.getElementById(id).classList.add('active');
         }
 
-        /* ================= العداد التنازلي الدائري الأخضر ================= */
-        function startVsCircularTimer() {
-            let left = 10;
-            const textEl = document.getElementById('vs-countdown-sec');
-            const circleEl = document.getElementById('vs-countdown-circle');
-            const total = 138;
-
-            setInterval(() => {
-                left--;
-                if (left <= 0) left = 10;
-                if (textEl) textEl.textContent = left;
-                if (circleEl) {
-                    const offset = total - (total * (left / 10));
-                    circleEl.style.strokeDashoffset = offset;
-                }
-            }, 1000);
-        }
-
-        function sendEmoteReact(em) {
-            confetti({ particleCount: 25, origin: { y: 0.7 } });
-            alert(`أرسلت إشارة حماسية: ${em} للخصم! 🔥`);
-        }
-
-        function spinLuckyWheel() {
-            confetti({ particleCount: 80, spread: 80 });
-            alert('🎉 مبروك! فزت بـ 500 عملة ذهبية و 5 جواهر نيون!');
-        }
-
-        /* ================= قسم المجتمع واللحظات مطابق للصورة 1 ================= */
-        function switchCommunityFilter(filter) {
-            currentFeedFilter = filter;
-            document.getElementById('btn-cap-explore').className = filter === 'explore' ? 'capsule-tab-btn active' : 'capsule-tab-btn inactive';
-            document.getElementById('btn-cap-friends').className = filter === 'friends' ? 'capsule-tab-btn active' : 'capsule-tab-btn inactive';
-            listenToLiveCommunityFeed();
-        }
-
-        function listenToLiveCommunityFeed() {
-            const container = document.getElementById('community-feed-stream');
-            if (!container) return;
-
-            if (db) {
-                db.ref('community_feed').limitToLast(40).on('value', (snap) => {
-                    const data = snap.val();
-                    renderFeedPosts(data);
-                });
-            } else {
-                renderFeedPosts(null);
-            }
-        }
-
-        function renderFeedPosts(firebaseData) {
-            const container = document.getElementById('community-feed-stream');
-            container.innerHTML = '';
-
-            let posts = [];
-            if (firebaseData) {
-                posts = Object.entries(firebaseData).map(([k, v]) => ({ key: k, ...v })).reverse();
-            } else {
-                // تماماً كما بالصورة 1
-                posts = [
-                    {
-                        key: 'p_jalil',
-                        authorName: 'محمد جليل',
-                        authorUsername: 'mohamed_jalil',
-                        authorAvatar: '😎',
-                        timeStr: 'منذ 15 دقيقة',
-                        caption: '⚡ حققت فوزاً ساحقاً في Math Blitz مسجلاً 520 نقطة! من يستطيع كسر هذا الرقم القياسي؟',
-                        isAchievement: true,
-                        score: '520 نقطة',
-                        gameTitle: 'Math Blitz',
-                        gameId: 'math',
-                        reactions: { fire: 42, crown: 18, target: 9 }
-                    },
-                    {
-                        key: 'p_sarah',
-                        authorName: 'سارة',
-                        authorUsername: 'sara_gamer',
-                        authorAvatar: '🧕',
-                        timeStr: 'منذ ساعة',
-                        caption: 'جاهزة لتحدي أي لاعب في صالة الشطرنج الإلكتروني... من يجرؤ؟ ♟️🔥',
-                        isAchievement: false,
-                        reactions: { fire: 19, crown: 7, target: 4 }
-                    }
-                ];
-            }
-
-            posts.forEach(post => {
-                const card = document.createElement('div');
-                card.className = 'post-card-master';
-                card.innerHTML = `
-                    <div class="post-author-row">
-                        <div class="post-author-details" onclick="inspectUserProfile('${post.authorId || 'p'}', '${post.authorName}', '${post.authorAvatar || '👤'}')">
-                            <div class="post-avatar-frame">${post.authorAvatar || '👤'}</div>
-                            <div>
-                                <strong style="color: #fff; font-size: 14px;">${post.authorName}</strong>
-                                <div style="font-size: 11px; color: var(--text-sub);">@${post.authorUsername || 'gamer'}</div>
-                            </div>
-                        </div>
-                        <span style="font-size: 11px; color: var(--text-sub);">${post.timeStr || 'الآن'}</span>
-                    </div>
-
-                    ${post.caption ? `<div style="font-size: 13.5px; color: #f1f5f9; line-height: 1.45;">${post.caption}</div>` : ''}
-
-                    ${post.imageUrl ? `
-                        <div style="border-radius: 14px; overflow: hidden; max-height: 340px; margin-top: 4px;">
-                            <img src="${post.imageUrl}" style="width: 100%; height: 100%; object-fit: cover;" />
-                        </div>
-                    ` : ''}
-
-                    ${post.isAchievement ? `
-                        <div class="post-achievement-box">
-                            <div style="color: #fff; font-size: 13px; font-weight: 800;">
-                                <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i> حقق ${post.authorName} رقماً قياسياً في ${post.gameTitle} بنتيجة ${post.score}!
-                            </div>
-                            <button class="btn-break-record" onclick="openSandboxGame('${post.gameId}')">
-                                تحدي الآن واكسر الرقم ⚔️
-                            </button>
-                        </div>
-                    ` : ''}
-
-                    <div class="post-social-bar">
-                        <div class="post-reactions-group">
-                            <div class="reaction-bubble" onclick="reactBubble(this)">${post.reactions ? post.reactions.fire : 14} 🔥</div>
-                            <div class="reaction-bubble" onclick="reactBubble(this)">${post.reactions ? post.reactions.crown : 6} 👑</div>
-                            <div class="reaction-bubble" onclick="reactBubble(this)">${post.reactions ? post.reactions.target : 3} 🎯</div>
-                        </div>
-                        <button class="btn-tip-coins" onclick="alert('أرسلت 50 عملة ذهبية كهدية دعم! 🪙')">
-                            🪙 إهداء 50 عملة
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function reactBubble(el) {
-            const txt = el.textContent.split(' ');
-            el.innerHTML = (parseInt(txt[0]) + 1) + ' ' + txt[1];
-            confetti({ particleCount: 20 });
-        }
-
-        /* ================= معاينة حساب الصديق ================= */
-        function inspectUserProfile(id, name, avatar) {
-            inspectedTargetUser = { id, name, avatar };
-            document.getElementById('friend-modal-name').textContent = name;
-            document.getElementById('friend-modal-id').textContent = '#' + id;
-            document.getElementById('friend-modal-avatar').innerHTML = avatar;
-            document.getElementById('friend-profile-modal').style.display = 'flex';
-        }
-
-        function closeFriendProfileModal() {
-            document.getElementById('friend-profile-modal').style.display = 'none';
-        }
-
-        function startDirectDuelFromModal() {
-            closeFriendProfileModal();
-            openSandboxGame('math');
-        }
-
-        function startDirectChatFromModal() {
-            closeFriendProfileModal();
-            const target = {
-                rawId: inspectedTargetUser.id,
-                id: '#' + inspectedTargetUser.id,
-                name: inspectedTargetUser.name,
-                avatar: inspectedTargetUser.avatar,
-                verified: false,
-                lastMsg: 'بدأت محادثة الآن',
-                unread: false,
-                isGroup: false
-            };
-            openChatRoom(target);
-        }
-
-        /* ================= شريط الملاحظات والدردشة وحفظها التام ================= */
+        /* ================= 1. نظام الملاحظات وتبديل الحسابات ================= */
         function openAccountsSheet() {
             document.getElementById('sheet-my-name').textContent = currentUser.fullname;
             document.getElementById('sheet-my-avatar').innerHTML = currentUser.avatarImg ? `<img src="${currentUser.avatarImg}" style="width:24px;height:24px;border-radius:50%;" />` : currentUser.avatar;
             document.getElementById('accounts-bottom-sheet').style.display = 'flex';
         }
-        function closeAccountsSheet() { document.getElementById('accounts-bottom-sheet').style.display = 'none'; }
+
+        function closeAccountsSheet() {
+            document.getElementById('accounts-bottom-sheet').style.display = 'none';
+        }
 
         function addNewAccountPrompt() {
             closeAccountsSheet();
@@ -2344,14 +1868,13 @@
             const note = prompt('اكتب ملاحظتك السريعة (حتى 60 حرفاً):', userNotes.myNote === 'Note...' ? '' : userNotes.myNote);
             if (note !== null && note.trim() !== '') {
                 userNotes.myNote = note.trim();
-                safeStorage.setItem('le_social_notes', JSON.stringify(userNotes));
+                localStorage.setItem('le_social_notes', JSON.stringify(userNotes));
                 document.getElementById('my-note-bubble-text').textContent = userNotes.myNote;
             }
         }
 
         function replyToNote(name, noteText) {
-            const reply = prompt(`رد فوري على ملاحظة ${name}:
-"${noteText}"`);
+            const reply = prompt(`رد فوري على ملاحظة ${name}:\n"${noteText}"`);
             if (reply && reply.trim() !== '') {
                 alert(`تم إرسال ردك إلى ${name} في رسالة خاصة: "${reply}" 📨`);
             }
@@ -2371,10 +1894,11 @@
                 isGroup: false
             };
             savedChatsList.unshift(newChat);
-            safeStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
+            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
             renderDirectChats();
         }
 
+        /* ================= 2. البحث الذكي Meta AI ================= */
         function handleSearchOrAI(query) {
             const q = query.toLowerCase().trim();
             const feed = document.getElementById('direct-chats-container');
@@ -2387,12 +1911,12 @@
 
         function executeAIAsk(query) {
             if (!query || query.trim() === '') return;
-            alert(`🤖 Meta AI يجيبك:
-"مرحباً بك! بخصوص استفسارك: '${query}' - المنصة جاهزة ويمكنك بدء التحديات ودعوة أصدقائك في أي وقت!"`);
+            alert(`🤖 Meta AI يجيبك:\n"مرحباً بك! بخصوص استفسارك: '${query}' - المنصة جاهزة ويمكنك بدء التحديات ودعوة أصدقائك في أي وقت!"`);
             document.getElementById('meta-search-input').value = '';
             handleSearchOrAI('');
         }
 
+        /* ================= 3. بطاقات المحادثة المباشرة والأمان ================= */
         function renderDirectChats() {
             const feed = document.getElementById('direct-chats-container');
             feed.innerHTML = '';
@@ -2423,7 +1947,7 @@
                         return;
                     }
                     chat.unread = false;
-                    safeStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
+                    localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
                     renderDirectChats();
                     openChatRoom(chat);
                 };
@@ -2459,7 +1983,7 @@
             document.getElementById('delete-chat-modal').style.display = 'none';
             if (confirmDelete && chatPendingDeleteIdx !== null) {
                 savedChatsList.splice(chatPendingDeleteIdx, 1);
-                safeStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
+                localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
                 renderDirectChats();
                 alert('تم حذف المحادثة بنجاح.');
             }
@@ -2556,7 +2080,7 @@
             }
 
             currentChatPartner.lastMsg = text;
-            safeStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
+            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
             renderDirectChats();
             input.value = '';
         }
@@ -2565,7 +2089,195 @@
             document.getElementById('chat-text-input').value += em;
         }
 
-        /* ================= ألعاب WePlay الـ 20 كاملة ================= */
+        /* ================= 4. بطاقة المواجهة (VS Card) والمؤقت التنازلي ================= */
+        function startVsCountdownTimer() {
+            let left = 15;
+            const timerEl = document.getElementById('vs-countdown-sec');
+            setInterval(() => {
+                left--;
+                if (left <= 0) left = 15;
+                if (timerEl) timerEl.textContent = left;
+            }, 1000);
+        }
+
+        function sendEmoteReact(em) {
+            confetti({ particleCount: 25, origin: { y: 0.7 } });
+            alert(`أرسلت إشارة حماسية: ${em} للخصم! 🔥`);
+        }
+
+        /* ================= 5. معاينة حساب الصديق (Profile Inspection) ================= */
+        function inspectUserProfile(id, name, avatar) {
+            inspectedTargetUser = { id, name, avatar };
+            document.getElementById('friend-modal-name').textContent = name;
+            document.getElementById('friend-modal-id').textContent = '#' + id;
+            document.getElementById('friend-modal-avatar').innerHTML = avatar;
+            document.getElementById('friend-profile-modal').style.display = 'flex';
+        }
+
+        function closeFriendProfileModal() {
+            document.getElementById('friend-profile-modal').style.display = 'none';
+        }
+
+        function startDirectDuelFromModal() {
+            closeFriendProfileModal();
+            openSandboxGame('math');
+        }
+
+        function startDirectChatFromModal() {
+            closeFriendProfileModal();
+            const target = {
+                rawId: inspectedTargetUser.id,
+                id: '#' + inspectedTargetUser.id,
+                name: inspectedTargetUser.name,
+                avatar: inspectedTargetUser.avatar,
+                verified: false,
+                lastMsg: 'بدأت محادثة الآن',
+                unread: false,
+                isGroup: false
+            };
+            openChatRoom(target);
+        }
+
+        /* ================= 6. قسم المجتمع الحي ومزامنة Firebase ================= */
+        function switchCommunityFilter(filter) {
+            currentFeedFilter = filter;
+            document.getElementById('tab-feed-explore').classList.toggle('active', filter === 'explore');
+            document.getElementById('tab-feed-friends').classList.toggle('active', filter === 'friends');
+            listenToLiveCommunityFeed();
+        }
+
+        function listenToLiveCommunityFeed() {
+            const container = document.getElementById('community-feed-stream');
+            if (!container) return;
+
+            if (db) {
+                db.ref('community_feed').limitToLast(40).on('value', (snap) => {
+                    const data = snap.val();
+                    renderFeedPosts(data);
+                });
+            } else {
+                renderFeedPosts(null);
+            }
+        }
+
+        function renderFeedPosts(firebaseData) {
+            const container = document.getElementById('community-feed-stream');
+            container.innerHTML = '';
+
+            let posts = [];
+            if (firebaseData) {
+                posts = Object.entries(firebaseData).map(([k, v]) => ({ key: k, ...v })).reverse();
+            } else {
+                // بيانات افتراضية حماسية
+                posts = [
+                    {
+                        key: 'p1',
+                        authorName: 'سارة',
+                        authorUsername: 'sarah_dz',
+                        authorAvatar: '🧕',
+                        caption: 'حطمت الرقم القياسي للتو في Math Blitz! هل يوجد من ينافسني؟ ⚡',
+                        isAchievement: true,
+                        score: '520 نقطة',
+                        gameId: 'math',
+                        gameTitle: 'Math Blitz'
+                    },
+                    {
+                        key: 'p2',
+                        authorName: 'ياسين',
+                        authorUsername: 'yassine_pro',
+                        authorAvatar: '🧑‍💻',
+                        caption: 'جلسة تدريب ليلية في Cyber Chess ♟️🔥',
+                        imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80',
+                        isAchievement: false
+                    }
+                ];
+            }
+
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'community-post-card';
+                card.innerHTML = `
+                    <div class="post-author-row">
+                        <div class="post-author-meta" onclick="inspectUserProfile('${post.authorId || 'player'}', '${post.authorName}', '${post.authorAvatar || '👤'}')">
+                            <div class="post-author-avatar">${post.authorAvatar || '👤'}</div>
+                            <div>
+                                <strong style="color: #fff; font-size: 13.5px;">${post.authorName}</strong>
+                                <div style="font-size: 10.5px; color: var(--text-sub);">@${post.authorUsername || 'gamer'}</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-ellipsis" style="color: var(--text-sub); cursor: pointer;"></i>
+                    </div>
+
+                    ${post.caption ? `<div style="font-size: 13px; color: #e2e8f0; line-height: 1.45;">${post.caption}</div>` : ''}
+
+                    ${post.imageUrl ? `
+                        <div class="post-media-box">
+                            <img src="${post.imageUrl}" />
+                        </div>
+                    ` : ''}
+
+                    ${post.isAchievement ? `
+                        <div class="achievement-highlight-card">
+                            <div>
+                                <strong style="color: #fff; font-size: 12.5px;"><i class="fa-solid fa-trophy" style="color:#fbbf24;"></i> إنجاز: ${post.score}</strong>
+                                <div style="font-size: 11px; color: var(--neon-green); margin-top: 2px;">في لعبة ${post.gameTitle}</div>
+                            </div>
+                            <button class="btn-neo" style="padding: 5px 12px; font-size: 11px;" onclick="openSandboxGame('${post.gameId}')">
+                                تحدي الآن ⚔️
+                            </button>
+                        </div>
+                    ` : ''}
+
+                    <div class="post-reactions-bar">
+                        <div class="reaction-chips-group">
+                            <button class="reaction-chip-btn" onclick="reactToPost(this, '🔥')">🔥 <span>14</span></button>
+                            <button class="reaction-chip-btn" onclick="reactToPost(this, '👑')">👑 <span>6</span></button>
+                            <button class="reaction-chip-btn" onclick="alert('أرسلت 50 عملة ذهبية كهدية دعم! 🪙')">🪙 إهداء</button>
+                        </div>
+                        <i class="fa-solid fa-share-nodes" style="color: var(--neon-cyan); cursor: pointer;" onclick="openShareInviteModal()"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function reactToPost(btn, em) {
+            const span = btn.querySelector('span');
+            if (span) span.textContent = parseInt(span.textContent) + 1;
+            confetti({ particleCount: 20 });
+        }
+
+        /* ================= 7. عجلة الحظ والمكافأة اليومية ================= */
+        function openLuckyWheelModal() { document.getElementById('lucky-wheel-modal').style.display = 'flex'; }
+        function closeLuckyWheelModal() { document.getElementById('lucky-wheel-modal').style.display = 'none'; }
+        function spinLuckyWheel() {
+            closeLuckyWheelModal();
+            confetti({ particleCount: 80, spread: 80 });
+            alert('🎉 مبروك! فزت بـ 500 عملة ذهبية و 5 جواهر نيون!');
+        }
+
+        /* ================= 8. مشاركة التحدي برابط مباشر ================= */
+        function openShareInviteModal() { document.getElementById('share-invite-modal').style.display = 'flex'; }
+        function closeShareInviteModal() { document.getElementById('share-invite-modal').style.display = 'none'; }
+        
+        function shareVia(app) {
+            const text = `تحداني الآن في ألعاب Le jeux chat! حسابي: ${currentUser ? currentUser.id : '#JEUX-0000'}`;
+            const url = window.location.href;
+            if (app === 'whatsapp') {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+            } else if (app === 'telegram') {
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+            }
+            closeShareInviteModal();
+        }
+
+        function copyDirectInviteLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('تم نسخ رابط التحدي المباشر بنجاح! 📋');
+            closeShareInviteModal();
+        }
+
+        /* ================= 9. ألعاب WePlay Arena الـ 20 التفاعلية ================= */
         const weplayGamesData = [
             { id: 'chess', title: 'Cyber Chess', cat: 'ذهنية وتكتيك', icon: 'fa-chess', accent: '#00D9F5', count: '2.4k' },
             { id: 'hockey', title: 'Air Hockey', cat: 'سرعة وفيزياء', icon: 'fa-hockey-puck', accent: '#00F5A0', count: '3.1k' },
@@ -2595,6 +2307,7 @@
             weplayGamesData.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-badge-card';
+                card.style.setProperty('--card-accent', game.accent);
                 card.onclick = () => openSandboxGame(game.id);
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -2653,6 +2366,7 @@
             document.getElementById('game-sandbox-modal').style.display = 'none';
         }
 
+        /* دوال محركات الألعاب الـ 20 كاملة */
         function runCyberChess(arena) {
             arena.innerHTML = `
                 <div style="font-size: 12px; margin-bottom: 8px; color: var(--neon-green);">الدور: <strong id="chess-turn">الأبيض</strong></div>
@@ -2845,6 +2559,7 @@
                     score += 50; 
                     confetti({ particleCount: 20 });
                     if (score >= 150) {
+                        // نشر تلقائي للإنجاز في خلاصة المجتمع
                         autoPublishAchievement('Math Blitz', score);
                     }
                 }
@@ -2860,7 +2575,7 @@
                 authorName: currentUser.fullname,
                 authorUsername: currentUser.username,
                 authorAvatar: currentUser.avatar,
-                caption: `⚡ حققت فوزاً ساحقاً في ${gameTitle} مسجلاً ${score} نقطة! من يستطيع كسر هذا الرقم القياسي؟`,
+                caption: `حطمت رقماً قياسياً جديداً بنتيجة ${score} نقطة في ${gameTitle}! 🔥`,
                 isAchievement: true,
                 score: `${score} نقطة`,
                 gameId: 'math',
@@ -3247,7 +2962,7 @@
             }
         }
 
-        /* ================= طلبات الصداقة والأصدقاء ================= */
+        /* ================= 10. طلبات الصداقة والأصدقاء ================= */
         function dispatchFriendRequest() {
             const input = document.getElementById('friend-search-input');
             const target = input.value.trim().toUpperCase().replace('#', '');
@@ -3309,7 +3024,7 @@
         function acceptFriend(id, name, avatar) {
             const fr = { rawId: id, id: '#' + id, name: name, avatar: avatar };
             friendsList.push(fr);
-            safeStorage.setItem('le_social_friends', JSON.stringify(friendsList));
+            localStorage.setItem('le_social_friends', JSON.stringify(friendsList));
             if (db) db.ref(`requests/${currentUser.rawId}/${id}`).remove();
             renderFriendsDeck();
             
@@ -3323,7 +3038,7 @@
                 unread: true,
                 isGroup: false
             });
-            safeStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
+            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
             renderDirectChats();
             alert(`أصبحتم أصدقاء الآن! 🎉`);
         }
@@ -3356,7 +3071,7 @@
             });
         }
 
-        /* ================= الملف الشخصي والنشر ================= */
+        /* ================= 11. الملف الشخصي والنشر ================= */
         function loadProfile() {
             if (!currentUser) return;
             document.getElementById('insta-profile-username').textContent = currentUser.username;
@@ -3383,7 +3098,7 @@
             const reader = new FileReader();
             reader.onload = (event) => {
                 currentUser.avatarImg = event.target.result;
-                safeStorage.setItem('le_social_user', JSON.stringify(currentUser));
+                localStorage.setItem('le_social_user', JSON.stringify(currentUser));
                 if (db) db.ref('users/' + currentUser.rawId).update({ avatarImg: currentUser.avatarImg });
                 loadProfile();
                 alert('تم تحديث صورتك الشخصية بنجاح! 📸');
@@ -3398,7 +3113,7 @@
             const newBio = prompt('النبذة الشخصية (Bio):', currentUser.bio);
             if (newBio !== null) currentUser.bio = newBio.trim();
 
-            safeStorage.setItem('le_social_user', JSON.stringify(currentUser));
+            localStorage.setItem('le_social_user', JSON.stringify(currentUser));
             if (db) db.ref('users/' + currentUser.rawId).update({ fullname: currentUser.fullname, bio: currentUser.bio });
             loadProfile();
             document.getElementById('top-bar-username').textContent = currentUser.username || currentUser.fullname;
@@ -3445,13 +3160,14 @@
                 timestamp: firebase.database.ServerValue ? firebase.database.ServerValue.TIMESTAMP : Date.now()
             };
 
+            // رفع إلى Firebase ليظهر لجميع الأصدقاء أونلاين فوراً
             if (db) {
                 db.ref('community_feed').push().set(postObj);
             }
 
             if (tempPostImg) {
                 userPosts.unshift({ img: tempPostImg, caption: cap || 'منشور جديد' });
-                safeStorage.setItem('le_social_posts', JSON.stringify(userPosts));
+                localStorage.setItem('le_social_posts', JSON.stringify(userPosts));
                 renderProfilePosts();
             }
 
@@ -3477,7 +3193,7 @@
                 cell.onclick = () => {
                     if (confirm(`"${post.caption}"\n\nهل تريد حذف هذا المنشور؟`)) {
                         userPosts.splice(i, 1);
-                        safeStorage.setItem('le_social_posts', JSON.stringify(userPosts));
+                        localStorage.setItem('le_social_posts', JSON.stringify(userPosts));
                         renderProfilePosts();
                     }
                 };
@@ -3486,7 +3202,7 @@
             });
         }
 
-        /* ================= المجموعات ================= */
+        /* ================= 12. المجموعات ================= */
         function openCreateGroupModal() { document.getElementById('create-group-modal').style.display = 'flex'; }
         function closeCreateGroupModal() { document.getElementById('create-group-modal').style.display = 'none'; }
         function submitCreateGroup() {
@@ -3503,7 +3219,7 @@
                 isGroup: true 
             };
             savedChatsList.unshift(grp);
-            safeStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
+            localStorage.setItem('le_social_saved_chats', JSON.stringify(savedChatsList));
             renderDirectChats();
             closeCreateGroupModal();
             alert(`تم إنشاء مجموعة "${name}" بنجاح! 🚀`);
